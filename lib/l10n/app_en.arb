@@ -1,0 +1,37 @@
+{
+    "appName": "Find the Words",
+    "loading": "Loading",
+    "chooseLanguageHeader": "Choose your language",
+    "submit": "Submit",
+    "logo": "home_logo_en.svg",
+    "level": "Level",
+    "stage": "Stage",
+    "levelWithNumber": "Level {levelNumber}",
+    "@levelWithNumber": {
+        "description": "Level with number",
+        "placeholders": {
+            "levelNumber": {
+                "type": "int",
+                "example": "3"
+            }
+        }
+    },
+    "stageWithNumber": "Stage {stageNumber}",
+    "@stageWithNumber": {
+        "description": "Stage with number",
+        "placeholders": {
+            "stageNumber": {
+                "type": "int",
+                "example": "38"
+            }
+        }
+    },
+    "languageBottomsheetTitle": "Change Language",
+    "languageBottomsheetDescription": "Your progress is saved separately for each language. Levels, and completed stages are tracked independently, allowing you to learn at your own pace in multiple languages.",
+    "languageBottomsheetUpdateBtn": "Update",
+    "stageAndLevelCardDescription": "XP progress for next level",
+    "totalWordsCardDescription": "Total words",
+    "nextStageBtnText": "Next Stage",
+    "stageButtonHelp": "Help",
+    "stageButtonShuffle": "Shuffle"
+}

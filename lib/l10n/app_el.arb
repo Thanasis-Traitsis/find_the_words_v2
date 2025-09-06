@@ -1,0 +1,37 @@
+{
+    "appName": "Βρες τις Λέξεις",
+    "loading": "Φόρτωση",
+    "chooseLanguageHeader": "Διάλεξε τη γλώσσα σου",
+    "submit": "Υποβολή",
+    "logo": "home_logo.svg",
+    "level": "Επίπεδο",
+    "stage": "Στάδιο",
+    "levelWithNumber": "Επίπεδο {levelNumber}",
+    "@levelWithNumber": {
+        "description": "Level with number",
+        "placeholders": {
+            "levelNumber": {
+                "type": "int",
+                "example": "3"
+            }
+        }
+    },
+    "stageWithNumber": "Στάδιο {stageNumber}",
+    "@stageWithNumber": {
+        "description": "Stage with number",
+        "placeholders": {
+            "stageNumber": {
+                "type": "int",
+                "example": "38"
+            }
+        }
+    },
+    "languageBottomsheetTitle": "Αλλαγή Γλώσσας",
+    "languageBottomsheetDescription": "Η πρόοδός σας αποθηκεύεται ξεχωριστά για κάθε γλώσσα. Τα επίπεδα και τα ολοκληρωμένα στάδια παρακολουθούνται ανεξάρτητα, επιτρέποντάς σας να μαθαίνετε με το δικό σας ρυθμό σε πολλές γλώσσες.",
+    "languageBottomsheetUpdateBtn": "Ενημέρωση",
+    "stageAndLevelCardDescription": "XP πρόοδος επόμενου επιπέδου",
+    "totalWordsCardDescription": "Συνολικές λέξεις",
+    "nextStageBtnText": "Επόμενο Στάδιο",
+    "stageButtonHelp": "Βοήθεια",
+    "stageButtonShuffle": "Ανακάτεμα"
+}

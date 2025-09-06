@@ -1,0 +1,11 @@
+import 'package:hive/hive.dart';
+
+part 'words_model.g.dart';
+
+@HiveType(typeId: 4)
+class WordsModel extends HiveObject {
+  @HiveField(0)
+  final Map<String, dynamic> words;
+
+  WordsModel({required this.words});
+}
