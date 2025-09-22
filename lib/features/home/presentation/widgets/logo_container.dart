@@ -11,7 +11,7 @@ class LogoContainer extends StatelessWidget {
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.symmetric(vertical: AppSpacing.spacingXL),
-      
+
       child: SvgPicture.asset(
         'assets/icons/${context.translate.logo}',
         height: AppSizes.homeLogoSize,

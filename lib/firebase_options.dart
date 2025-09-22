@@ -83,5 +83,4 @@ class DefaultFirebaseOptions {
     authDomain: 'words-lists.firebaseapp.com',
     storageBucket: 'words-lists.firebasestorage.app',
   );
-
 }

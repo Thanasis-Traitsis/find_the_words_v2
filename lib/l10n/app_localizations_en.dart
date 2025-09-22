@@ -43,7 +43,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get languageBottomsheetTitle => 'Change Language';
 
   @override
-  String get languageBottomsheetDescription => 'Your progress is saved separately for each language. Levels, and completed stages are tracked independently, allowing you to learn at your own pace in multiple languages.';
+  String get languageBottomsheetDescription =>
+      'Your progress is saved separately for each language. Levels, and completed stages are tracked independently, allowing you to learn at your own pace in multiple languages.';
 
   @override
   String get languageBottomsheetUpdateBtn => 'Update';

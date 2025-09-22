@@ -1,6 +1,5 @@
 import 'package:find_the_words/config/routes/app_pages.dart';
 import 'package:find_the_words/core/screens/custom_screen.dart';
-import 'package:find_the_words/core/utils/file_utils.dart';
 import 'package:find_the_words/core/utils/text_extensions.dart';
 import 'package:find_the_words/core/widgets/custom_appbar.dart';
 import 'package:find_the_words/core/widgets/custom_filled_button.dart';
@@ -54,10 +53,12 @@ class HomeScreen extends StatelessWidget {
                     CustomFilledButton(
                       text: context.translate.nextStageBtnText,
                       onPressed: () {
-                        context.read<StageBloc>().add(NextStageButtonPressed(FileUtils.stageFile(3)));
-                        // AppPages.stage.push(
-                        //   extra: state.user.profileStatus.stage,
-                        // );
+                        context.read<StageBloc>().add(
+                          NextStageButtonPressed(state.user.profileStatus),
+                        );
+                        AppPages.stage.push(
+                          extra: state.user.profileStatus.stage,
+                        );
                       },
                     ),
                   ],

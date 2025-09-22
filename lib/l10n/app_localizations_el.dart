@@ -43,7 +43,8 @@ class AppLocalizationsEl extends AppLocalizations {
   String get languageBottomsheetTitle => 'Αλλαγή Γλώσσας';
 
   @override
-  String get languageBottomsheetDescription => 'Η πρόοδός σας αποθηκεύεται ξεχωριστά για κάθε γλώσσα. Τα επίπεδα και τα ολοκληρωμένα στάδια παρακολουθούνται ανεξάρτητα, επιτρέποντάς σας να μαθαίνετε με το δικό σας ρυθμό σε πολλές γλώσσες.';
+  String get languageBottomsheetDescription =>
+      'Η πρόοδός σας αποθηκεύεται ξεχωριστά για κάθε γλώσσα. Τα επίπεδα και τα ολοκληρωμένα στάδια παρακολουθούνται ανεξάρτητα, επιτρέποντάς σας να μαθαίνετε με το δικό σας ρυθμό σε πολλές γλώσσες.';
 
   @override
   String get languageBottomsheetUpdateBtn => 'Ενημέρωση';

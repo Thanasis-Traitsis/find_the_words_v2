@@ -1,18 +1,19 @@
-import 'dart:math';
-
 import 'package:equatable/equatable.dart';
-import 'package:find_the_words/core/constants/app_keys.dart';
 import 'package:find_the_words/core/utils/file_utils.dart';
+import 'package:find_the_words/features/auth/data/models/profile_status_model.dart';
+import 'package:find_the_words/features/stage/data/models/current_stage.dart';
+import 'package:find_the_words/features/stage/domain/services/stage_generator_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 part 'stage_event.dart';
 part 'stage_state.dart';
 
 class StageBloc extends Bloc<StageEvent, StageState> {
-  static const String _usedWordsKey = AppKeys.usedWordsKey;
+  final StageGeneratorService _stageGeneratorService;
 
-  StageBloc() : super(StageInitial()) {
+  StageBloc({required StageGeneratorService stageGeneratorService})
+    : _stageGeneratorService = stageGeneratorService,
+      super(StageInitial()) {
     on<NextStageButtonPressed>(_onNextStageButtonPressed);
   }
 
@@ -20,16 +21,19 @@ class StageBloc extends Bloc<StageEvent, StageState> {
     NextStageButtonPressed event,
     Emitter<StageState> emit,
   ) async {
-    final stageFile = await FileUtils.loadCompressedJson(event.filePath);
-    
-    int randomStageChoice = Random().nextInt(stageFile.length);
-    var wordEntry = stageFile.entries.elementAt(randomStageChoice);
+    final int userLevel = event.profileStatus.level + 3;
+    final int letterFileNum = userLevel + 2;
 
-    final prefs = await SharedPreferences.getInstance();
-    final List<String> usedWordsList = prefs.getStringList(_usedWordsKey) ?? [];
+    final stageData = await _stageGeneratorService.generateStage(
+      filePath: FileUtils.stageFile(letterFileNum),
+      level: userLevel,
+      progress: event.profileStatus.progress,
+    );
 
-    if(!usedWordsList.contains(wordEntry.key)) {
-      print("object");
-    }
+    // Save the current stage locally
+
+    // Upload the current stage online
+
+    emit(StageCreated(stageData));
   }
 }

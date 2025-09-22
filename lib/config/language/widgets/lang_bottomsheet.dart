@@ -1,3 +1,4 @@
+import 'package:find_the_words/config/language/widgets/info_container.dart';
 import 'package:find_the_words/config/language/widgets/select_language_list.dart';
 import 'package:find_the_words/config/theme/custom_text_type.dart';
 import 'package:find_the_words/core/constants/constants.dart';
@@ -49,13 +50,7 @@ class LangBottomsheet extends StatelessWidget {
                   ],
                 ),
               ),
-              Container(
-                margin: const EdgeInsets.only(bottom: AppSpacing.spacingXL),
-                child: CustomText(
-                  context.translate.languageBottomsheetDescription,
-                  textType: CustomTextType.regularBody,
-                ),
-              ),
+              const InfoContainer(),
               Container(
                 width: double.infinity,
                 height: AppBorders.smallBorderWidth,

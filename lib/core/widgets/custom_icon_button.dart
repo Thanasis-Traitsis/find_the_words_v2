@@ -26,7 +26,7 @@ class CustomIconButton extends StatelessWidget {
             onTap: onTap,
             child: Container(
               padding: const EdgeInsets.all(AppSpacing.iconButtonPadding),
-              child: CustomSvgIcon(icon: icon, color: context.colors.black,),
+              child: CustomSvgIcon(icon: icon, color: context.colors.black),
             ),
           ),
         ),

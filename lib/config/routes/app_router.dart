@@ -71,7 +71,7 @@ class AppRouter {
         name: AppPages.stage.info.name,
         pageBuilder: (context, state) {
           final stage = state.extra as int? ?? 0;
-          return _noAnimationPage(StageScreen(stage: stage,), state);
+          return _noAnimationPage(StageScreen(stage: stage), state);
         },
       ),
     ],

@@ -27,7 +27,6 @@ void main() async {
 Future<void> runMyApp() async {
   final themeCubit = ThemeCubit();
   final langCubit = getIt<LanguageCubit>();
-  final stageBloc = StageBloc();
 
   await themeCubit.loadTheme();
   await langCubit.loadSelectedLang();
@@ -38,7 +37,7 @@ Future<void> runMyApp() async {
         BlocProvider.value(value: themeCubit),
         BlocProvider.value(value: langCubit),
         BlocProvider.value(value: getIt<AuthCubit>()),
-        BlocProvider.value(value: stageBloc),
+        BlocProvider.value(value: getIt<StageBloc>()),
       ],
       child: const MyApp(),
     ),

@@ -10,7 +10,9 @@ import 'package:find_the_words/features/stage/presentation/widgets/stage_icon_bu
 import 'package:flutter/material.dart';
 
 class CircleContainerWithWord extends StatefulWidget {
-  const CircleContainerWithWord({super.key});
+  final List<String> letters;
+
+  const CircleContainerWithWord({super.key, required this.letters});
 
   @override
   State<CircleContainerWithWord> createState() =>
@@ -27,8 +29,6 @@ class _CircleContainerWithWordState extends State<CircleContainerWithWord> {
 
   final Map<int, Offset> letterCenters = {};
 
-  final List<String> letters = ['C', 'A', 'T'];
-
   static const double containerPadding = AppSpacing.spacingM;
   static const double letterSize = AppSizes.stageLetterSize;
   static const double offsetAdjustment = containerPadding + (letterSize / 2);
@@ -44,7 +44,7 @@ class _CircleContainerWithWordState extends State<CircleContainerWithWord> {
 
         selectedIndices.add(letterIndex);
         selectedPositions.add(letterCenters[letterIndex]!);
-        formatedWord.write(letters[letterIndex]);
+        formatedWord.write(widget.letters[letterIndex]);
       });
     }
   }
@@ -53,7 +53,7 @@ class _CircleContainerWithWordState extends State<CircleContainerWithWord> {
     if (!isDragging) return;
 
     setState(() {
-      if (selectedIndices.length < letters.length) {
+      if (selectedIndices.length < widget.letters.length) {
         currentDragPosition = localPosition;
       }
 
@@ -62,9 +62,9 @@ class _CircleContainerWithWordState extends State<CircleContainerWithWord> {
       if (letterIndex != null && !selectedIndices.contains(letterIndex)) {
         selectedIndices.add(letterIndex);
         selectedPositions.add(letterCenters[letterIndex]!);
-        formatedWord.write(letters[letterIndex]);
+        formatedWord.write(widget.letters[letterIndex]);
 
-        if (selectedIndices.length >= letters.length) {
+        if (selectedIndices.length >= widget.letters.length) {
           currentDragPosition = null;
         }
       }
@@ -153,7 +153,7 @@ class _CircleContainerWithWordState extends State<CircleContainerWithWord> {
                         });
                       },
                     ),
-                    children: List.generate(letters.length, (index) {
+                    children: List.generate(widget.letters.length, (index) {
                       final isSelected = selectedIndices.contains(index);
 
                       return Container(
@@ -167,7 +167,7 @@ class _CircleContainerWithWordState extends State<CircleContainerWithWord> {
                               : Colors.transparent,
                         ),
                         child: CustomText(
-                          letters[index],
+                          widget.letters[index],
                           textStyle: TextStyle(
                             fontSize: CustomTextType.regularHeading.fontSize,
                             fontWeight:

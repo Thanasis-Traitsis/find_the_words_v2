@@ -8,7 +8,7 @@ sealed class StageEvent extends Equatable {
 }
 
 class NextStageButtonPressed extends StageEvent {
-  final String filePath;
+  final ProfileStatusModel profileStatus;
 
-  const NextStageButtonPressed(this.filePath);
+  const NextStageButtonPressed(this.profileStatus);
 }
