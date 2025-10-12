@@ -49,6 +49,7 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
+            // CustomText('ds'),
             if (userPoints != null && isHomePage == true)
               userPoints!
             else ...[
@@ -57,6 +58,7 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
                   margin: const EdgeInsets.only(right: AppSpacing.spacingS),
                   child: CustomIconButton(
                     onTap: () {
+                      print("pop stage screen");
                       NavigationService.instance.pop();
                     },
                     icon: leadingIcon!,

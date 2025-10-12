@@ -12,6 +12,27 @@ class AppLocalizationsEn extends AppLocalizations {
   String get appName => 'Find the Words';
 
   @override
+  String get splashScreenName => 'Splash';
+
+  @override
+  String get langScreenName => 'Language';
+
+  @override
+  String get homeScreenName => 'Home';
+
+  @override
+  String get stageScreenName => 'Stage';
+
+  @override
+  String get wordsScreenName => 'Total Words';
+
+  @override
+  String get settingsScreenName => 'Settings';
+
+  @override
+  String get themeScreenName => 'Choose Theme';
+
+  @override
   String get loading => 'Loading';
 
   @override
@@ -63,4 +84,103 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get stageButtonShuffle => 'Shuffle';
+
+  @override
+  String get settingsItemTheme => 'Theme';
+
+  @override
+  String get settingsItemLanguage => 'Language';
+
+  @override
+  String get settingsItemSound => 'Sound';
+
+  @override
+  String get settingsItemGameInstructions => 'Game instructions';
+
+  @override
+  String get settingsItemResetStage => 'Reset current stage';
+
+  @override
+  String get settingsItemReportBug => 'Report a bug';
+
+  @override
+  String get settingsItemReportBadWord => 'Report a bad word';
+
+  @override
+  String get settingsItemReportContact => 'Contact us';
+
+  @override
+  String get settingsItemReportPrivacy => 'Privacy & Policy';
+
+  @override
+  String get settingsItemReportTermsConditions => 'Terms & Conditions';
+
+  @override
+  String get themeOptionLight => 'Light';
+
+  @override
+  String get themeOptionDark => 'Dark';
+
+  @override
+  String get themeOptionSystem => 'System';
+
+  @override
+  String get themeOptionSystemDescription =>
+      'Automatically match your device settings';
+
+  @override
+  String get searchPlaceholder => 'Search';
+
+  @override
+  String get sortByAlphabetical => 'Alphabetical order';
+
+  @override
+  String get sortBySmallestToBiggest => 'Smallest to largest';
+
+  @override
+  String get sortByBiggestToSmallest => 'Largest to smallest';
+
+  @override
+  String get extraWordsDialogEmpty => 'No extra words found yet!';
+
+  @override
+  String get extraWordsDialogTitle => 'Extra Words';
+
+  @override
+  String get extraWordsDialogSubtitle =>
+      'Find hidden words that don\'t fit in the crossword and earn bonus points!';
+
+  @override
+  String get helpDialogTitle => 'Help';
+
+  @override
+  String get helpDialogSubtitle =>
+      'Use available hints to reveal words or letters.';
+
+  @override
+  String get gameDialogCloseBtn => 'Close';
+
+  @override
+  String get free => 'Free';
+
+  @override
+  String get helpDialogShuffleTitle => 'Shuffle';
+
+  @override
+  String get helpDialogShuffleDescription =>
+      'Using this help, the letters are shuffled, giving you a fresh way to think.';
+
+  @override
+  String get helpDialogRandomLetterTitle => 'Random Reveal';
+
+  @override
+  String get helpDialogRandomLetterDescription =>
+      'This hint will reveal a hidden letter in the crossword from a random position.';
+
+  @override
+  String get helpDialogSpecificLetterTitle => 'Targeted Reveal';
+
+  @override
+  String get helpDialogSpecificLetterDescription =>
+      'With this hint you choose which hidden letter of the crossword you want to reveal.';
 }

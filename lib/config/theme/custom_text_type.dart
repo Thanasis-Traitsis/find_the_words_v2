@@ -6,6 +6,7 @@ enum CustomTextType {
   bigHeading,
   regularHeading,
   smallHeading,
+  bigBody,
   regularBody,
   smallBody,
   smallTag,
@@ -15,7 +16,8 @@ extension CustomFontSize on CustomTextType {
   double get fontSize => switch (this) {
     CustomTextType.bigHeading => AppTextSizes.textSizeXL,
     CustomTextType.regularHeading => AppTextSizes.textSizeL,
-    CustomTextType.smallHeading => AppTextSizes.textSizeM,
+    CustomTextType.smallHeading ||
+    CustomTextType.bigBody => AppTextSizes.textSizeM,
     CustomTextType.regularBody => AppTextSizes.textSizeS,
     CustomTextType.smallBody ||
     CustomTextType.smallTag => AppTextSizes.textSizeXS,
@@ -28,7 +30,9 @@ extension CustomFontWeight on CustomTextType {
     CustomTextType.regularHeading ||
     CustomTextType.smallHeading ||
     CustomTextType.smallTag => FontWeight.bold,
-    CustomTextType.regularBody || CustomTextType.smallBody => FontWeight.normal,
+    CustomTextType.bigBody ||
+    CustomTextType.regularBody ||
+    CustomTextType.smallBody => FontWeight.normal,
   };
 }
 

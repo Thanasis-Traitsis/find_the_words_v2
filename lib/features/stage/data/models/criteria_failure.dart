@@ -1,5 +1,5 @@
 import 'package:find_the_words/features/stage/data/models/stage_criteria.dart';
-import 'package:find_the_words/features/stage/domain/helpers/word_placement.dart';
+import 'package:find_the_words/features/stage/domain/helpers/word_placement_tracker.dart';
 
 enum CriteriaFailure { notEnoughTotalWords, tooManyWords, allMet }
 

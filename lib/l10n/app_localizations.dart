@@ -104,6 +104,48 @@ abstract class AppLocalizations {
   /// **'Find the Words'**
   String get appName;
 
+  /// No description provided for @splashScreenName.
+  ///
+  /// In en, this message translates to:
+  /// **'Splash'**
+  String get splashScreenName;
+
+  /// No description provided for @langScreenName.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get langScreenName;
+
+  /// No description provided for @homeScreenName.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get homeScreenName;
+
+  /// No description provided for @stageScreenName.
+  ///
+  /// In en, this message translates to:
+  /// **'Stage'**
+  String get stageScreenName;
+
+  /// No description provided for @wordsScreenName.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Words'**
+  String get wordsScreenName;
+
+  /// No description provided for @settingsScreenName.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settingsScreenName;
+
+  /// No description provided for @themeScreenName.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose Theme'**
+  String get themeScreenName;
+
   /// No description provided for @loading.
   ///
   /// In en, this message translates to:
@@ -199,6 +241,192 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Shuffle'**
   String get stageButtonShuffle;
+
+  /// No description provided for @settingsItemTheme.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme'**
+  String get settingsItemTheme;
+
+  /// No description provided for @settingsItemLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get settingsItemLanguage;
+
+  /// No description provided for @settingsItemSound.
+  ///
+  /// In en, this message translates to:
+  /// **'Sound'**
+  String get settingsItemSound;
+
+  /// No description provided for @settingsItemGameInstructions.
+  ///
+  /// In en, this message translates to:
+  /// **'Game instructions'**
+  String get settingsItemGameInstructions;
+
+  /// No description provided for @settingsItemResetStage.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset current stage'**
+  String get settingsItemResetStage;
+
+  /// No description provided for @settingsItemReportBug.
+  ///
+  /// In en, this message translates to:
+  /// **'Report a bug'**
+  String get settingsItemReportBug;
+
+  /// No description provided for @settingsItemReportBadWord.
+  ///
+  /// In en, this message translates to:
+  /// **'Report a bad word'**
+  String get settingsItemReportBadWord;
+
+  /// No description provided for @settingsItemReportContact.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact us'**
+  String get settingsItemReportContact;
+
+  /// No description provided for @settingsItemReportPrivacy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy & Policy'**
+  String get settingsItemReportPrivacy;
+
+  /// No description provided for @settingsItemReportTermsConditions.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms & Conditions'**
+  String get settingsItemReportTermsConditions;
+
+  /// No description provided for @themeOptionLight.
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get themeOptionLight;
+
+  /// No description provided for @themeOptionDark.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark'**
+  String get themeOptionDark;
+
+  /// No description provided for @themeOptionSystem.
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get themeOptionSystem;
+
+  /// No description provided for @themeOptionSystemDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatically match your device settings'**
+  String get themeOptionSystemDescription;
+
+  /// No description provided for @searchPlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Search'**
+  String get searchPlaceholder;
+
+  /// No description provided for @sortByAlphabetical.
+  ///
+  /// In en, this message translates to:
+  /// **'Alphabetical order'**
+  String get sortByAlphabetical;
+
+  /// No description provided for @sortBySmallestToBiggest.
+  ///
+  /// In en, this message translates to:
+  /// **'Smallest to largest'**
+  String get sortBySmallestToBiggest;
+
+  /// No description provided for @sortByBiggestToSmallest.
+  ///
+  /// In en, this message translates to:
+  /// **'Largest to smallest'**
+  String get sortByBiggestToSmallest;
+
+  /// No description provided for @extraWordsDialogEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No extra words found yet!'**
+  String get extraWordsDialogEmpty;
+
+  /// No description provided for @extraWordsDialogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Extra Words'**
+  String get extraWordsDialogTitle;
+
+  /// No description provided for @extraWordsDialogSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Find hidden words that don\'t fit in the crossword and earn bonus points!'**
+  String get extraWordsDialogSubtitle;
+
+  /// No description provided for @helpDialogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Help'**
+  String get helpDialogTitle;
+
+  /// No description provided for @helpDialogSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Use available hints to reveal words or letters.'**
+  String get helpDialogSubtitle;
+
+  /// No description provided for @gameDialogCloseBtn.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get gameDialogCloseBtn;
+
+  /// No description provided for @free.
+  ///
+  /// In en, this message translates to:
+  /// **'Free'**
+  String get free;
+
+  /// No description provided for @helpDialogShuffleTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Shuffle'**
+  String get helpDialogShuffleTitle;
+
+  /// No description provided for @helpDialogShuffleDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Using this help, the letters are shuffled, giving you a fresh way to think.'**
+  String get helpDialogShuffleDescription;
+
+  /// No description provided for @helpDialogRandomLetterTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Random Reveal'**
+  String get helpDialogRandomLetterTitle;
+
+  /// No description provided for @helpDialogRandomLetterDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'This hint will reveal a hidden letter in the crossword from a random position.'**
+  String get helpDialogRandomLetterDescription;
+
+  /// No description provided for @helpDialogSpecificLetterTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Targeted Reveal'**
+  String get helpDialogSpecificLetterTitle;
+
+  /// No description provided for @helpDialogSpecificLetterDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'With this hint you choose which hidden letter of the crossword you want to reveal.'**
+  String get helpDialogSpecificLetterDescription;
 }
 
 class _AppLocalizationsDelegate

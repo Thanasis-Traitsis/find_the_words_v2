@@ -8,7 +8,7 @@ part of 'words_model.dart';
 
 class WordsModelAdapter extends TypeAdapter<WordsModel> {
   @override
-  final int typeId = 4;
+  final int typeId = 3;
 
   @override
   WordsModel read(BinaryReader reader) {

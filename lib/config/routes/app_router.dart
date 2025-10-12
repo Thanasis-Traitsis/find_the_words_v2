@@ -1,13 +1,17 @@
 import 'package:find_the_words/config/language/cubit/language_cubit.dart';
 import 'package:find_the_words/config/routes/app_pages.dart';
 import 'package:find_the_words/config/routes/app_routes.dart';
+import 'package:find_the_words/config/theme/screens/theme_screen.dart';
 import 'package:find_the_words/core/services/navigation_service.dart';
 import 'package:find_the_words/core/services/service_locator.dart';
 import 'package:find_the_words/error_screen.dart';
 import 'package:find_the_words/features/auth/auth_cubit/auth_cubit.dart';
+import 'package:find_the_words/features/complete/presentation/screens/complete_stage_screen.dart';
 import 'package:find_the_words/features/home/presentation/screens/home_screen.dart';
 import 'package:find_the_words/features/language/presentation/screens/language_selection_screen.dart';
+import 'package:find_the_words/features/settings/presentation/screens/settings_screen.dart';
 import 'package:find_the_words/features/stage/presentation/screens/stage_screen.dart';
+import 'package:find_the_words/features/words/presentation/screens/total_words_screen.dart';
 import 'package:find_the_words/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -72,6 +76,39 @@ class AppRouter {
         pageBuilder: (context, state) {
           final stage = state.extra as int? ?? 0;
           return _noAnimationPage(StageScreen(stage: stage), state);
+        },
+      ),
+      GoRoute(
+        parentNavigatorKey: NavigationService.rootNavigatorKey,
+        path: AppPages.words.info.path,
+        name: AppPages.words.info.name,
+        pageBuilder: (context, state) {
+          final words = state.extra as Map<String, dynamic>? ?? {};
+          return _noAnimationPage(TotalWordsScreen(words: words), state);
+        },
+      ),
+      GoRoute(
+        parentNavigatorKey: NavigationService.rootNavigatorKey,
+        path: AppPages.settings.info.path,
+        name: AppPages.settings.info.name,
+        pageBuilder: (context, state) {
+          return _noAnimationPage(SettingsScreen(), state);
+        },
+      ),
+      GoRoute(
+        parentNavigatorKey: NavigationService.rootNavigatorKey,
+        path: AppPages.theme.info.path,
+        name: AppPages.theme.info.name,
+        pageBuilder: (context, state) {
+          return _noAnimationPage(ThemeScreen(), state);
+        },
+      ),
+      GoRoute(
+        parentNavigatorKey: NavigationService.rootNavigatorKey,
+        path: AppPages.complete.info.path,
+        name: AppPages.complete.info.name,
+        pageBuilder: (context, state) {
+          return _noAnimationPage(CompleteStageScreen(), state);
         },
       ),
     ],

@@ -8,17 +8,26 @@ import 'package:flutter/material.dart';
 class StageIconButton extends StatelessWidget {
   final String icon;
   final String? text;
+  final int? points;
+  final VoidCallback onTap;
 
-  const StageIconButton({super.key, required this.icon, this.text});
+  const StageIconButton({
+    super.key,
+    required this.icon,
+    this.text,
+    required this.onTap,
+    this.points,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        splashColor: context.colors.stageBlue.withValues(alpha: 0.8),
+        highlightColor: Colors.transparent,
+        splashColor: context.colors.stageBlue.withValues(alpha: 0.4),
         borderRadius: AppBorders.regularBorderRadius,
-        onTap: () {},
+        onTap: onTap,
         child: Container(
           padding: const EdgeInsets.all(AppSpacing.iconButtonPadding),
           decoration: BoxDecoration(
@@ -34,10 +43,39 @@ class StageIconButton extends StatelessWidget {
               CustomSvgIcon(
                 icon: icon,
                 color: context.colors.black,
-                height: 18,
+                height: AppSizes.stageButtonIcon,
               ),
               if (text != null)
                 CustomText(text!, textType: CustomTextType.regularBody),
+              if (points != null)
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: AppBorders.smallBorderRadius,
+                    border: Border.all(
+                      width: AppBorders.smallBorderWidth,
+                      color: context.colors.secondary,
+                    ),
+                    color: context.colors.lightPink,
+                  ),
+                  child: Row(
+                    spacing: AppSpacing.spacingS,
+                    children: [
+                      CustomText(
+                        '-$points',
+                        textStyle: TextStyle(
+                          color: context.colors.darkPink,
+                          fontSize: CustomTextType.smallTag.fontSize,
+                          fontWeight: CustomTextType.smallTag.fontWeight,
+                        ),
+                      ),
+                      CustomSvgIcon(
+                        icon: 'star',
+                        color: context.colors.darkPink,
+                        height: 8,
+                      ),
+                    ],
+                  ),
+                ),
             ],
           ),
         ),

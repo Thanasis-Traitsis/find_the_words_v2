@@ -1,4 +1,5 @@
 import 'package:find_the_words/config/routes/app_pages.dart';
+import 'package:find_the_words/core/constants/constants.dart';
 import 'package:find_the_words/core/screens/custom_screen.dart';
 import 'package:find_the_words/core/utils/text_extensions.dart';
 import 'package:find_the_words/core/widgets/custom_appbar.dart';
@@ -22,13 +23,19 @@ class HomeScreen extends StatelessWidget {
         isHomePage: true,
         suffixWidget: LanguageButton(),
         suffixIcon: 'settings',
-        suffixOnTap: () {},
+        suffixOnTap: () {
+          AppPages.settings.push();
+        },
       ),
       child: BlocBuilder<AuthCubit, AuthState>(
         builder: (context, state) {
           if (state is! AuthAuthenticated) {
             return Center(child: CircularProgressIndicator());
           }
+
+          final user = state.user;
+          final progress = user.currentProgress;
+
           return CustomScrollView(
             physics: const ClampingScrollPhysics(),
             shrinkWrap: true,
@@ -41,23 +48,29 @@ class HomeScreen extends StatelessWidget {
                     Column(
                       children: [
                         const LogoContainer(),
-                        StageAndLevelCard(
-                          profileStatus: state.user.profileStatus,
-                        ),
-                        TotalWordsCard(
-                          wordsListLength:
-                              state.user.profileStatus.wordsModel.words.length,
-                        ),
+                        StageAndLevelCard(profileStatus: progress),
+                        TotalWordsCard(words: progress.wordsModel.words),
                       ],
                     ),
-                    CustomFilledButton(
-                      text: context.translate.nextStageBtnText,
-                      onPressed: () {
-                        context.read<StageBloc>().add(
-                          NextStageButtonPressed(state.user.profileStatus),
-                        );
-                        AppPages.stage.push(
-                          extra: state.user.profileStatus.stage,
+                    BlocConsumer<StageBloc, StageState>(
+                      listener: (context, state) {
+                        if (state is StageReady) {
+                          AppPages.stage.push(extra: progress.stage);
+                        }
+                      },
+                      builder: (context, state) {
+                        return Container(
+                          margin: const EdgeInsets.symmetric(
+                            vertical: AppSpacing.spacingXL,
+                          ),
+                          child: CustomFilledButton(
+                            text: context.translate.nextStageBtnText,
+                            onPressed: () {
+                              context.read<StageBloc>().add(
+                                NextStageButtonPressed(progress),
+                              );
+                            },
+                          ),
                         );
                       },
                     ),

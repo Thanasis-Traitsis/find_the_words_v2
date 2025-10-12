@@ -1,50 +1,22 @@
-import 'package:find_the_words/features/stage/domain/helpers/board_helper.dart';
+import 'package:hive/hive.dart';
 
-class WordPlacementTracker {
-  final List<WordPlacement> _placements = [];
+part 'word_placement.g.dart';
 
-  bool get isEmpty => _placements.isEmpty;
-  int get wordCount => _placements.length;
-
-  void addPlacement(String word, List<int> positions) {
-    _placements.add(
-      WordPlacement(
-        word: word,
-        positions: positions,
-        isHorizontal: BoardHelper.isHorizontal(positions),
-      ),
-    );
-  }
-
-  WordPlacement getPlacement(int index) => _placements[index];
-
-  List<String> get words => _placements.map((p) => p.word).toList();
-  List<List<int>> get allPositions =>
-      _placements.map((p) => p.positions).toList();
-
-  void clear() {
-    _placements.clear();
-  }
-
-  void removeLast() {
-    if (_placements.isNotEmpty) {
-      _placements.removeLast();
-    }
-  }
-
-  bool containsWord(String word) {
-    return _placements.any((p) => p.word == word);
-  }
-}
-
-class WordPlacement {
+@HiveType(typeId: 6)
+class WordPlacement extends HiveObject {
+  @HiveField(0)
   final String word;
+  @HiveField(1)
   final List<int> positions;
+  @HiveField(2)
   final bool isHorizontal;
+  @HiveField(3)
+  final bool isUsed;
 
   WordPlacement({
     required this.word,
     required this.positions,
     required this.isHorizontal,
+    this.isUsed = false,
   });
 }

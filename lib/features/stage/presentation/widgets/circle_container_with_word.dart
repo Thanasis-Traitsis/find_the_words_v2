@@ -1,13 +1,13 @@
 import 'package:find_the_words/config/theme/custom_text_type.dart';
 import 'package:find_the_words/core/constants/constants.dart';
-import 'package:find_the_words/core/utils/text_extensions.dart';
 import 'package:find_the_words/core/utils/theme_extensions.dart';
 import 'package:find_the_words/core/widgets/custom_text.dart';
 import 'package:find_the_words/features/stage/presentation/helpers/circle_layout_delegate.dart';
 import 'package:find_the_words/features/stage/presentation/helpers/line_painter.dart';
+import 'package:find_the_words/features/stage/presentation/stage_bloc/stage_bloc.dart';
 import 'package:find_the_words/features/stage/presentation/widgets/formated_word_container.dart';
-import 'package:find_the_words/features/stage/presentation/widgets/stage_icon_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CircleContainerWithWord extends StatefulWidget {
   final List<String> letters;
@@ -72,6 +72,12 @@ class _CircleContainerWithWordState extends State<CircleContainerWithWord> {
   }
 
   void _handlePointerUp() {
+    if (formatedWord.length > 2) {
+      context.read<StageBloc>().add(
+        SubmitFormatedWord(formatedWord.toString()),
+      );
+    }
+
     setState(() {
       isDragging = false;
       currentDragPosition = null;
@@ -119,10 +125,10 @@ class _CircleContainerWithWordState extends State<CircleContainerWithWord> {
               padding: const EdgeInsets.all(containerPadding),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: context.colors.stageBlue.withValues(alpha: 0.8),
+                color: context.colors.stageBlue.withValues(alpha: 0.6),
                 border: Border.all(
-                  width: 1,
-                  color: context.colors.darkBlue.withValues(alpha: 0.4),
+                  width: AppBorders.smallBorderWidth,
+                  color: context.colors.stageBlue,
                 ),
               ),
               child: Stack(
@@ -183,22 +189,6 @@ class _CircleContainerWithWordState extends State<CircleContainerWithWord> {
                 ],
               ),
             ),
-          ),
-        ),
-        IntrinsicHeight(
-          child: Row(
-            spacing: AppSpacing.spacingM,
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              StageIconButton(
-                icon: 'help',
-                text: context.translate.stageButtonHelp,
-              ),
-              StageIconButton(
-                icon: 'shuffle',
-                // text: context.translate.stageButtonShuffle,
-              ),
-            ],
           ),
         ),
       ],

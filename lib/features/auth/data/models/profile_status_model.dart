@@ -34,6 +34,16 @@ class ProfileStatusModel {
     required this.wordsModel,
   });
 
+  factory ProfileStatusModel.initial(AppLanguage language) {
+    return ProfileStatusModel(
+      language: language,
+      level: 1,
+      progress: 0.0,
+      stage: 1,
+      wordsModel: WordsModel(words: {}),
+    );
+  }
+
   ProfileStatusModel copyWith({
     AppLanguage? language,
     int? level,
@@ -46,7 +56,7 @@ class ProfileStatusModel {
       level: level ?? this.level,
       progress: progress ?? this.progress,
       stage: stage ?? this.stage,
-      wordsModel: wordsModel ?? this.wordsModel,
+      wordsModel: words ?? wordsModel,
     );
   }
 }

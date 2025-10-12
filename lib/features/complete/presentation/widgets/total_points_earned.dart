@@ -1,0 +1,51 @@
+import 'package:find_the_words/config/theme/custom_text_type.dart';
+import 'package:find_the_words/core/constants/constants.dart';
+import 'package:find_the_words/core/utils/theme_extensions.dart';
+import 'package:find_the_words/core/widgets/custom_svg_icon.dart';
+import 'package:find_the_words/core/widgets/custom_text.dart';
+import 'package:flutter/material.dart';
+
+class TotalPointsEarned extends StatelessWidget {
+  const TotalPointsEarned({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.centerRight,
+      child: Container(
+        padding: const EdgeInsets.symmetric(
+          vertical: AppSpacing.spacingS,
+          horizontal: AppSpacing.spacingL,
+        ),
+        decoration: BoxDecoration(
+          color: context.colors.lightPink,
+          borderRadius: AppBorders.hugeBorderRadius,
+          border: Border.all(
+            width: AppBorders.smallBorderWidth,
+            color: context.colors.darkPink,
+          ),
+        ),
+        child: Row(
+          spacing: AppSpacing.spacingM,
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            CustomText(
+              'Σύνολο: + 15',
+              textStyle: TextStyle(
+                fontSize: CustomTextType.smallHeading.fontSize,
+                fontWeight: CustomTextType.smallHeading.fontWeight,
+                color: context.colors.darkPink,
+              ),
+            ),
+            CustomSvgIcon(
+              icon: 'star',
+              color: context.colors.secondary,
+              height: AppSizes.stageButtonIcon,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

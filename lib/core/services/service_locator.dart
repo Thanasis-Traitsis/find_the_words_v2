@@ -4,6 +4,7 @@ import 'package:find_the_words/core/services/storage_service.dart';
 import 'package:find_the_words/features/auth/auth_cubit/auth_cubit.dart';
 import 'package:find_the_words/features/auth/data/repositories/user_repository_impl.dart';
 import 'package:find_the_words/features/stage/domain/services/board_setup_service.dart';
+import 'package:find_the_words/features/stage/domain/services/dictionary_service.dart';
 import 'package:find_the_words/features/stage/domain/services/stage_generator_service.dart';
 import 'package:find_the_words/features/stage/domain/services/word_selection_service.dart';
 import 'package:find_the_words/features/stage/presentation/stage_bloc/stage_bloc.dart';
@@ -29,6 +30,12 @@ Future<void> setupServiceLocator() async {
 
   getIt.registerLazySingleton<ConnectivityService>(() => ConnectivityService());
   getIt.registerLazySingleton<LanguageCubit>(() => LanguageCubit());
+
+  getIt.registerSingletonAsync<DictionaryService>(() async {
+    final service = DictionaryService();
+    await service.loadDictionaryJson();
+    return service;
+  });
 
   final wordService = WordSelectionService(prefs);
   final boardService = BoardSetupService();

@@ -13,22 +13,17 @@ class UserRepositoryImpl extends UserRepository {
   @override
   Future<UserEntity> createUser(String id) async {
     final storageService = getIt<StorageService>();
-    final ProfileStatusModel newProfileStatus = storageService
-        .createInitialProgress(getIt<LanguageCubit>().state.appLanguage);
+    final currentLang = getIt<LanguageCubit>().state.appLanguage;
 
-    await storageService.saveProgressForLanguage(
-      newProfileStatus.language,
-      newProfileStatus,
-    );
-
-    final UserModel user = UserModel.guest(
+    final user = UserModel.guest(
       id: id,
       points: AppValues.startingPoints,
-      profileStatus: newProfileStatus,
+      progressByLanguage: {
+        currentLang: ProfileStatusModel.initial(currentLang),
+      },
     );
 
     await storageService.saveUser(user);
-
     return user;
   }
 
@@ -39,7 +34,7 @@ class UserRepositoryImpl extends UserRepository {
 
     if (user == null) {
       debugPrint('Warning: No user found in storage');
-      throw Exception();
+      throw Exception("No user found in local storage");
     }
 
     return user;

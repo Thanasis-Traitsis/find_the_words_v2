@@ -1,3 +1,4 @@
+import 'package:find_the_words/config/routes/app_pages.dart';
 import 'package:find_the_words/config/theme/custom_text_type.dart';
 import 'package:find_the_words/core/constants/constants.dart';
 import 'package:find_the_words/core/utils/text_extensions.dart';
@@ -9,14 +10,16 @@ import 'package:find_the_words/features/home/presentation/widgets/card_icon_cont
 import 'package:flutter/material.dart';
 
 class TotalWordsCard extends StatelessWidget {
-  final int wordsListLength;
+  final Map<String, dynamic> words;
 
-  const TotalWordsCard({super.key, required this.wordsListLength});
+  const TotalWordsCard({super.key, required this.words});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () async {
+        AppPages.words.push(extra: words);
+      },
       child: CustomBorderContainer(
         backgroundColor: context.colors.lightBlue,
         borderColor: context.colors.darkBlue,
@@ -36,7 +39,7 @@ class TotalWordsCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     CustomText(
-                      wordsListLength.toString(),
+                      words.length.toString(),
                       textType: CustomTextType.regularHeading,
                     ),
                     CustomText(

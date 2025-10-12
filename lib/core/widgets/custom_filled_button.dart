@@ -23,8 +23,7 @@ class CustomFilledButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: AppSpacing.spacingXL),
+    return SizedBox(
       width: fullWidth ? double.infinity : null,
       child: FilledButton(
         style: ButtonStyle(

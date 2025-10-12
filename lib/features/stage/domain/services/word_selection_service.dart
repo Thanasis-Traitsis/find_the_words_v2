@@ -11,12 +11,14 @@ class WordSelectionService {
 
   WordSelectionService(this._prefs);
 
-  Future<MapEntry<String, dynamic>> selectUnusedWord(
+  Future<MapEntry<String, dynamic>?> selectUnusedWord(
     Map<String, dynamic> stageFile,
     StageCriteria criteria,
   ) async {
     final usedStages = await _getUsedStages();
     final bannedStages = await _getBannedStages();
+    // TODO: get used words from the profile - selected language
+    final List<String> usedWords = [];
 
     // STEP 1
     var availableStages = _filterAvailableStages(
@@ -33,21 +35,18 @@ class WordSelectionService {
     }
 
     // STEP 2
-    final bannedStagesMap = _getBannedStagesFromFile(stageFile, bannedStages);
-
-    if (bannedStagesMap.isNotEmpty) {
+    selectedStage = await _trySelectUsedStageWithNewWords(
+      stageFile,
+      usedWords,
+      criteria,
+    );
+    if (selectedStage != null) {
+      await _markStageAsUsed(selectedStage.key);
       await _clearBannedStages();
-
-      selectedStage = _selectRandomStage(bannedStagesMap);
-      await _markStageAsUsed(selectedStage!.key);
       return selectedStage;
     }
 
-    // STEP 3
-    selectedStage = _selectRandomStage(stageFile);
-    await _markStageAsUsed(selectedStage!.key);
-    await _clearBannedStages();
-    return selectedStage;
+    return null;
   }
 
   Future<MapEntry<String, dynamic>?> _trySelectValidStage(
@@ -60,11 +59,55 @@ class WordSelectionService {
       final stage = _selectRandomStage(stagesToTry);
       if (stage == null) break;
 
-      if (_stageMatchesCriteria(stage, criteria)) {
-        return stage;
+      final allStageWords = List<String>.from(stage.value);
+      final mainWordLength = stage.key.length;
+
+      final bigWords = allStageWords
+          .where((word) => word.length == mainWordLength)
+          .toList();
+      final smallerWords = allStageWords
+          .where((word) => word.length < mainWordLength)
+          .toList();
+
+      final bigWordsToKeep = bigWords.take(criteria.minBigWords).toList();
+
+      final filteredWords = [...bigWordsToKeep, ...smallerWords];
+
+      final filteredStage = MapEntry(stage.key, filteredWords);
+
+      if (_stageMatchesCriteria(filteredStage, criteria)) {
+        return filteredStage;
       }
 
-      await _addToBannedStages(stage.key);
+      await addToBannedStages(stage.key);
+      stagesToTry.remove(stage.key);
+    }
+
+    return null;
+  }
+
+  Future<MapEntry<String, dynamic>?> _trySelectUsedStageWithNewWords(
+    Map<String, dynamic> availableStages,
+    List<String> usedWords,
+    StageCriteria criteria,
+  ) async {
+    final stagesToTry = Map<String, dynamic>.from(availableStages);
+
+    while (stagesToTry.isNotEmpty) {
+      final stage = _selectRandomStage(stagesToTry);
+      if (stage == null) break;
+
+      final allStageWords = List<String>.from(stage.value);
+      final availableWords = allStageWords
+          .where((word) => !usedWords.contains(word))
+          .toList();
+
+      final filteredStage = MapEntry(stage.key, availableWords);
+
+      if (_stageMatchesCriteria(filteredStage, criteria)) {
+        return filteredStage;
+      }
+
       stagesToTry.remove(stage.key);
     }
 
@@ -152,7 +195,7 @@ class WordSelectionService {
     }
   }
 
-  Future<void> _addToBannedStages(String stageKey) async {
+  Future<void> addToBannedStages(String stageKey) async {
     final bannedStages = await _getBannedStages();
     if (!bannedStages.contains(stageKey)) {
       bannedStages.add(stageKey);

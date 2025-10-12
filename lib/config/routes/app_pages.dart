@@ -4,7 +4,11 @@ enum AppPages {
   splash,
   lang,
   home,
-  stage;
+  stage,
+  words,
+  settings,
+  theme,
+  complete;
 
   void go({Object? extra}) => info.go(extra: extra);
   void push({Object? extra}) => info.push(extra: extra);
@@ -25,6 +29,22 @@ enum AppPages {
     stage => const PageInfo(
       path: AppRoutes.stagePath,
       name: AppRoutes.stageScreenName,
+    ),
+    words => const PageInfo(
+      path: AppRoutes.wordsPath,
+      name: AppRoutes.wordsScreenName,
+    ),
+    settings => const PageInfo(
+      path: AppRoutes.settingsPath,
+      name: AppRoutes.settingsScreenName,
+    ),
+    theme => const PageInfo(
+      path: AppRoutes.themePath,
+      name: AppRoutes.themeScreenName,
+    ),
+    complete => const PageInfo(
+      path: AppRoutes.completePath,
+      name: AppRoutes.completeScreenName,
     ),
   };
 }

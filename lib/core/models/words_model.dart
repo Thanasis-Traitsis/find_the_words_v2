@@ -2,7 +2,7 @@ import 'package:hive/hive.dart';
 
 part 'words_model.g.dart';
 
-@HiveType(typeId: 4)
+@HiveType(typeId: 3)
 class WordsModel extends HiveObject {
   @HiveField(0)
   final Map<String, dynamic> words;

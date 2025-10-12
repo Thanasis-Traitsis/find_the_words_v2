@@ -12,3 +12,11 @@ class NextStageButtonPressed extends StageEvent {
 
   const NextStageButtonPressed(this.profileStatus);
 }
+
+class SubmitFormatedWord extends StageEvent {
+  final String formatedWord;
+
+  const SubmitFormatedWord(this.formatedWord);
+}
+
+class RandomLetterReveal extends StageEvent {}

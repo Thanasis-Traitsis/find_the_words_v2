@@ -1,10 +1,11 @@
+import 'package:find_the_words/core/utils/string_extensions.dart';
 import 'package:find_the_words/features/stage/data/models/criteria_failure.dart';
 import 'package:find_the_words/features/stage/data/models/current_stage.dart';
 import 'package:find_the_words/features/stage/data/models/stage_criteria.dart';
 import 'package:find_the_words/features/stage/domain/helpers/board_helper.dart';
 import 'package:find_the_words/features/stage/domain/helpers/neighbor_marker.dart';
 import 'package:find_the_words/features/stage/domain/helpers/placement_strategy.dart';
-import 'package:find_the_words/features/stage/domain/helpers/word_placement.dart';
+import 'package:find_the_words/features/stage/domain/helpers/word_placement_tracker.dart';
 import 'package:find_the_words/features/stage/domain/services/stage_generator_service.dart';
 import 'package:find_the_words/features/stage/domain/services/stage_validation_service.dart';
 import 'package:flutter/material.dart';
@@ -62,6 +63,51 @@ class BoardSetupService {
     for (final strategy in strategies) {
       final success = await strategy();
       if (success) {
+        int rowLength = StageGeneratorService.maxRowLength;
+        final emptySpaces = _checkEmptyRowsCols(board);
+
+        int top = emptySpaces[topKey] ?? 0;
+        int right = emptySpaces[rightKey] ?? 0;
+        int bottom = emptySpaces[bottomKey] ?? 0;
+        int left = emptySpaces[leftKey] ?? 0;
+
+        _moveCrosswordTopLeft(placementTracker, left, top);
+
+        int horizontal = left + right;
+        int vertical = top + bottom;
+
+        while (horizontal > 0 && vertical > 0) {
+          horizontal--;
+          vertical--;
+          rowLength--;
+        }
+
+        int centerNum = 0;
+        if (horizontal > 1) {
+          centerNum = horizontal ~/ 2;
+        } else if (vertical > 1) {
+          centerNum = (vertical ~/ 2) * rowLength;
+        }
+
+        for (int i = 0; i < placementTracker.allPositions.length; i++) {
+          for (int j = 0; j < placementTracker.allPositions[i].length; j++) {
+            placementTracker.allPositions[i][j] -=
+                (placementTracker.allPositions[i][j] ~/
+                    StageGeneratorService.maxRowLength) *
+                (StageGeneratorService.maxRowLength - rowLength);
+
+            placementTracker.allPositions[i][j] += centerNum;
+          }
+        }
+
+        List<String> _createNewBoard(int size) {
+          return List.generate(size, (_) => '');
+        }
+
+        final newBoardSize = rowLength * rowLength;
+        board = _createNewBoard(newBoardSize);
+        board = placementTracker.placePositions(board);
+
         break;
       }
 
@@ -71,7 +117,12 @@ class BoardSetupService {
       StageValidationService.instance.clearFailedWords();
     }
 
-    return CurrentStage(board: board, letters: stageKey.split(''));
+    return CurrentStage(
+      allWords: words,
+      board: board,
+      letters: stageKey.stringMixer(),
+      placementTracker: placementTracker,
+    );
   }
 
   int _calculateCenterStartPosition(int wordLength) {
@@ -396,8 +447,11 @@ class BoardSetupService {
     }
   }
 
-  void _resetBoard(List<String> board) {
-    for (int i = 0; i < board.length; i++) {
+  void _resetBoard(
+    List<String> board, {
+    int boardLength = StageGeneratorService.maxBoardSize,
+  }) {
+    for (int i = 0; i < boardLength; i++) {
       board[i] = '';
     }
   }
@@ -411,7 +465,8 @@ class BoardSetupService {
       i = i + StageGeneratorService.maxRowLength
     ) {
       int row = i;
-      while (!BoardHelper.positionWithLetter(board, row)) {
+      while (row < board.length &&
+          !BoardHelper.positionWithLetter(board, row)) {
         row++;
         if (row - i == StageGeneratorService.maxRowLength) break;
       }
@@ -426,14 +481,15 @@ class BoardSetupService {
     }
 
     for (int i = 0; i < StageGeneratorService.maxRowLength; i++) {
-      int row = i;
-      while (!BoardHelper.positionWithLetter(board, row)) {
-        row = row + StageGeneratorService.maxRowLength;
-        if (row > StageGeneratorService.maxBoardSize) break;
+      int col = i;
+      while (col < board.length &&
+          !BoardHelper.positionWithLetter(board, col)) {
+        col += StageGeneratorService.maxRowLength;
+        if (col > StageGeneratorService.maxBoardSize) break;
       }
 
-      if (row > StageGeneratorService.maxBoardSize) {
-        if ((row ~/ StageGeneratorService.maxRowLength) <
+      if (col >= StageGeneratorService.maxBoardSize) {
+        if (col - StageGeneratorService.maxBoardSize <
             (StageGeneratorService.maxRowLength / 2)) {
           result[leftKey] = (result[leftKey] ?? 0) + 1;
         } else {
@@ -477,5 +533,28 @@ class BoardSetupService {
       bottomKey => original + (offset * StageGeneratorService.maxRowLength),
       _ => original,
     };
+  }
+
+  void _moveCrosswordTopLeft(
+    WordPlacementTracker placementTracker,
+    int left,
+    int top,
+  ) {
+    if (left > 0) {
+      for (int i = 0; i < placementTracker.allPositions.length; i++) {
+        for (int j = 0; j < placementTracker.allPositions[i].length; j++) {
+          placementTracker.allPositions[i][j] -= left;
+        }
+      }
+    }
+
+    if (top > 0) {
+      for (int i = 0; i < placementTracker.allPositions.length; i++) {
+        for (int j = 0; j < placementTracker.allPositions[i].length; j++) {
+          placementTracker.allPositions[i][j] -=
+              (StageGeneratorService.maxRowLength * top);
+        }
+      }
+    }
   }
 }

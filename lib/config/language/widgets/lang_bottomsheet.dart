@@ -35,6 +35,7 @@ class LangBottomsheet extends StatelessWidget {
               Container(
                 margin: const EdgeInsets.only(bottom: AppSpacing.spacingL),
                 child: Row(
+                  spacing: AppSpacing.spacingM,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CustomText(

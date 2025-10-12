@@ -20,7 +20,8 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       id: fields[0] as String,
       username: fields[1] as String?,
       points: fields[2] as int,
-      profileStatus: fields[3] as ProfileStatusModel,
+      progressByLanguage: (fields[3] as Map)
+          .cast<AppLanguage, ProfileStatusModel>(),
       currentStage: fields[4] as CurrentStage?,
     );
   }
@@ -36,7 +37,7 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       ..writeByte(2)
       ..write(obj.points)
       ..writeByte(3)
-      ..write(obj.profileStatus)
+      ..write(obj.progressByLanguage)
       ..writeByte(4)
       ..write(obj.currentStage);
   }

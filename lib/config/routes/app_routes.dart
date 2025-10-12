@@ -5,11 +5,19 @@ class AppRoutes {
   static const String langPath = '/lang';
   static const String homePath = '/';
   static const String stagePath = '/stage';
+  static const String wordsPath = '/words';
+  static const String settingsPath = '/settings';
+  static const String themePath = '/theme';
+  static const String completePath = '/complete';
 
   static const String splashScreenName = 'Splash';
   static const String langScreenName = 'Language';
   static const String homeScreenName = 'Home';
   static const String stageScreenName = 'Stage';
+  static const String wordsScreenName = 'Total Words';
+  static const String settingsScreenName = 'Settings';
+  static const String themeScreenName = 'Choose Theme';
+  static const String completeScreenName = 'Complete Stage';
 }
 
 class PageInfo {

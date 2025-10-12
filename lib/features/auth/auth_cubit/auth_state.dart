@@ -13,6 +13,9 @@ final class AuthAuthenticated extends AuthState {
   final UserEntity user;
 
   const AuthAuthenticated({required this.user});
+
+  @override
+  List<Object> get props => [user];
 }
 
 final class AuthUnauthenticated extends AuthState {}

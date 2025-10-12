@@ -1,32 +1,41 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'progress_collection.dart';
+part of 'current_stage.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class ProgressCollectionAdapter extends TypeAdapter<ProgressCollection> {
+class CurrentStageAdapter extends TypeAdapter<CurrentStage> {
   @override
-  final int typeId = 3;
+  final int typeId = 4;
 
   @override
-  ProgressCollection read(BinaryReader reader) {
+  CurrentStage read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return ProgressCollection(
-      progressMap: (fields[0] as Map).cast<String, ProfileStatusModel>(),
+    return CurrentStage(
+      allWords: (fields[0] as List).cast<String>(),
+      letters: (fields[1] as List).cast<String>(),
+      board: (fields[2] as List).cast<String>(),
+      placementTracker: fields[3] as WordPlacementTracker,
     );
   }
 
   @override
-  void write(BinaryWriter writer, ProgressCollection obj) {
+  void write(BinaryWriter writer, CurrentStage obj) {
     writer
-      ..writeByte(1)
+      ..writeByte(4)
       ..writeByte(0)
-      ..write(obj.progressMap);
+      ..write(obj.allWords)
+      ..writeByte(1)
+      ..write(obj.letters)
+      ..writeByte(2)
+      ..write(obj.board)
+      ..writeByte(3)
+      ..write(obj.placementTracker);
   }
 
   @override
@@ -35,7 +44,7 @@ class ProgressCollectionAdapter extends TypeAdapter<ProgressCollection> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is ProgressCollectionAdapter &&
+      other is CurrentStageAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
