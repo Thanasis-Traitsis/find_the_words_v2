@@ -1,5 +1,6 @@
 import 'package:find_the_words/config/theme/custom_text_type.dart';
 import 'package:find_the_words/core/constants/constants.dart';
+import 'package:find_the_words/core/services/service_locator.dart';
 import 'package:find_the_words/core/utils/theme_extensions.dart';
 import 'package:find_the_words/core/widgets/custom_text.dart';
 import 'package:find_the_words/features/stage/presentation/helpers/circle_layout_delegate.dart';
@@ -73,7 +74,7 @@ class _CircleContainerWithWordState extends State<CircleContainerWithWord> {
 
   void _handlePointerUp() {
     if (formatedWord.length > 2) {
-      context.read<StageBloc>().add(
+      getIt<StageBloc>().add(
         SubmitFormatedWord(formatedWord.toString()),
       );
     }

@@ -8,6 +8,7 @@ class AppRoutes {
   static const String wordsPath = '/words';
   static const String settingsPath = '/settings';
   static const String themePath = '/theme';
+  static const String gamePath = '/game';
   static const String completePath = '/complete';
 
   static const String splashScreenName = 'Splash';
@@ -17,6 +18,7 @@ class AppRoutes {
   static const String wordsScreenName = 'Total Words';
   static const String settingsScreenName = 'Settings';
   static const String themeScreenName = 'Choose Theme';
+  static const String gameScreenName = 'Game Instructions';
   static const String completeScreenName = 'Complete Stage';
 }
 
@@ -29,4 +31,6 @@ class PageInfo {
   void go({Object? extra}) => NavigationService.instance.go(path, extra: extra);
   void push({Object? extra}) =>
       NavigationService.instance.push(path, extra: extra);
+  void pushReplacement({Object? extra}) =>
+      NavigationService.instance.pushReplacement(path, extra: extra);
 }

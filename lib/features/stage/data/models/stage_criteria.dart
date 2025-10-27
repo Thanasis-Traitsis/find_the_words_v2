@@ -20,11 +20,11 @@ class StageCriteria {
   @override
   String toString() {
     return '''
-StageCriteria:
-  Difficulty: ${difficulty.name}
-  Word Length: $smallestWordLength-$biggestWordLength letters
-  Word Count: $minStageWords-$maxStageWords words
-  Min Big Words: $minBigWords
+      StageCriteria:
+        Difficulty: ${difficulty.name}
+        Word Length: $smallestWordLength-$biggestWordLength letters
+        Word Count: $minStageWords-$maxStageWords words
+        Min Big Words: $minBigWords
   ''';
   }
 
@@ -90,7 +90,7 @@ enum LevelProgressDifficulty {
       [2, 3, 4, 5, 7, 7, 8, 9, 9, 10],
       [2, 4, 5, 6, 7, 8, 9, 9, 10, 11],
       [2, 5, 6, 7, 8, 8, 9, 10, 11, 12],
-      [3, 6, 7, 7, 8, 9, 10, 11, 11, 14],
+      [2, 6, 7, 7, 8, 9, 10, 11, 11, 14],
     ];
 
     return wordCounts[index][level - 1];

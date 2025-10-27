@@ -33,6 +33,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get themeScreenName => 'Choose Theme';
 
   @override
+  String get gameInstructionsScreenName => 'Game Instructions';
+
+  @override
   String get loading => 'Loading';
 
   @override
@@ -64,8 +67,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get languageBottomsheetTitle => 'Change Language';
 
   @override
-  String get languageBottomsheetDescription =>
-      'Your progress is saved separately for each language. Levels, and completed stages are tracked independently, allowing you to learn at your own pace in multiple languages.';
+  String get languageBottomsheetDescription => 'Your progress is saved separately for each language. Levels, and completed stages are tracked independently, allowing you to learn at your own pace in multiple languages.';
 
   @override
   String get languageBottomsheetUpdateBtn => 'Update';
@@ -125,8 +127,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get themeOptionSystem => 'System';
 
   @override
-  String get themeOptionSystemDescription =>
-      'Automatically match your device settings';
+  String get themeOptionSystemDescription => 'Automatically match your device settings';
 
   @override
   String get searchPlaceholder => 'Search';
@@ -147,15 +148,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get extraWordsDialogTitle => 'Extra Words';
 
   @override
-  String get extraWordsDialogSubtitle =>
-      'Find hidden words that don\'t fit in the crossword and earn bonus points!';
+  String get extraWordsDialogSubtitle => 'Find hidden words that don\'t fit in the crossword and earn bonus points!';
 
   @override
   String get helpDialogTitle => 'Help';
 
   @override
-  String get helpDialogSubtitle =>
-      'Use available hints to reveal words or letters.';
+  String get helpDialogSubtitle => 'Use available hints to reveal words or letters.';
 
   @override
   String get gameDialogCloseBtn => 'Close';
@@ -167,20 +166,76 @@ class AppLocalizationsEn extends AppLocalizations {
   String get helpDialogShuffleTitle => 'Shuffle';
 
   @override
-  String get helpDialogShuffleDescription =>
-      'Using this help, the letters are shuffled, giving you a fresh way to think.';
+  String get helpDialogShuffleDescription => 'Using this help, the letters are shuffled, giving you a fresh way to think.';
 
   @override
   String get helpDialogRandomLetterTitle => 'Random Reveal';
 
   @override
-  String get helpDialogRandomLetterDescription =>
-      'This hint will reveal a hidden letter in the crossword from a random position.';
+  String get helpDialogRandomLetterDescription => 'This hint will reveal a hidden letter in the crossword from a random position.';
 
   @override
   String get helpDialogSpecificLetterTitle => 'Targeted Reveal';
 
   @override
-  String get helpDialogSpecificLetterDescription =>
-      'With this hint you choose which hidden letter of the crossword you want to reveal.';
+  String get helpDialogSpecificLetterDescription => 'With this hint you choose which hidden letter of the crossword you want to reveal.';
+
+  @override
+  String get helpSpecificLetterActive => 'Pick which letter you want to uncover!';
+
+  @override
+  String get easy => 'EASY';
+
+  @override
+  String get normal => 'NORMAL';
+
+  @override
+  String get hard => 'HARD';
+
+  @override
+  String get veryHard => 'VERY HARD';
+
+  @override
+  String get completeStageTitle => 'Stage';
+
+  @override
+  String get completeStageSubtitle => 'Completed!';
+
+  @override
+  String get completeStageStatisticsHeader => 'Stage Statistics';
+
+  @override
+  String get completeStageDifficulty => 'Stage difficulty';
+
+  @override
+  String get completeStageTimeSpent => 'Stage duration';
+
+  @override
+  String get completeStageCrosswordWords => 'Crossword words';
+
+  @override
+  String get completeStageExtraWords => 'Extra words';
+
+  @override
+  String get completeStageRewardsHeader => 'Stage Rewards';
+
+  @override
+  String get completeStageCompletionPoints => 'Stage completion';
+
+  @override
+  String get completeStageWordsPoints => 'Stage words';
+
+  @override
+  String get completeStageExtraWordsPoints => 'Extra words';
+
+  @override
+  String get completeStageTotalPoints => 'Total';
+
+  @override
+  String get completeStageBackToHomeBtn => 'Back to home';
+
+  @override
+  String completeTotalPoints(int totalPoints) {
+    return 'Total: + $totalPoints';
+  }
 }

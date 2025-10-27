@@ -86,7 +86,6 @@ class AuthCubit extends Cubit<AuthState> with ChangeNotifier {
     if (currentUser.currentProgress.wordsModel.words.containsKey(word)) return;
 
     final dictionaryService = getIt<DictionaryService>();
-    final currentLang = getIt<LanguageCubit>().state.appLanguage;
     final currentProgress = currentUser.currentProgress;
 
     final updatedWords = Map<String, dynamic>.from(
@@ -97,16 +96,38 @@ class AuthCubit extends Cubit<AuthState> with ChangeNotifier {
       words: WordsModel(words: updatedWords),
     );
 
+    await _saveUpdatedProgress(updatedProgress, currentUser as UserModel);
+  }
+
+  Future<void> updateAfterStage(int xpEarned, double newProgress, int totalPoints) async {
+    if (state is! AuthAuthenticated) return;
+
+    final currentUser = (state as AuthAuthenticated).user;
+    final currentProgress = currentUser.currentProgress;
+
+    final updatedProgress = currentProgress.copyWith(
+      stage: currentProgress.stage + 1,
+      progress: newProgress >= 100 ? 0 : newProgress,
+      level: newProgress >= 100 ? currentProgress.level + 1 : currentProgress.level,
+    );
+
+    await _saveUpdatedProgress(updatedProgress, currentUser as UserModel,totalPoints: totalPoints);
+  }
+
+  Future<void> _saveUpdatedProgress(
+    ProfileStatusModel updatedProgress,
+    UserModel currentUser,
+    {int totalPoints = 0}
+  ) async {
+    final currentLang = getIt<LanguageCubit>().state.appLanguage;
+
     final updatedProgressMap = Map<AppLanguage, ProfileStatusModel>.from(
       currentUser.progressByLanguage,
     )..[currentLang] = updatedProgress;
 
-    final updatedUser = UserModel(
-      id: currentUser.id,
-      username: currentUser.username,
-      points: currentUser.points,
+    final updatedUser = currentUser.copyWith(
+      points: currentUser.points + totalPoints,
       progressByLanguage: updatedProgressMap,
-      currentStage: currentUser.currentStage,
     );
 
     await getIt<StorageService>().saveUser(updatedUser);

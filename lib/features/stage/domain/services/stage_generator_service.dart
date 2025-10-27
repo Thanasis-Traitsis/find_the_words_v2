@@ -82,12 +82,8 @@ class StageGeneratorService {
 
     return await _boardSetupService.placeWordsOnBoard(
       board: board,
-      // words: ["ΒΙΤΣΑ", "ΣΑΙΤ", "ΣΙΤΑ", "ΤΑΣΙ", "ΤΣΑΙ", "ΙΣΑ", "ΣΙΑ", "ΣΤΑ", "ΤΙΣ", "ΤΣΑ", "ΑΤΙ", "ΒΑΙ", "ΒΑΤ", "ΒΙΑ"],
-      // words: ["ΓΡΙΑ", "ΓΑΡ", "ΓΙΑ", "ΓΡΙ"],
       words: List<String>.from(sortedWords),
       stageKey: selectedWord.key,
-      // stageKey: "ΑΓΙΡ",
-      // stageKey: "ΑΒΙΣΤ",
       criteria: criteria,
     );
   }

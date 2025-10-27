@@ -33,6 +33,9 @@ class AppLocalizationsEl extends AppLocalizations {
   String get themeScreenName => 'Επιλογή Θέματος';
 
   @override
+  String get gameInstructionsScreenName => 'Οδηγίες παιχνιδιού';
+
+  @override
   String get loading => 'Φόρτωση';
 
   @override
@@ -64,8 +67,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get languageBottomsheetTitle => 'Αλλαγή Γλώσσας';
 
   @override
-  String get languageBottomsheetDescription =>
-      'Η πρόοδός σας αποθηκεύεται ξεχωριστά για κάθε γλώσσα. Τα επίπεδα και τα ολοκληρωμένα στάδια παρακολουθούνται ανεξάρτητα, επιτρέποντάς σας να μαθαίνετε με το δικό σας ρυθμό σε πολλές γλώσσες.';
+  String get languageBottomsheetDescription => 'Η πρόοδός σας αποθηκεύεται ξεχωριστά για κάθε γλώσσα. Τα επίπεδα και τα ολοκληρωμένα στάδια παρακολουθούνται ανεξάρτητα, επιτρέποντάς σας να μαθαίνετε με το δικό σας ρυθμό σε πολλές γλώσσες.';
 
   @override
   String get languageBottomsheetUpdateBtn => 'Ενημέρωση';
@@ -125,8 +127,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get themeOptionSystem => 'Σύστημα';
 
   @override
-  String get themeOptionSystemDescription =>
-      'Ακολουθεί αυτόματα τις ρυθμίσεις της συσκευής';
+  String get themeOptionSystemDescription => 'Ακολουθεί αυτόματα τις ρυθμίσεις της συσκευής';
 
   @override
   String get searchPlaceholder => 'Αναζήτηση';
@@ -147,15 +148,13 @@ class AppLocalizationsEl extends AppLocalizations {
   String get extraWordsDialogTitle => 'Έξτρα Λέξεις';
 
   @override
-  String get extraWordsDialogSubtitle =>
-      'Βρες κρυφές λέξεις που δεν χωράνε στο σταυρόλεξο και κέρδισε επιπλέον πόντους!';
+  String get extraWordsDialogSubtitle => 'Βρες κρυφές λέξεις που δεν χωράνε στο σταυρόλεξο και κέρδισε επιπλέον πόντους!';
 
   @override
   String get helpDialogTitle => 'Βοήθεια';
 
   @override
-  String get helpDialogSubtitle =>
-      'Χρησιμοποίησε τις διαθέσιμες βοήθειες για να αποκαλύψεις λέξεις ή γράμματα.';
+  String get helpDialogSubtitle => 'Χρησιμοποίησε τις διαθέσιμες βοήθειες για να αποκαλύψεις λέξεις ή γράμματα.';
 
   @override
   String get gameDialogCloseBtn => 'Κλείσιμο';
@@ -167,20 +166,76 @@ class AppLocalizationsEl extends AppLocalizations {
   String get helpDialogShuffleTitle => 'Ανακάτεμα';
 
   @override
-  String get helpDialogShuffleDescription =>
-      'Χρησιμοποιώντας αυτή τη βοήθεια, τα γράμματα ανακατεύονται, δίνοντάς σου έναν νέο τρόπο σκέψης.';
+  String get helpDialogShuffleDescription => 'Χρησιμοποιώντας αυτή τη βοήθεια, τα γράμματα ανακατεύονται, δίνοντάς σου έναν νέο τρόπο σκέψης.';
 
   @override
   String get helpDialogRandomLetterTitle => 'Τυχαία αποκάλυψη';
 
   @override
-  String get helpDialogRandomLetterDescription =>
-      'Με αυτή τη βοήθεια θα εμφανιστεί ένα κρυφό γράμμα μέσα στο σταυρόλεξο από μία τυχαία θέση.';
+  String get helpDialogRandomLetterDescription => 'Με αυτή τη βοήθεια θα εμφανιστεί ένα κρυφό γράμμα μέσα στο σταυρόλεξο από μία τυχαία θέση.';
 
   @override
   String get helpDialogSpecificLetterTitle => 'Στοχευμένη αποκάλυψη';
 
   @override
-  String get helpDialogSpecificLetterDescription =>
-      'Με αυτή τη βοήθεια διαλέγεις ποιο κρυφό γράμμα του σταυρολέξου θέλεις να εμφανιστεί.';
+  String get helpDialogSpecificLetterDescription => 'Με αυτή τη βοήθεια διαλέγεις ποιο κρυφό γράμμα του σταυρολέξου θέλεις να εμφανιστεί.';
+
+  @override
+  String get helpSpecificLetterActive => 'Διάλεξε ποιο γράμμα θέλεις να σου αποκαλυφθεί!';
+
+  @override
+  String get easy => 'ΕΥΚΟΛΟ';
+
+  @override
+  String get normal => 'ΜΕΤΡΙΟ';
+
+  @override
+  String get hard => 'ΔΥΣΚΟΛΟ';
+
+  @override
+  String get veryHard => 'ΠΟΛΥ ΔΥΣΚΟΛΟ';
+
+  @override
+  String get completeStageTitle => 'Στάδιο';
+
+  @override
+  String get completeStageSubtitle => 'Ολοκληρώθηκε!';
+
+  @override
+  String get completeStageStatisticsHeader => 'Στατιστικά Σταδίου';
+
+  @override
+  String get completeStageDifficulty => 'Δυσκολία σταδίου';
+
+  @override
+  String get completeStageTimeSpent => 'Χρόνος επίλυσης';
+
+  @override
+  String get completeStageCrosswordWords => 'Λέξεις σταυρολέξου';
+
+  @override
+  String get completeStageExtraWords => 'Έξτρα λέξεις';
+
+  @override
+  String get completeStageRewardsHeader => 'Επιβραβεύσεις Σταδίου';
+
+  @override
+  String get completeStageCompletionPoints => 'Ολοκλήρωση σταδίου';
+
+  @override
+  String get completeStageWordsPoints => 'Λέξεις Σταδίου';
+
+  @override
+  String get completeStageExtraWordsPoints => 'Έξτρα λέξεις';
+
+  @override
+  String get completeStageTotalPoints => 'Σύνολο';
+
+  @override
+  String get completeStageBackToHomeBtn => 'Πίσω στην αρχική';
+
+  @override
+  String completeTotalPoints(int totalPoints) {
+    return 'Σύνολο: + $totalPoints';
+  }
 }

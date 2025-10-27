@@ -8,10 +8,12 @@ enum AppPages {
   words,
   settings,
   theme,
+  gameInstructions,
   complete;
 
   void go({Object? extra}) => info.go(extra: extra);
   void push({Object? extra}) => info.push(extra: extra);
+  void pushReplacement({Object? extra}) => info.pushReplacement(extra: extra);
 
   PageInfo get info => switch (this) {
     splash => const PageInfo(
@@ -41,6 +43,10 @@ enum AppPages {
     theme => const PageInfo(
       path: AppRoutes.themePath,
       name: AppRoutes.themeScreenName,
+    ),
+    gameInstructions => const PageInfo(
+      path: AppRoutes.gamePath,
+      name: AppRoutes.gameScreenName,
     ),
     complete => const PageInfo(
       path: AppRoutes.completePath,

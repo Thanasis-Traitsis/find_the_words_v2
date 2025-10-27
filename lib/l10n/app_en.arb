@@ -7,6 +7,7 @@
     "wordsScreenName": "Total Words",
     "settingsScreenName": "Settings",
     "themeScreenName": "Choose Theme",
+    "gameInstructionsScreenName": "Game Instructions",
     "loading": "Loading",
     "chooseLanguageHeader": "Choose your language",
     "submit": "Submit",
@@ -71,5 +72,33 @@
     "helpDialogRandomLetterTitle": "Random Reveal",
     "helpDialogRandomLetterDescription": "This hint will reveal a hidden letter in the crossword from a random position.",
     "helpDialogSpecificLetterTitle": "Targeted Reveal",
-    "helpDialogSpecificLetterDescription": "With this hint you choose which hidden letter of the crossword you want to reveal."
+    "helpDialogSpecificLetterDescription": "With this hint you choose which hidden letter of the crossword you want to reveal.",
+    "helpSpecificLetterActive": "Pick which letter you want to uncover!",
+    "easy": "EASY",
+    "normal": "NORMAL",
+    "hard": "HARD",
+    "veryHard": "VERY HARD",
+    "completeStageTitle": "Stage",
+    "completeStageSubtitle": "Completed!",
+    "completeStageStatisticsHeader": "Stage Statistics",
+    "completeStageDifficulty": "Stage difficulty",
+    "completeStageTimeSpent": "Stage duration",
+    "completeStageCrosswordWords": "Crossword words",
+    "completeStageExtraWords": "Extra words",
+    "completeStageRewardsHeader": "Stage Rewards",
+    "completeStageCompletionPoints": "Stage completion",
+    "completeStageWordsPoints": "Stage words",
+    "completeStageExtraWordsPoints": "Extra words",
+    "completeStageTotalPoints": "Total",
+    "completeStageBackToHomeBtn": "Back to home",
+    "completeTotalPoints": "Total: + {totalPoints}",
+    "@completeTotalPoints": {
+        "description": "Total points from stage",
+        "placeholders": {
+            "totalPoints": {
+                "type": "int",
+                "example": "3"
+            }
+        }
+    }    
 }

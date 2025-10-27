@@ -1,6 +1,7 @@
 import 'package:find_the_words/config/routes/app_pages.dart';
 import 'package:find_the_words/core/constants/constants.dart';
 import 'package:find_the_words/core/screens/custom_screen.dart';
+import 'package:find_the_words/core/services/service_locator.dart';
 import 'package:find_the_words/core/utils/text_extensions.dart';
 import 'package:find_the_words/core/widgets/custom_appbar.dart';
 import 'package:find_the_words/core/widgets/custom_filled_button.dart';
@@ -52,27 +53,25 @@ class HomeScreen extends StatelessWidget {
                         TotalWordsCard(words: progress.wordsModel.words),
                       ],
                     ),
-                    BlocConsumer<StageBloc, StageState>(
-                      listener: (context, state) {
-                        if (state is StageReady) {
-                          AppPages.stage.push(extra: progress.stage);
-                        }
-                      },
-                      builder: (context, state) {
-                        return Container(
-                          margin: const EdgeInsets.symmetric(
-                            vertical: AppSpacing.spacingXL,
-                          ),
-                          child: CustomFilledButton(
-                            text: context.translate.nextStageBtnText,
-                            onPressed: () {
-                              context.read<StageBloc>().add(
-                                NextStageButtonPressed(progress),
-                              );
+                    Container(
+                      margin: const EdgeInsets.symmetric(
+                        vertical: AppSpacing.spacingXL,
+                      ),
+                      child: CustomFilledButton(
+                        text: context.translate.nextStageBtnText,
+                        onPressed: () {
+                          getIt<StageBloc>().add(
+                            NextStageButtonPressed(progress),
+                          );
+
+                          AppPages.stage.push(
+                            extra: {
+                              'stage': user.currentProgress.stage,
+                              'level': user.currentProgress.level,
                             },
-                          ),
-                        );
-                      },
+                          );
+                        },
+                      ),
                     ),
                   ],
                 ),

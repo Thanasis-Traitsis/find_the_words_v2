@@ -29,16 +29,16 @@ class ProfileStatusModel {
   ProfileStatusModel({
     required this.language,
     required this.level,
-    required this.progress,
+    required double progress,
     required this.stage,
     required this.wordsModel,
-  });
+  }) : progress = progress.clamp(0, 100);
 
   factory ProfileStatusModel.initial(AppLanguage language) {
     return ProfileStatusModel(
       language: language,
       level: 1,
-      progress: 0.0,
+      progress: 0,
       stage: 1,
       wordsModel: WordsModel(words: {}),
     );

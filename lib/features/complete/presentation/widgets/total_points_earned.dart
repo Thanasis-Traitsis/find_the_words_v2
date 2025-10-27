@@ -1,12 +1,14 @@
 import 'package:find_the_words/config/theme/custom_text_type.dart';
 import 'package:find_the_words/core/constants/constants.dart';
+import 'package:find_the_words/core/utils/text_extensions.dart';
 import 'package:find_the_words/core/utils/theme_extensions.dart';
 import 'package:find_the_words/core/widgets/custom_svg_icon.dart';
 import 'package:find_the_words/core/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 
 class TotalPointsEarned extends StatelessWidget {
-  const TotalPointsEarned({super.key});
+  final int points;
+  const TotalPointsEarned({super.key, required this.points});
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +33,7 @@ class TotalPointsEarned extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             CustomText(
-              'Σύνολο: + 15',
+              context.translate.completeTotalPoints(points),
               textStyle: TextStyle(
                 fontSize: CustomTextType.smallHeading.fontSize,
                 fontWeight: CustomTextType.smallHeading.fontWeight,

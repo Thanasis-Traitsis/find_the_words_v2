@@ -7,6 +7,7 @@
     "wordsScreenName": "Συνολικές Λέξεις",
     "settingsScreenName": "Ρυθμίσεις",
     "themeScreenName": "Επιλογή Θέματος",
+    "gameInstructionsScreenName": "Οδηγίες παιχνιδιού",
     "loading": "Φόρτωση",
     "chooseLanguageHeader": "Διάλεξε τη γλώσσα σου",
     "submit": "Υποβολή",
@@ -71,5 +72,33 @@
     "helpDialogRandomLetterTitle": "Τυχαία αποκάλυψη",
     "helpDialogRandomLetterDescription": "Με αυτή τη βοήθεια θα εμφανιστεί ένα κρυφό γράμμα μέσα στο σταυρόλεξο από μία τυχαία θέση.",
     "helpDialogSpecificLetterTitle": "Στοχευμένη αποκάλυψη",
-    "helpDialogSpecificLetterDescription": "Με αυτή τη βοήθεια διαλέγεις ποιο κρυφό γράμμα του σταυρολέξου θέλεις να εμφανιστεί."
+    "helpDialogSpecificLetterDescription": "Με αυτή τη βοήθεια διαλέγεις ποιο κρυφό γράμμα του σταυρολέξου θέλεις να εμφανιστεί.",
+    "helpSpecificLetterActive": "Διάλεξε ποιο γράμμα θέλεις να σου αποκαλυφθεί!",
+    "easy": "ΕΥΚΟΛΟ",
+    "normal": "ΜΕΤΡΙΟ",
+    "hard": "ΔΥΣΚΟΛΟ",
+    "veryHard": "ΠΟΛΥ ΔΥΣΚΟΛΟ",
+    "completeStageTitle": "Στάδιο",
+    "completeStageSubtitle": "Ολοκληρώθηκε!",
+    "completeStageStatisticsHeader": "Στατιστικά Σταδίου",
+    "completeStageDifficulty": "Δυσκολία σταδίου",
+    "completeStageTimeSpent": "Χρόνος επίλυσης",
+    "completeStageCrosswordWords": "Λέξεις σταυρολέξου",
+    "completeStageExtraWords": "Έξτρα λέξεις",
+    "completeStageRewardsHeader": "Επιβραβεύσεις Σταδίου",
+    "completeStageCompletionPoints": "Ολοκλήρωση σταδίου",
+    "completeStageWordsPoints": "Λέξεις σταδίου",
+    "completeStageExtraWordsPoints": "Έξτρα λέξεις",
+    "completeStageTotalPoints": "Σύνολο",
+    "completeStageBackToHomeBtn": "Πίσω στην αρχική",
+    "completeTotalPoints": "Σύνολο: + {totalPoints}",
+    "@completeTotalPoints": {
+        "description": "Total points from stage",
+        "placeholders": {
+            "totalPoints": {
+                "type": "int",
+                "example": "3"
+            }
+        }
+    }
 }

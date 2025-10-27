@@ -49,6 +49,16 @@ class WordPlacementTracker extends HiveObject {
   int get wordCount => placements.length;
   bool get allWordsFound => foundWords.length == placements.length;
 
+  int get smallestWordLength {
+    if (placements.isEmpty) return 0;
+    return placements.map((p) => p.word.length).reduce((a, b) => a < b ? a : b);
+  }
+
+  int get biggestWordLength {
+    if (placements.isEmpty) return 0;
+    return placements.map((p) => p.word.length).reduce((a, b) => a > b ? a : b);
+  }
+
   void addPlacement(String word, List<int> positions) {
     placements.add(
       WordPlacement(
@@ -62,6 +72,14 @@ class WordPlacementTracker extends HiveObject {
   WordPlacement getPlacement(int index) => placements[index];
   WordPlacement getPlacementFromWord(String word) =>
       placements.firstWhere((p) => p.word == word);
+  WordPlacement getPlacementFromUniquePosition(int position) =>
+      placements.firstWhere(
+        (p) =>
+            p.positions.contains(position) &&
+            !commonPositions.contains(position),
+      );
+  List<WordPlacement> getPlacementsFromPosition(int position) =>
+      placements.where((p) => p.positions.contains(position)).toList();
 
   List<String> get words => placements.map((p) => p.word).toList();
   List<List<int>> get allPositions =>

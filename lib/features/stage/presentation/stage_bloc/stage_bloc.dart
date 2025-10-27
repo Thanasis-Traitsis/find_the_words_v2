@@ -7,6 +7,7 @@ import 'package:find_the_words/core/utils/file_utils.dart';
 import 'package:find_the_words/features/auth/auth_cubit/auth_cubit.dart';
 import 'package:find_the_words/features/auth/data/models/profile_status_model.dart';
 import 'package:find_the_words/features/stage/data/models/current_stage.dart';
+import 'package:find_the_words/features/stage/domain/helpers/word_placement.dart';
 import 'package:find_the_words/features/stage/domain/helpers/word_placement_tracker.dart';
 import 'package:find_the_words/features/stage/domain/services/stage_generator_service.dart';
 import 'package:find_the_words/features/stage/presentation/usecases/crossword_usecase.dart';
@@ -26,7 +27,7 @@ class StageBloc extends Bloc<StageEvent, StageState> {
       super(StageInitial()) {
     on<NextStageButtonPressed>(_onNextStageButtonPressed);
     on<SubmitFormatedWord>(_onSubmitFormatedWord);
-    on<RandomLetterReveal>(_onRandomLetterReveal);
+    on<CrosswordLetterReveal>(_onCrosswordLetterReveal);
   }
 
   void _onNextStageButtonPressed(
@@ -35,7 +36,7 @@ class StageBloc extends Bloc<StageEvent, StageState> {
   ) async {
     emit(StageLoading());
 
-    final stage = checkForSavedStage();
+    final stage = _checkForSavedStage();
 
     if (stage != null) {
       emit(StageReady(stage));
@@ -94,6 +95,14 @@ class StageBloc extends Bloc<StageEvent, StageState> {
           stage: updatedStage,
           emit: emit,
         );
+
+        _checkAndCompleteIntersectingWords(
+          wordPositions: wordPositions,
+          submittedWord: submittedWord,
+          tracker: tracker,
+          currentStage: updatedStage,
+          emit: emit,
+        );
       }
     } else if (currentState.stage.allWords.contains(submittedWord) &&
         !tracker.isWordFound(submittedWord)) {
@@ -120,6 +129,14 @@ class StageBloc extends Bloc<StageEvent, StageState> {
               stage: updatedStage,
               emit: emit,
             );
+
+            _checkAndCompleteIntersectingWords(
+              wordPositions: placement.positions,
+              submittedWord: submittedWord,
+              tracker: tracker,
+              currentStage: updatedStage,
+              emit: emit,
+            );
             return;
           }
         }
@@ -138,54 +155,29 @@ class StageBloc extends Bloc<StageEvent, StageState> {
     }
   }
 
-  void _onRandomLetterReveal(
-    RandomLetterReveal event,
+  void _onCrosswordLetterReveal(
+    CrosswordLetterReveal event,
     Emitter<StageState> emit,
   ) async {
     if (state is! StageActive) return;
 
     final currentState = state as StageActive;
     final tracker = currentState.stage.placementTracker;
+    final unrevealedPositions = tracker.remainingPositions;
 
-    // Collect all unrevealed positions
-    final unrevealedPositions = <int>{};
-    for (var positions in tracker.allPositions) {
-      for (var position in positions) {
-        if (!tracker.revealedPositions.contains(position)) {
-          unrevealedPositions.add(position);
-        }
-      }
-    }
-
-    // Select random position
-    final randomSpot = unrevealedPositions.elementAt(
-      Random().nextInt(unrevealedPositions.length),
-    );
+    final randomSpot =
+        event.position ??
+        unrevealedPositions.elementAt(
+          Random().nextInt(unrevealedPositions.length),
+        );
 
     tracker.addRevealedPositions([randomSpot]);
-    final updatedStage = CurrentStage(
-      allWords: currentState.stage.allWords,
-      letters: currentState.stage.letters,
-      board: currentState.stage.board,
-      placementTracker: tracker,
-    );
+    _handleRandomSpotSelection(randomSpot, tracker, emit, currentState.stage);
 
-    updateStageState(
-      tracker: tracker,
-      newPositions: [randomSpot],
-      stage: updatedStage,
-      emit: emit,
-    );
-
-    // Find which word placements contain this position
     final affectedPlacements = tracker.placements
-        .where(
-          (placement) =>
-              !placement.isUsed && placement.positions.contains(randomSpot),
-        )
+        .where((placement) => placement.positions.contains(randomSpot))
         .toList();
 
-    // Check if revealing this letter completes any words
     for (var placement in affectedPlacements) {
       final allRevealed = placement.positions.every(
         (position) => tracker.revealedPositions.contains(position),
@@ -208,10 +200,12 @@ class StageBloc extends Bloc<StageEvent, StageState> {
           stage: updatedStage,
           emit: emit,
         );
+
+        await Future.delayed(
+          Duration(milliseconds: (placement.word.length * 100) + 200),
+        );
       }
     }
-
-    // TODO: when you reveal a spot of a word, mark this word as "locked", so it cannot be replaced
   }
 
   void updateStageState({
@@ -219,7 +213,7 @@ class StageBloc extends Bloc<StageEvent, StageState> {
     required List<int> newPositions,
     required CurrentStage stage,
     required Emitter<StageState> emit,
-  }) {
+  }) async {
     if (tracker.allWordsFound) {
       _storageService.deleteCurrentStage();
       emit(StageCompleted(stage));
@@ -229,7 +223,7 @@ class StageBloc extends Bloc<StageEvent, StageState> {
     }
   }
 
-  CurrentStage? checkForSavedStage() {
+  CurrentStage? _checkForSavedStage() {
     if (!_storageService.hasSavedStage()) return null;
 
     CurrentStage? stage = _storageService.getCurrentStage();
@@ -280,5 +274,105 @@ class StageBloc extends Bloc<StageEvent, StageState> {
         .where((entry) => entry.value > 1)
         .map((entry) => entry.key)
         .toList();
+  }
+
+  void _checkAndCompleteIntersectingWords({
+    required List<int> wordPositions,
+    required String submittedWord,
+    required WordPlacementTracker tracker,
+    required CurrentStage currentStage,
+    required Emitter<StageState> emit,
+  }) async {
+    await Future.delayed(
+      Duration(milliseconds: (wordPositions.length * 100) + 200),
+    );
+
+    final commonPositionsInWord = wordPositions
+        .where((pos) => tracker.commonPositions.contains(pos))
+        .toList();
+
+    if (commonPositionsInWord.isEmpty) return;
+
+    CurrentStage latestStage = currentStage;
+
+    for (int position in commonPositionsInWord) {
+      final placements = tracker.getPlacementsFromPosition(position);
+
+      for (var placement in placements) {
+        if (placement.word != submittedWord &&
+            !tracker.isWordFound(placement.word)) {
+          if (_isWordFullyRevealed(placement, tracker)) {
+            tracker.markWordAsFound(placement.word);
+            _authCubit.addFoundWord(placement.word);
+
+            latestStage = _crosswordUsecase.updateCurrentStage(
+              oldTracker: tracker,
+              oldStage: latestStage,
+              placement: placement,
+            );
+
+            updateStageState(
+              tracker: tracker,
+              newPositions: placement.positions,
+              stage: latestStage,
+              emit: emit,
+            );
+
+            await Future.delayed(
+              Duration(milliseconds: (placement.word.length * 100) + 200),
+            );
+          }
+        }
+      }
+    }
+  }
+
+  bool _isWordFullyRevealed(
+    WordPlacement placement,
+    WordPlacementTracker tracker,
+  ) {
+    return placement.positions.every(
+      (position) => tracker.revealedPositions.contains(position),
+    );
+  }
+
+  void _handleRandomSpotSelection(
+    int randomSpot,
+    WordPlacementTracker tracker,
+    Emitter<StageState> emit,
+    CurrentStage stage,
+  ) {
+    try {
+      final foundInPlacement = tracker.getPlacementFromUniquePosition(
+        randomSpot,
+      );
+
+      final updatedStage = _crosswordUsecase.updateCurrentStage(
+        oldTracker: tracker,
+        placement: foundInPlacement,
+        oldStage: stage,
+      );
+
+      updateStageState(
+        tracker: tracker,
+        newPositions: [randomSpot],
+        stage: updatedStage,
+        emit: emit,
+      );
+    } on StateError {
+      final updatedStage = CurrentStage(
+        allWords: stage.allWords,
+        letters: stage.letters,
+        board: stage.board,
+        placementTracker: tracker,
+      );
+
+      updateStageState(
+        tracker: tracker,
+        newPositions: [randomSpot],
+        stage: updatedStage,
+        emit: emit,
+      );
+    }
   }
 }

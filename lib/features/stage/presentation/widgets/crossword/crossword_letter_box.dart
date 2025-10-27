@@ -9,6 +9,7 @@ class CrosswordLetterBox extends StatefulWidget {
   final bool isVisible;
   final bool shouldAnimate;
   final int? animationDelay;
+  final VoidCallback onTap;
 
   const CrosswordLetterBox({
     super.key,
@@ -17,6 +18,7 @@ class CrosswordLetterBox extends StatefulWidget {
     this.isVisible = false,
     this.shouldAnimate = false,
     this.animationDelay,
+    required this.onTap,
   });
 
   @override
@@ -27,6 +29,7 @@ class _CrosswordLetterBoxState extends State<CrosswordLetterBox>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
+  bool _hasAnimated = false;
 
   @override
   void initState() {
@@ -60,11 +63,14 @@ class _CrosswordLetterBoxState extends State<CrosswordLetterBox>
   @override
   void didUpdateWidget(CrosswordLetterBox oldWidget) {
     super.didUpdateWidget(oldWidget);
-    Future.delayed(Duration(milliseconds: widget.animationDelay ?? 0), () {
-      if (mounted) {
-        _controller.forward(from: 0);
-      }
-    });
+    if (widget.shouldAnimate && !_hasAnimated) {
+      Future.delayed(Duration(milliseconds: widget.animationDelay ?? 0), () {
+        if (mounted) {
+          _controller.forward(from: 0);
+          _hasAnimated = true;
+        }
+      });
+    }
   }
 
   @override
@@ -79,38 +85,41 @@ class _CrosswordLetterBoxState extends State<CrosswordLetterBox>
       return const SizedBox.shrink();
     }
 
-    return AnimatedBuilder(
-      animation: _scaleAnimation,
-      builder: (context, child) {
-        return Transform.scale(
-          scale: widget.shouldAnimate ? _scaleAnimation.value : 1.0,
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 300),
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              borderRadius: AppBorders.smallBorderRadius,
-              color: widget.isVisible
-                  ? context.colors.primary
-                  : context.colors.stageBlue.withValues(alpha: 0.6),
-              border: Border.all(
-                width: AppBorders.smallBorderWidth,
+    return GestureDetector(
+      onTap: widget.onTap,
+      child: AnimatedBuilder(
+        animation: _scaleAnimation,
+        builder: (context, child) {
+          return Transform.scale(
+            scale: widget.shouldAnimate ? _scaleAnimation.value : 1.0,
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 300),
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                borderRadius: AppBorders.smallBorderRadius,
                 color: widget.isVisible
                     ? context.colors.primary
-                    : context.colors.stageBlue,
+                    : context.colors.stageBlue.withValues(alpha: 0.6),
+                border: Border.all(
+                  width: AppBorders.smallBorderWidth,
+                  color: widget.isVisible
+                      ? context.colors.primary
+                      : context.colors.stageBlue,
+                ),
+              ),
+              child: CustomText(
+                widget.isVisible ? widget.crosswordBoxItem : "",
+                textStyle: TextStyle(
+                  color: widget.isVisible
+                      ? context.colors.white
+                      : Colors.transparent,
+                  fontSize: setFontSize(widget.boardSize),
+                ),
               ),
             ),
-            child: CustomText(
-              widget.isVisible ? widget.crosswordBoxItem : "",
-              textStyle: TextStyle(
-                color: widget.isVisible
-                    ? context.colors.white
-                    : Colors.transparent,
-                fontSize: setFontSize(widget.boardSize),
-              ),
-            ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }

@@ -1,106 +1,236 @@
-import 'package:find_the_words/config/routes/app_pages.dart';
 import 'package:find_the_words/config/theme/custom_text_type.dart';
 import 'package:find_the_words/core/constants/app_spacing.dart';
 import 'package:find_the_words/core/constants/constants.dart';
 import 'package:find_the_words/core/screens/custom_screen.dart';
+import 'package:find_the_words/core/services/navigation_service.dart';
 import 'package:find_the_words/core/utils/text_extensions.dart';
-import 'package:find_the_words/core/widgets/custom_filled_button.dart';
 import 'package:find_the_words/core/widgets/custom_text.dart';
 import 'package:find_the_words/features/auth/auth_cubit/auth_cubit.dart';
-import 'package:find_the_words/features/complete/presentation/widgets/stage_completion_section_header.dart';
+import 'package:find_the_words/features/complete/presentation/widgets/stage_completion_header.dart';
+import 'package:find_the_words/features/complete/presentation/widgets/stage_completion_next_stage_button.dart';
+import 'package:find_the_words/features/complete/presentation/widgets/stage_completion_widget_list.dart';
 import 'package:find_the_words/features/complete/presentation/widgets/stage_data_list_item.dart';
 import 'package:find_the_words/features/complete/presentation/widgets/total_points_earned.dart';
 import 'package:find_the_words/features/home/presentation/widgets/stage_and_level_card.dart';
+import 'package:find_the_words/features/stage/data/models/stage_results.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class CompleteStageScreen extends StatelessWidget {
-  const CompleteStageScreen({super.key});
+class CompleteStageScreen extends StatefulWidget {
+  final StageResults stageResults;
+
+  const CompleteStageScreen({super.key, required this.stageResults});
+
+  @override
+  State<CompleteStageScreen> createState() => _CompleteStageScreenState();
+}
+
+class _CompleteStageScreenState extends State<CompleteStageScreen> {
+  final ScrollController _scrollController = ScrollController();
+  double _bottomButtonOpacity = 0.0;
+  double _inlineButtonOpacity = 1.0;
+  final GlobalKey _inlineButtonKey = GlobalKey();
+  bool _isScrollable = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkIfScrollable();
+    });
+  }
+
+  void _checkIfScrollable() {
+    if (_scrollController.hasClients) {
+      final isScrollable = _scrollController.position.maxScrollExtent > 0;
+
+      setState(() {
+        _isScrollable = isScrollable;
+
+        if (isScrollable) {
+          _bottomButtonOpacity = 1.0;
+          _inlineButtonOpacity = 0.0;
+        }
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_onScroll);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    if (!_isScrollable) return;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final RenderBox? renderBox =
+          _inlineButtonKey.currentContext?.findRenderObject() as RenderBox?;
+
+      if (renderBox == null) return;
+
+      final buttonPosition = renderBox.localToGlobal(Offset.zero);
+      final screenHeight = MediaQuery.of(context).size.height;
+      final buttonTop = buttonPosition.dy;
+      final buttonHeight = renderBox.size.height;
+
+      final fixedButtonBottom = screenHeight;
+
+      final buttonBottom = buttonTop + buttonHeight;
+      final isButtonReachingFixedPosition = buttonBottom <= fixedButtonBottom;
+
+      setState(() {
+        if (isButtonReachingFixedPosition) {
+          _bottomButtonOpacity = 0.0;
+          _inlineButtonOpacity = 1.0;
+        } else {
+          _bottomButtonOpacity = 1.0;
+          _inlineButtonOpacity = 0.0;
+        }
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return CustomScreen(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: AppSpacing.spacingL),
-        child: SingleChildScrollView(
-          child: Column(
-            spacing: AppSpacing.spacingL,
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return BlocBuilder<AuthCubit, AuthState>(
+      builder: (context, state) {
+        if (state is! AuthAuthenticated) {
+          return const SizedBox.shrink();
+        }
+
+        final currentUser = state.user;
+
+        return CustomScreen(
+          child: Stack(
             children: [
-              Column(
-                spacing: AppSpacing.spacingS,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    spacing: AppSpacing.spacingM,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      CustomText(
-                        '38',
-                        textType: CustomTextType.bigHeading,
-                        isItalic: true,
-                      ),
-                      CustomText(
-                        'Στάδιο',
-                        textType: CustomTextType.regularHeading,
-                        isItalic: true,
-                      ),
-                    ],
+              CustomScrollView(
+                controller: _scrollController,
+                physics: const ClampingScrollPhysics(),
+                shrinkWrap: true,
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: StageCompletionHeader(
+                      stageNumber: widget.stageResults.stage.toString(),
+                    ),
                   ),
-                  CustomText(
-                    'Ολοκληρώθηκε!',
-                    textType: CustomTextType.regularHeading,
+                  SliverPadding(
+                    padding: EdgeInsets.only(bottom: AppSpacing.spacingXL),
+                    sliver: SliverToBoxAdapter(
+                      child: StageAndLevelCard(
+                        profileStatus: currentUser.currentProgress,
+                        withStage: false,
+                        stageResults: widget.stageResults,
+                      ),
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: StageCompletionWidgetList(
+                      headerTitle:
+                          context.translate.completeStageStatisticsHeader,
+                      widgetList: [
+                        StageDataListItem.withDifficulty(
+                          title: context.translate.completeStageDifficulty,
+                          difficulty: widget.stageResults.difficulty,
+                        ),
+                        StageDataListItem(
+                          title: context.translate.completeStageTimeSpent,
+                          value: widget.stageResults.getFormattedTime(),
+                        ),
+                        StageDataListItem(
+                          title: context.translate.completeStageCrosswordWords,
+                          value: widget.stageResults.crosswordWords.toString(),
+                        ),
+                        StageDataListItem(
+                          title: context.translate.completeStageExtraWords,
+                          value: widget.stageResults.foundExtraWords.toString(),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: StageCompletionWidgetList(
+                      headerTitle: context.translate.completeStageRewardsHeader,
+                      widgetList: [
+                        StageDataListItem(
+                          title:
+                              context.translate.completeStageCompletionPoints,
+                          value: widget.stageResults
+                              .getPointsForStage()
+                              .toString(),
+                          isPoints: true,
+                        ),
+                        StageDataListItem(
+                          title: context.translate.completeStageWordsPoints,
+                          value: widget.stageResults
+                              .getPointsForCrosswordWords()
+                              .toString(),
+                          isPoints: true,
+                        ),
+                        StageDataListItem(
+                          title: context.translate.completeStageExtraWords,
+                          value: widget.stageResults
+                              .getPointsForExtraWords()
+                              .toString(),
+                          isPoints: true,
+                        ),
+                      ],
+                    ),
+                  ),
+                  SliverPadding(
+                    padding: EdgeInsets.only(bottom: AppSpacing.spacingXL),
+                    sliver: SliverToBoxAdapter(
+                      child: TotalPointsEarned(
+                        points: widget.stageResults.totalPointsForStage(),
+                      ),
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: Opacity(
+                      key: _inlineButtonKey,
+                      opacity: _inlineButtonOpacity,
+                      child: StageCompletionNextStageButton(
+                        user: currentUser,
+                        isButtonAvailable: _inlineButtonOpacity != 0.0,
+                      ),
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: Center(
+                      child: TextButton(
+                        onPressed: () {
+                          NavigationService.instance.pop();
+                        },
+                        child: CustomText(
+                          context.translate.completeStageBackToHomeBtn,
+                          textType: CustomTextType.regularBody,
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),
-              BlocBuilder<AuthCubit, AuthState>(
-                builder: (context, state) {
-                  if (state is! AuthAuthenticated) {
-                    return const SizedBox.shrink();
-                  }
-                  return StageAndLevelCard(
-                    profileStatus: state.user.currentProgress,
-                    withStage: false,
-                    xpEarned: 10,
-                  );
-                },
-              ),
-              StageCompletionSectionHeader(header: 'Στατιστικά Σταδίου'),
-              StageDataListItem(title: 'Δυσκολία σταδίου', value: 3),
-              StageDataListItem(title: 'Χρόνος επίλυσης', value: 3),
-              StageDataListItem(title: 'Λέξεις Σταδίου', value: 3),
-              StageDataListItem(title: 'Έξτρα λέξεις', value: 3),
-              StageCompletionSectionHeader(header: 'Επιβραβεύσεις Σταδίου'),
-              StageDataListItem(title: 'Ολοκλήρωση σταδίου', value: 3),
-              StageDataListItem(title: 'Λέξεις Σταδίου', value: 3),
-              StageDataListItem(title: 'Έξτρα λέξεις', value: 3),
-              TotalPointsEarned(),
-              Container(
-                margin: const EdgeInsets.only(top: AppSpacing.spacingXL),
-                child: CustomFilledButton(
-                  text: context.translate.nextStageBtnText,
-                  onPressed: () {
-                    // context.read<StageBloc>().add(
-                    //   NextStageButtonPressed(progress),
-                    // );
-                  },
-                ),
-              ),
-              Center(
-                child: TextButton(
-                  onPressed: () {
-                    AppPages.home.go();
-                  },
-                  child: CustomText(
-                    'Πίσω στην αρχική',
-                    textType: CustomTextType.regularBody,
+              Positioned(
+                left: 0,
+                right: 0,
+                bottom: AppSpacing.spacingM,
+                child: Opacity(
+                  opacity: _bottomButtonOpacity,
+                  child: IgnorePointer(
+                    ignoring: _bottomButtonOpacity == 0.0,
+                    child: StageCompletionNextStageButton(
+                      user: currentUser,
+                      isButtonAvailable: _bottomButtonOpacity != 0.0,
+                    ),
                   ),
                 ),
               ),
             ],
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

@@ -7,9 +7,11 @@ import 'package:find_the_words/core/services/service_locator.dart';
 import 'package:find_the_words/error_screen.dart';
 import 'package:find_the_words/features/auth/auth_cubit/auth_cubit.dart';
 import 'package:find_the_words/features/complete/presentation/screens/complete_stage_screen.dart';
+import 'package:find_the_words/features/game_instructions/presentation/screens/game_instructions_screen.dart';
 import 'package:find_the_words/features/home/presentation/screens/home_screen.dart';
 import 'package:find_the_words/features/language/presentation/screens/language_selection_screen.dart';
 import 'package:find_the_words/features/settings/presentation/screens/settings_screen.dart';
+import 'package:find_the_words/features/stage/data/models/stage_results.dart';
 import 'package:find_the_words/features/stage/presentation/screens/stage_screen.dart';
 import 'package:find_the_words/features/words/presentation/screens/total_words_screen.dart';
 import 'package:find_the_words/splash_screen.dart';
@@ -74,8 +76,13 @@ class AppRouter {
         path: AppPages.stage.info.path,
         name: AppPages.stage.info.name,
         pageBuilder: (context, state) {
-          final stage = state.extra as int? ?? 0;
-          return _noAnimationPage(StageScreen(stage: stage), state);
+          final params = state.extra as Map<String, dynamic>?;
+          final stage = params?['stage'] as int? ?? 0;
+          final level = params?['level'] as int? ?? 1;
+          return _noAnimationPage(
+            StageScreen(stage: stage, level: level),
+            state,
+          );
         },
       ),
       GoRoute(
@@ -105,10 +112,22 @@ class AppRouter {
       ),
       GoRoute(
         parentNavigatorKey: NavigationService.rootNavigatorKey,
+        path: AppPages.gameInstructions.info.path,
+        name: AppPages.gameInstructions.info.name,
+        pageBuilder: (context, state) {
+          return _noAnimationPage(GameInstructionsScreen(), state);
+        },
+      ),
+      GoRoute(
+        parentNavigatorKey: NavigationService.rootNavigatorKey,
         path: AppPages.complete.info.path,
         name: AppPages.complete.info.name,
         pageBuilder: (context, state) {
-          return _noAnimationPage(CompleteStageScreen(), state);
+          final stageResults = state.extra as StageResults;
+          return _noAnimationPage(
+            CompleteStageScreen(stageResults: stageResults),
+            state,
+          );
         },
       ),
     ],

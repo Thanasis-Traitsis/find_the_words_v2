@@ -1,27 +1,37 @@
 import 'package:find_the_words/config/theme/custom_text_type.dart';
 import 'package:find_the_words/core/constants/constants.dart';
+import 'package:find_the_words/core/utils/double_extensions.dart';
 import 'package:find_the_words/core/utils/text_extensions.dart';
 import 'package:find_the_words/core/utils/theme_extensions.dart';
 import 'package:find_the_words/core/widgets/custom_border_container.dart';
 import 'package:find_the_words/core/widgets/custom_text.dart';
 import 'package:find_the_words/features/auth/data/models/profile_status_model.dart';
 import 'package:find_the_words/features/home/presentation/widgets/level_progress_bar.dart';
+import 'package:find_the_words/features/stage/data/models/stage_results.dart';
 import 'package:flutter/material.dart';
 
 class StageAndLevelCard extends StatelessWidget {
   final ProfileStatusModel profileStatus;
   final bool withStage;
-  final int? xpEarned;
+  final StageResults? stageResults;
 
   const StageAndLevelCard({
     super.key,
     required this.profileStatus,
     this.withStage = true,
-    this.xpEarned,
+    this.stageResults,
   });
 
   @override
   Widget build(BuildContext context) {
+    final int level = stageResults != null
+        ? stageResults!.level
+        : profileStatus.level;
+
+    final double progress = stageResults != null
+        ? stageResults!.newProgress
+        : profileStatus.progress;
+
     return CustomBorderContainer(
       backgroundColor: context.colors.lightGreen,
       borderColor: context.colors.darkGreen,
@@ -56,7 +66,7 @@ class StageAndLevelCard extends StatelessWidget {
             Expanded(
               child: Column(
                 children: [
-                  if (xpEarned != null)
+                  if (stageResults != null)
                     Align(
                       alignment: Alignment.centerRight,
                       child: Container(
@@ -69,7 +79,7 @@ class StageAndLevelCard extends StatelessWidget {
                           borderRadius: AppBorders.hugeBorderRadius,
                         ),
                         child: CustomText(
-                          '+ $xpEarned XP',
+                          '+ ${stageResults!.xpEarned} XP',
                           textType: CustomTextType.smallTag,
                           isWhite: true,
                         ),
@@ -87,9 +97,7 @@ class StageAndLevelCard extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               CustomText(
-                                context.translate.levelWithNumber(
-                                  profileStatus.level,
-                                ),
+                                context.translate.levelWithNumber(level),
                                 textType: CustomTextType.smallHeading,
                               ),
                               CustomText(
@@ -100,14 +108,17 @@ class StageAndLevelCard extends StatelessWidget {
                           ),
                         ),
                         CustomText(
-                          '${profileStatus.progress}%',
+                          '${progress.toProgressString()}%',
                           textType: CustomTextType.regularHeading,
                           isItalic: true,
                         ),
                       ],
                     ),
                   ),
-                  LevelProgressBar(progress: profileStatus.progress),
+                  LevelProgressBar(
+                    progress: profileStatus.progress,
+                    stageResults: stageResults,
+                  ),
                 ],
               ),
             ),

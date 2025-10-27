@@ -1,24 +1,31 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:find_the_words/config/routes/app_pages.dart';
+import 'package:find_the_words/core/services/service_locator.dart';
 import 'package:find_the_words/core/utils/text_extensions.dart';
 import 'package:find_the_words/core/utils/theme_extensions.dart';
 import 'package:find_the_words/core/widgets/custom_svg_icon.dart';
+import 'package:find_the_words/features/auth/auth_cubit/auth_cubit.dart';
+import 'package:find_the_words/features/stage/domain/services/stage_xp_service.dart';
 import 'package:find_the_words/features/stage/presentation/stage_bloc/stage_bloc.dart';
 import 'package:find_the_words/features/stage/presentation/widgets/circle_container_with_word.dart';
 import 'package:find_the_words/features/stage/presentation/widgets/crossword/crossword_letter_box.dart';
 import 'package:find_the_words/features/stage/presentation/widgets/extra_words/extra_word_box.dart';
 import 'package:find_the_words/features/stage/presentation/widgets/help/help_dialog.dart';
+import 'package:find_the_words/features/stage/presentation/widgets/help/help_target_button.dart';
 import 'package:find_the_words/features/stage/presentation/widgets/stage_icon_button.dart';
 import 'package:flutter/material.dart';
 import 'package:find_the_words/core/constants/constants.dart';
 import 'package:find_the_words/core/screens/custom_screen.dart';
 import 'package:find_the_words/core/widgets/custom_appbar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class StageScreen extends StatefulWidget {
+  final int level;
   final int stage;
-  const StageScreen({super.key, required this.stage});
+  const StageScreen({super.key, required this.stage, required this.level});
 
   @override
   State<StageScreen> createState() => _StageScreenState();
@@ -27,16 +34,89 @@ class StageScreen extends StatefulWidget {
 class _StageScreenState extends State<StageScreen> {
   bool _showOverlay = false;
   final GlobalKey _buttonKey = GlobalKey();
+  final GlobalKey _activeDescription = GlobalKey();
   final Map<int, GlobalKey> _gridKeys = {};
   List<GlobalKey> keysToHighlight = <GlobalKey>[];
+
+  Timer? _timer;
+  int _elapsedSeconds = 0;
+  late final String _timerKey = AppKeys.timerKey(widget.stage);
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeTimer();
+  }
+
+  @override
+  void dispose() {
+    _saveTimerToPrefs();
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  Future<void> _initializeTimer() async {
+    final prefs = await SharedPreferences.getInstance();
+    final savedTime = prefs.getInt(_timerKey) ?? 0;
+
+    if (savedTime == 0) {
+      await prefs.setInt(_timerKey, savedTime);
+    }
+
+    setState(() {
+      _elapsedSeconds = savedTime;
+    });
+
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {
+        _elapsedSeconds++;
+      });
+    });
+  }
+
+  Future<void> _saveTimerToPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    final savedTime = prefs.getInt(_timerKey);
+
+    if (savedTime != null) {
+      await prefs.setInt(_timerKey, _elapsedSeconds);
+    }
+  }
+
+  Future<void> _clearTimerFromPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_timerKey);
+  }
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<StageBloc, StageState>(
       listener: (context, state) async {
         if (state is StageCompleted) {
+          _timer?.cancel();
+          await _clearTimerFromPrefs();
+
           await Future.delayed(const Duration(seconds: 1));
-          AppPages.complete.go();
+
+          final AuthCubit authCubit = getIt<AuthCubit>();
+          final authState = authCubit.state;
+          final currentUser = (authState as AuthAuthenticated).user;
+
+          final stageResults = StageXPService.calculateStageResults(
+            stage: state.stage,
+            level: widget.level,
+            stageNumber: widget.stage,
+            timeInSeconds: _elapsedSeconds,
+            currentProgress: currentUser.currentProgress.progress,
+          );
+
+          await authCubit.updateAfterStage(
+            stageResults.xpEarned,
+            stageResults.newProgress,
+            stageResults.totalPointsForStage(),
+          );
+
+          AppPages.complete.pushReplacement(extra: stageResults);
         }
       },
       builder: (context, state) {
@@ -123,6 +203,16 @@ class _StageScreenState extends State<StageScreen> {
                                 shouldAnimate: shouldAnimate,
                                 animationDelay:
                                     newPositions.indexOf(index) * 100,
+                                onTap: () {
+                                  if (_showOverlay) {
+                                    setState(() {
+                                      _showOverlay = false;
+                                    });
+                                    getIt<StageBloc>().add(
+                                      CrosswordLetterReveal(index),
+                                    );
+                                  }
+                                },
                               ),
                             );
                           },
@@ -163,19 +253,21 @@ class _StageScreenState extends State<StageScreen> {
                             StageIconButton(
                               icon: 'magic_wond',
                               onTap: () {
-                                context.read<StageBloc>().add(
-                                  RandomLetterReveal(),
+                                getIt<StageBloc>().add(
+                                  CrosswordLetterReveal(null),
                                 );
                               },
                             ),
-                            StageIconButton(
-                              key: _buttonKey,
-                              icon: 'target',
+                            HelpTargetButton(
+                              descriptionKey: _activeDescription,
+                              buttonKey: _buttonKey,
+                              isActive: _showOverlay,
                               onTap: () {
                                 setState(() {
                                   if (!_showOverlay) {
                                     keysToHighlight = [
                                       _buttonKey,
+                                      _activeDescription,
                                       ...remainingPositions
                                           .where(
                                             (pos) => _gridKeys.containsKey(pos),

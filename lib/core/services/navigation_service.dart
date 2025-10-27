@@ -27,6 +27,10 @@ class NavigationService {
     router.pushReplacement(path, extra: extra);
   }
 
+  void replace(String path, {Object? extra}) {
+    router.replace(path, extra: extra);
+  }
+
   String get currentLocation => GoRouter.of(
     rootNavigatorKey.currentContext!,
   ).routerDelegate.currentConfiguration.uri.toString();

@@ -49,9 +49,9 @@ class SettingsScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              SettingsRowItem(
+              SettingsRowItem.navigateToPage(
                 name: context.translate.settingsItemGameInstructions,
-                onTap: () {},
+                page: AppPages.gameInstructions,
               ),
               SettingsRowItem(
                 name: context.translate.settingsItemResetStage,

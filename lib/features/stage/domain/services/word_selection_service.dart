@@ -15,8 +15,10 @@ class WordSelectionService {
     Map<String, dynamic> stageFile,
     StageCriteria criteria,
   ) async {
+    // await _clearUsedStages();
     final usedStages = await _getUsedStages();
     final bannedStages = await _getBannedStages();
+
     // TODO: get used words from the profile - selected language
     final List<String> usedWords = [];
 
@@ -26,6 +28,7 @@ class WordSelectionService {
       usedStages,
       bannedStages,
     );
+
 
     var selectedStage = await _trySelectValidStage(availableStages, criteria);
 
@@ -59,21 +62,7 @@ class WordSelectionService {
       final stage = _selectRandomStage(stagesToTry);
       if (stage == null) break;
 
-      final allStageWords = List<String>.from(stage.value);
-      final mainWordLength = stage.key.length;
-
-      final bigWords = allStageWords
-          .where((word) => word.length == mainWordLength)
-          .toList();
-      final smallerWords = allStageWords
-          .where((word) => word.length < mainWordLength)
-          .toList();
-
-      final bigWordsToKeep = bigWords.take(criteria.minBigWords).toList();
-
-      final filteredWords = [...bigWordsToKeep, ...smallerWords];
-
-      final filteredStage = MapEntry(stage.key, filteredWords);
+      final filteredStage = separateBigAndSmallWords(stage, criteria);
 
       if (_stageMatchesCriteria(filteredStage, criteria)) {
         return filteredStage;
@@ -84,6 +73,32 @@ class WordSelectionService {
     }
 
     return null;
+  }
+
+  MapEntry<String, List<String>> separateBigAndSmallWords(
+    MapEntry<String, dynamic> stage,
+    StageCriteria criteria,
+  ) {
+    final allStageWords = List<String>.from(stage.value);
+    final mainWordLength = stage.key.length;
+
+    // For low level, we don't care about separating the big from the small words
+    bool shouldSeparateWords = mainWordLength > 4;
+
+    final bigWords = allStageWords
+        .where((word) => word.length == mainWordLength)
+        .toList();
+    final smallerWords = allStageWords
+        .where((word) => word.length < mainWordLength)
+        .toList();
+
+    final bigWordsToKeep = shouldSeparateWords ? bigWords.take(criteria.minBigWords).toList() : bigWords;
+
+    final filteredWords = [...bigWordsToKeep, ...smallerWords];
+
+    final filteredStage = MapEntry(stage.key, filteredWords);
+
+    return filteredStage;
   }
 
   Future<MapEntry<String, dynamic>?> _trySelectUsedStageWithNewWords(
@@ -201,6 +216,10 @@ class WordSelectionService {
       bannedStages.add(stageKey);
       await _prefs.setStringList(_bannedStageKey, bannedStages);
     }
+  }
+
+  Future<void> _clearUsedStages() async {
+    await _prefs.remove(_usedStageKey);
   }
 
   Future<void> _clearBannedStages() async {

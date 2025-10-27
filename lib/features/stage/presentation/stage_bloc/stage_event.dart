@@ -19,4 +19,8 @@ class SubmitFormatedWord extends StageEvent {
   const SubmitFormatedWord(this.formatedWord);
 }
 
-class RandomLetterReveal extends StageEvent {}
+class CrosswordLetterReveal extends StageEvent {
+  final int? position;
+
+  const CrosswordLetterReveal(this.position);
+}

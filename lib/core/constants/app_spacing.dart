@@ -7,4 +7,5 @@ class AppSpacing {
 
   static const double screenPadding = 16.0;
   static const double iconButtonPadding = 8.0;
+  static const double targetHelpBottomSpacing = 54.0;
 }

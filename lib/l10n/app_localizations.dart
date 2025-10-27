@@ -62,8 +62,7 @@ import 'app_localizations_en.dart';
 /// be consistent with the languages listed in the AppLocalizations.supportedLocales
 /// property.
 abstract class AppLocalizations {
-  AppLocalizations(String locale)
-    : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+  AppLocalizations(String locale) : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
   final String localeName;
 
@@ -71,8 +70,7 @@ abstract class AppLocalizations {
     return Localizations.of<AppLocalizations>(context, AppLocalizations);
   }
 
-  static const LocalizationsDelegate<AppLocalizations> delegate =
-      _AppLocalizationsDelegate();
+  static const LocalizationsDelegate<AppLocalizations> delegate = _AppLocalizationsDelegate();
 
   /// A list of this localizations delegate along with the default localizations
   /// delegates.
@@ -84,18 +82,17 @@ abstract class AppLocalizations {
   /// Additional delegates can be added by appending to this list in
   /// MaterialApp. This list does not have to be used at all if a custom list
   /// of delegates is preferred or required.
-  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
-      <LocalizationsDelegate<dynamic>>[
-        delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-      ];
+  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates = <LocalizationsDelegate<dynamic>>[
+    delegate,
+    GlobalMaterialLocalizations.delegate,
+    GlobalCupertinoLocalizations.delegate,
+    GlobalWidgetsLocalizations.delegate,
+  ];
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
     Locale('el'),
-    Locale('en'),
+    Locale('en')
   ];
 
   /// No description provided for @appName.
@@ -145,6 +142,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Choose Theme'**
   String get themeScreenName;
+
+  /// No description provided for @gameInstructionsScreenName.
+  ///
+  /// In en, this message translates to:
+  /// **'Game Instructions'**
+  String get gameInstructionsScreenName;
 
   /// No description provided for @loading.
   ///
@@ -427,10 +430,123 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'With this hint you choose which hidden letter of the crossword you want to reveal.'**
   String get helpDialogSpecificLetterDescription;
+
+  /// No description provided for @helpSpecificLetterActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick which letter you want to uncover!'**
+  String get helpSpecificLetterActive;
+
+  /// No description provided for @easy.
+  ///
+  /// In en, this message translates to:
+  /// **'EASY'**
+  String get easy;
+
+  /// No description provided for @normal.
+  ///
+  /// In en, this message translates to:
+  /// **'NORMAL'**
+  String get normal;
+
+  /// No description provided for @hard.
+  ///
+  /// In en, this message translates to:
+  /// **'HARD'**
+  String get hard;
+
+  /// No description provided for @veryHard.
+  ///
+  /// In en, this message translates to:
+  /// **'VERY HARD'**
+  String get veryHard;
+
+  /// No description provided for @completeStageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Stage'**
+  String get completeStageTitle;
+
+  /// No description provided for @completeStageSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed!'**
+  String get completeStageSubtitle;
+
+  /// No description provided for @completeStageStatisticsHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'Stage Statistics'**
+  String get completeStageStatisticsHeader;
+
+  /// No description provided for @completeStageDifficulty.
+  ///
+  /// In en, this message translates to:
+  /// **'Stage difficulty'**
+  String get completeStageDifficulty;
+
+  /// No description provided for @completeStageTimeSpent.
+  ///
+  /// In en, this message translates to:
+  /// **'Stage duration'**
+  String get completeStageTimeSpent;
+
+  /// No description provided for @completeStageCrosswordWords.
+  ///
+  /// In en, this message translates to:
+  /// **'Crossword words'**
+  String get completeStageCrosswordWords;
+
+  /// No description provided for @completeStageExtraWords.
+  ///
+  /// In en, this message translates to:
+  /// **'Extra words'**
+  String get completeStageExtraWords;
+
+  /// No description provided for @completeStageRewardsHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'Stage Rewards'**
+  String get completeStageRewardsHeader;
+
+  /// No description provided for @completeStageCompletionPoints.
+  ///
+  /// In en, this message translates to:
+  /// **'Stage completion'**
+  String get completeStageCompletionPoints;
+
+  /// No description provided for @completeStageWordsPoints.
+  ///
+  /// In en, this message translates to:
+  /// **'Stage words'**
+  String get completeStageWordsPoints;
+
+  /// No description provided for @completeStageExtraWordsPoints.
+  ///
+  /// In en, this message translates to:
+  /// **'Extra words'**
+  String get completeStageExtraWordsPoints;
+
+  /// No description provided for @completeStageTotalPoints.
+  ///
+  /// In en, this message translates to:
+  /// **'Total'**
+  String get completeStageTotalPoints;
+
+  /// No description provided for @completeStageBackToHomeBtn.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to home'**
+  String get completeStageBackToHomeBtn;
+
+  /// Total points from stage
+  ///
+  /// In en, this message translates to:
+  /// **'Total: + {totalPoints}'**
+  String completeTotalPoints(int totalPoints);
 }
 
-class _AppLocalizationsDelegate
-    extends LocalizationsDelegate<AppLocalizations> {
+class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
   const _AppLocalizationsDelegate();
 
   @override
@@ -439,26 +555,25 @@ class _AppLocalizationsDelegate
   }
 
   @override
-  bool isSupported(Locale locale) =>
-      <String>['el', 'en'].contains(locale.languageCode);
+  bool isSupported(Locale locale) => <String>['el', 'en'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
 }
 
 AppLocalizations lookupAppLocalizations(Locale locale) {
+
+
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
-    case 'el':
-      return AppLocalizationsEl();
-    case 'en':
-      return AppLocalizationsEn();
+    case 'el': return AppLocalizationsEl();
+    case 'en': return AppLocalizationsEn();
   }
 
   throw FlutterError(
     'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
     'an issue with the localizations generation tool. Please file an issue '
     'on GitHub with a reproducible sample app and the gen-l10n configuration '
-    'that was used.',
+    'that was used.'
   );
 }
