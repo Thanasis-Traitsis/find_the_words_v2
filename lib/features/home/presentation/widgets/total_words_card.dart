@@ -52,7 +52,7 @@ class TotalWordsCard extends StatelessWidget {
               CustomSvgIcon(
                 icon: 'arrow_right',
                 color: context.colors.darkBlue,
-                height: AppSizes.suffixContainerIcon,
+                height: AppSizes.iconS,
               ),
             ],
           ),

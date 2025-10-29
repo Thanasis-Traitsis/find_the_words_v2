@@ -50,7 +50,7 @@ class CustomFilledButton extends StatelessWidget {
                 child: CustomSvgIcon(
                   icon: 'arrow_right',
                   color: context.colors.white,
-                  height: AppSizes.suffixContainerIcon,
+                  height: AppSizes.iconS,
                 ),
               ),
             withIcon
@@ -84,7 +84,7 @@ class CustomFilledButton extends StatelessWidget {
               CustomSvgIcon(
                 icon: 'arrow_right',
                 color: context.colors.white,
-                height: AppSizes.suffixContainerIcon,
+                height: AppSizes.iconS,
               ),
           ],
         ),

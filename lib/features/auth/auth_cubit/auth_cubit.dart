@@ -10,8 +10,8 @@ import 'package:find_the_words/core/services/storage_service.dart';
 import 'package:find_the_words/core/utils/token_utils.dart';
 import 'package:find_the_words/features/auth/data/models/profile_status_model.dart';
 import 'package:find_the_words/features/auth/data/models/user_model.dart';
-import 'package:find_the_words/features/auth/data/repositories/user_repository_impl.dart';
 import 'package:find_the_words/features/auth/domain/entities/user_entity.dart';
+import 'package:find_the_words/features/auth/domain/repositories/user_repository.dart';
 import 'package:find_the_words/features/stage/domain/services/dictionary_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,7 +19,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> with ChangeNotifier {
-  final UserRepositoryImpl _userRepo;
+  final UserRepository _userRepo;
 
   AuthCubit(this._userRepo) : super(AuthLoading()) {
     _loadAuthState();
@@ -78,7 +78,7 @@ class AuthCubit extends Cubit<AuthState> with ChangeNotifier {
     // This should only run when online
   }
 
-  void addFoundWord(String word) async {
+  Future<void> addFoundWord(String word) async {
     if (state is! AuthAuthenticated) return;
 
     final currentUser = (state as AuthAuthenticated).user;
@@ -99,7 +99,7 @@ class AuthCubit extends Cubit<AuthState> with ChangeNotifier {
     await _saveUpdatedProgress(updatedProgress, currentUser as UserModel);
   }
 
-  Future<void> updateAfterStage(int xpEarned, double newProgress, int totalPoints) async {
+  Future<void> updateAfterStage(int xpEarned, double newProgress) async {
     if (state is! AuthAuthenticated) return;
 
     final currentUser = (state as AuthAuthenticated).user;
@@ -108,16 +108,17 @@ class AuthCubit extends Cubit<AuthState> with ChangeNotifier {
     final updatedProgress = currentProgress.copyWith(
       stage: currentProgress.stage + 1,
       progress: newProgress >= 100 ? 0 : newProgress,
-      level: newProgress >= 100 ? currentProgress.level + 1 : currentProgress.level,
+      level: newProgress >= 100
+          ? currentProgress.level + 1
+          : currentProgress.level,
     );
 
-    await _saveUpdatedProgress(updatedProgress, currentUser as UserModel,totalPoints: totalPoints);
+    await _saveUpdatedProgress(updatedProgress, currentUser as UserModel);
   }
 
   Future<void> _saveUpdatedProgress(
     ProfileStatusModel updatedProgress,
     UserModel currentUser,
-    {int totalPoints = 0}
   ) async {
     final currentLang = getIt<LanguageCubit>().state.appLanguage;
 
@@ -126,7 +127,6 @@ class AuthCubit extends Cubit<AuthState> with ChangeNotifier {
     )..[currentLang] = updatedProgress;
 
     final updatedUser = currentUser.copyWith(
-      points: currentUser.points + totalPoints,
       progressByLanguage: updatedProgressMap,
     );
 

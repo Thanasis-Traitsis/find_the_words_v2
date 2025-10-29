@@ -9,7 +9,7 @@ import 'package:find_the_words/features/auth/auth_cubit/auth_cubit.dart';
 import 'package:find_the_words/features/complete/presentation/screens/complete_stage_screen.dart';
 import 'package:find_the_words/features/game_instructions/presentation/screens/game_instructions_screen.dart';
 import 'package:find_the_words/features/home/presentation/screens/home_screen.dart';
-import 'package:find_the_words/features/language/presentation/screens/language_selection_screen.dart';
+import 'package:find_the_words/config/language/presentation/screen/language_selection_screen.dart';
 import 'package:find_the_words/features/settings/presentation/screens/settings_screen.dart';
 import 'package:find_the_words/features/stage/data/models/stage_results.dart';
 import 'package:find_the_words/features/stage/presentation/screens/stage_screen.dart';

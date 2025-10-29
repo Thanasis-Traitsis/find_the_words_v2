@@ -223,7 +223,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get completeStageCompletionPoints => 'Ολοκλήρωση σταδίου';
 
   @override
-  String get completeStageWordsPoints => 'Λέξεις Σταδίου';
+  String get completeStageWordsPoints => 'Λέξεις σταδίου';
 
   @override
   String get completeStageExtraWordsPoints => 'Έξτρα λέξεις';
@@ -238,4 +238,52 @@ class AppLocalizationsEl extends AppLocalizations {
   String completeTotalPoints(int totalPoints) {
     return 'Σύνολο: + $totalPoints';
   }
+
+  @override
+  String get gameRulesTitle1 => 'Πώς να παίξεις';
+
+  @override
+  String get gameRulesContent1 => 'Ο στόχος σου είναι απλός. Bρες όλες τις κρυμμένες λέξεις σε κάθε σταυρόλεξο.';
+
+  @override
+  String get gameRulesTitle2 => 'Κανόνες Παιχνιδιού';
+
+  @override
+  String get gameRulesContent2a => 'Σύνδεσε γράμματα για να σχηματίσεις έγκυρες λέξεις.';
+
+  @override
+  String get gameRulesContent2b => 'Κάθε στάδιο δημιουργείται δυναμικά, οπότε κανένα παζλ δεν είναι το ίδιο!';
+
+  @override
+  String get gameRulesContent2c => 'Ο αριθμός του επιπέδου καθορίζει το μέγεθος του παζλ:';
+
+  @override
+  String get gameRulesSubcontent2a => 'Επίπεδο 1 → η μεγαλύτερη λέξη έχει 3 γράμματα';
+
+  @override
+  String get gameRulesSubcontent2b => 'Επίπεδο 2 → η μεγαλύτερη λέξη έχει 4 γράμματα';
+
+  @override
+  String get gameRulesSubcontent2c => 'Επίπεδο 3 → η μεγαλύτερη λέξη έχει 5 γράμματα, και ούτω καθεξής';
+
+  @override
+  String get gameRulesTitle3 => 'Συμβουλές';
+
+  @override
+  String get gameRulesContent3a => 'Δοκίμασε διαφορετικούς συνδυασμούς γραμμάτων, μπορεί να ανακαλύψεις bonus λέξεις!';
+
+  @override
+  String get gameRulesContent3b => 'Κόλλησες; Χρησιμοποίησε τις διαθέσιμες βοήθειες για να αποκαλύψεις γράμματα ή λέξεις.';
+
+  @override
+  String get gameRulesContent3c => 'Όσο περισσότερο παίζεις, τόσο βελτιώνεις το λεξιλόγιο και την ικανότητα εύρεσης λέξεων!';
+
+  @override
+  String get gameRulesTitle4 => 'Ατελείωτη Διασκέδαση';
+
+  @override
+  String get gameRulesContent4 => 'Δεν υπάρχει προκαθορισμένη πορεία. Κάθε παζλ είναι μοναδικό, προσφέροντας ατελείωτες προκλήσεις λέξεων και μια φρέσκια εμπειρία κάθε φορά που παίζεις.';
+
+  @override
+  String get gameRulesTitle5 => 'Απόλαυσε την περιπέτεια λέξεων στο Βρες τις Λέξεις!';
 }

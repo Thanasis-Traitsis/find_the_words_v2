@@ -27,18 +27,27 @@ class StorageService {
     await Hive.deleteBoxFromDisk(_stageBoxKey);
 
     // Register all adapters once
-    if (!Hive.isAdapterRegistered(0)) Hive.registerAdapter(UserModelAdapter());
-    if (!Hive.isAdapterRegistered(1))
+    if (!Hive.isAdapterRegistered(0)) {
+      Hive.registerAdapter(UserModelAdapter());
+    }
+    if (!Hive.isAdapterRegistered(1)) {
       Hive.registerAdapter(ProfileStatusModelAdapter());
-    if (!Hive.isAdapterRegistered(2))
+    }
+    if (!Hive.isAdapterRegistered(2)) {
       Hive.registerAdapter(AppLanguageAdapter());
-    if (!Hive.isAdapterRegistered(3)) Hive.registerAdapter(WordsModelAdapter());
-    if (!Hive.isAdapterRegistered(4))
+    }
+    if (!Hive.isAdapterRegistered(3)) {
+      Hive.registerAdapter(WordsModelAdapter());
+    }
+    if (!Hive.isAdapterRegistered(4)) {
       Hive.registerAdapter(CurrentStageAdapter());
-    if (!Hive.isAdapterRegistered(5))
+    }
+    if (!Hive.isAdapterRegistered(5)) {
       Hive.registerAdapter(WordPlacementTrackerAdapter());
-    if (!Hive.isAdapterRegistered(6))
+    }
+    if (!Hive.isAdapterRegistered(6)) {
       Hive.registerAdapter(WordPlacementAdapter());
+    }
 
     _userBox = await Hive.openBox<UserModel>(_userBoxKey);
     _stageBox = await Hive.openBox<CurrentStage>(_stageBoxKey);

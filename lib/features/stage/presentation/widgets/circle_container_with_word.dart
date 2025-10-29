@@ -31,7 +31,7 @@ class _CircleContainerWithWordState extends State<CircleContainerWithWord> {
   final Map<int, Offset> letterCenters = {};
 
   static const double containerPadding = AppSpacing.spacingM;
-  static const double letterSize = AppSizes.stageLetterSize;
+  static const double letterSize = AppSizes.stageLetter;
   static const double offsetAdjustment = containerPadding + (letterSize / 2);
 
   void _handlePointerDown(Offset localPosition) {

@@ -13,6 +13,7 @@ class _ExtraWordsBoxState extends State<ExtraWordsBox>
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
   int _previousCount = 0;
+  bool _hasBeenInitialized = false;
 
   @override
   void initState() {
@@ -73,33 +74,35 @@ class _ExtraWordsBoxState extends State<ExtraWordsBox>
         BlocBuilder<StageBloc, StageState>(
           builder: (context, state) {
             if (state is! StageActive) return const SizedBox.shrink();
-            if (state.stage.placementTracker.extraWords.isEmpty) {
-              _previousCount = 0;
-              return const SizedBox.shrink();
-            }
 
             final currentCount = state.stage.placementTracker.extraWords.length;
 
-            if (currentCount > _previousCount && _previousCount > 0) {
-              _controller.forward(from: 0);
+            if (currentCount > _previousCount) {
+              if (_hasBeenInitialized) {
+                _controller.forward(from: 0);
+              }
             }
+            _hasBeenInitialized = true;
             _previousCount = currentCount;
 
             return Positioned(
               left: -AppSizes.extraWordsNumberSpacing,
               bottom: 0,
-              child: ScaleTransition(
-                scale: _scaleAnimation,
-                child: Container(
-                  padding: const EdgeInsets.all(AppSpacing.spacingS),
-                  decoration: BoxDecoration(
-                    color: context.colors.primary,
-                    borderRadius: AppBorders.smallBorderRadius,
-                  ),
-                  child: CustomText(
-                    "$currentCount",
-                    textType: CustomTextType.smallTag,
-                    isWhite: true,
+              child: Opacity(
+                opacity: currentCount > 0 ? 1.0 : 0.0,
+                child: ScaleTransition(
+                  scale: _scaleAnimation,
+                  child: Container(
+                    padding: const EdgeInsets.all(AppSpacing.spacingS),
+                    decoration: BoxDecoration(
+                      color: context.colors.primary,
+                      borderRadius: AppBorders.smallBorderRadius,
+                    ),
+                    child: CustomText(
+                      "$currentCount",
+                      textType: CustomTextType.smallTag,
+                      isWhite: true,
+                    ),
                   ),
                 ),
               ),

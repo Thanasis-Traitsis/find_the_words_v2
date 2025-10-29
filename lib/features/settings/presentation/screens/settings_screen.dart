@@ -1,4 +1,4 @@
-import 'package:find_the_words/config/language/widgets/lang_bottomsheet.dart';
+import 'package:find_the_words/config/language/presentation/bottomsheet/widgets/lang_bottomsheet.dart';
 import 'package:find_the_words/config/routes/app_pages.dart';
 import 'package:find_the_words/core/constants/constants.dart';
 import 'package:find_the_words/core/screens/custom_screen.dart';

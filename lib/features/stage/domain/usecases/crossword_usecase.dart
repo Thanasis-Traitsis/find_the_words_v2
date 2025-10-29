@@ -41,10 +41,6 @@ class CrosswordUsecase {
   ) {
     if (placement.word.length != submittedWord.length) return false;
 
-    print(
-      "PLACEMENT: ${placement.positions}, this spot is taken: ${placement.isUsed}",
-    );
-
     if (placement.isUsed) return false;
 
     for (int i = 0; i < placement.positions.length; i++) {

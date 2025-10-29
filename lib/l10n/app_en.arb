@@ -100,5 +100,21 @@
                 "example": "3"
             }
         }
-    }    
+    },
+    "gameRulesTitle1": "How to Play",
+    "gameRulesContent1": "Your goal is simple, find all the hidden words in each crossword puzzle.",
+    "gameRulesTitle2": "Game Rules",
+    "gameRulesContent2a": "Connect letters to form valid words.",
+    "gameRulesContent2b": "Each stage is generated dynamically, so no two puzzles are the same!",
+    "gameRulesContent2c": "The level number determines the size of the puzzle:",
+    "gameRulesSubcontent2a": "Level 1 → the longest word has 3 letters",
+    "gameRulesSubcontent2b": "Level 2 → the longest word has 4 letters",
+    "gameRulesSubcontent2c": "Level 3 → the longest word has 5 letters, and so on",
+    "gameRulesTitle3": "Tips",
+    "gameRulesContent3a": "Try forming different word combinations, you might discover bonus words!",
+    "gameRulesContent3b": "Stuck? Use available hints to reveal letters or words.",
+    "gameRulesContent3c": "The more you play, the more your vocabulary and word-finding skills will grow!",
+    "gameRulesTitle4": "Endless Fun",
+    "gameRulesContent4": "There’s no fixed path. Every puzzle is unique, offering endless word challenges and a fresh experience each time you play.",
+    "gameRulesTitle5": "Enjoy your word adventure in Βρες τις Λέξεις!"
 }

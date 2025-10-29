@@ -544,6 +544,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Total: + {totalPoints}'**
   String completeTotalPoints(int totalPoints);
+
+  /// No description provided for @gameRulesTitle1.
+  ///
+  /// In en, this message translates to:
+  /// **'How to Play'**
+  String get gameRulesTitle1;
+
+  /// No description provided for @gameRulesContent1.
+  ///
+  /// In en, this message translates to:
+  /// **'Your goal is simple, find all the hidden words in each crossword puzzle.'**
+  String get gameRulesContent1;
+
+  /// No description provided for @gameRulesTitle2.
+  ///
+  /// In en, this message translates to:
+  /// **'Game Rules'**
+  String get gameRulesTitle2;
+
+  /// No description provided for @gameRulesContent2a.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect letters to form valid words.'**
+  String get gameRulesContent2a;
+
+  /// No description provided for @gameRulesContent2b.
+  ///
+  /// In en, this message translates to:
+  /// **'Each stage is generated dynamically, so no two puzzles are the same!'**
+  String get gameRulesContent2b;
+
+  /// No description provided for @gameRulesContent2c.
+  ///
+  /// In en, this message translates to:
+  /// **'The level number determines the size of the puzzle:'**
+  String get gameRulesContent2c;
+
+  /// No description provided for @gameRulesSubcontent2a.
+  ///
+  /// In en, this message translates to:
+  /// **'Level 1 → the longest word has 3 letters'**
+  String get gameRulesSubcontent2a;
+
+  /// No description provided for @gameRulesSubcontent2b.
+  ///
+  /// In en, this message translates to:
+  /// **'Level 2 → the longest word has 4 letters'**
+  String get gameRulesSubcontent2b;
+
+  /// No description provided for @gameRulesSubcontent2c.
+  ///
+  /// In en, this message translates to:
+  /// **'Level 3 → the longest word has 5 letters, and so on'**
+  String get gameRulesSubcontent2c;
+
+  /// No description provided for @gameRulesTitle3.
+  ///
+  /// In en, this message translates to:
+  /// **'Tips'**
+  String get gameRulesTitle3;
+
+  /// No description provided for @gameRulesContent3a.
+  ///
+  /// In en, this message translates to:
+  /// **'Try forming different word combinations, you might discover bonus words!'**
+  String get gameRulesContent3a;
+
+  /// No description provided for @gameRulesContent3b.
+  ///
+  /// In en, this message translates to:
+  /// **'Stuck? Use available hints to reveal letters or words.'**
+  String get gameRulesContent3b;
+
+  /// No description provided for @gameRulesContent3c.
+  ///
+  /// In en, this message translates to:
+  /// **'The more you play, the more your vocabulary and word-finding skills will grow!'**
+  String get gameRulesContent3c;
+
+  /// No description provided for @gameRulesTitle4.
+  ///
+  /// In en, this message translates to:
+  /// **'Endless Fun'**
+  String get gameRulesTitle4;
+
+  /// No description provided for @gameRulesContent4.
+  ///
+  /// In en, this message translates to:
+  /// **'There’s no fixed path. Every puzzle is unique, offering endless word challenges and a fresh experience each time you play.'**
+  String get gameRulesContent4;
+
+  /// No description provided for @gameRulesTitle5.
+  ///
+  /// In en, this message translates to:
+  /// **'Enjoy your word adventure in Βρες τις Λέξεις!'**
+  String get gameRulesTitle5;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

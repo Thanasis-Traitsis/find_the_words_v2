@@ -25,7 +25,7 @@ class SortByButton extends StatelessWidget {
             CustomSvgIcon(
               icon: 'arrows_up_down',
               color: context.colors.text,
-              height: AppSizes.suffixContainerIcon,
+              height: AppSizes.iconS,
             ),
           ],
         ),

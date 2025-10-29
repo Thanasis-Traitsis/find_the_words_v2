@@ -43,7 +43,7 @@ class StageIconButton extends StatelessWidget {
               CustomSvgIcon(
                 icon: icon,
                 color: context.colors.black,
-                height: AppSizes.stageButtonIcon,
+                height: AppSizes.iconS,
               ),
               if (text != null)
                 CustomText(text!, textType: CustomTextType.regularBody),

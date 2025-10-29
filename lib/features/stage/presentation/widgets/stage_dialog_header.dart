@@ -46,7 +46,7 @@ class StageDialogHeader extends StatelessWidget {
               CustomSvgIcon(
                 icon: icon,
                 color: textColor,
-                height: AppSizes.dialogHeaderIconSize,
+                height: AppSizes.iconXL,
               ),
               Expanded(
                 child: CustomText(

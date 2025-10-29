@@ -104,7 +104,7 @@ class _LevelProgressBarState extends State<LevelProgressBar>
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: AppSizes.progressBarHeight,
+      height: AppSizes.iconXS,
       decoration: BoxDecoration(
         color: context.colors.darkGreen.withValues(alpha: 0.2),
         borderRadius: AppBorders.regularBorderRadius,

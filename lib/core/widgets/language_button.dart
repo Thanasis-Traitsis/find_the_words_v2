@@ -1,5 +1,5 @@
 import 'package:find_the_words/config/language/cubit/language_cubit.dart';
-import 'package:find_the_words/config/language/widgets/lang_bottomsheet.dart';
+import 'package:find_the_words/config/language/presentation/bottomsheet/widgets/lang_bottomsheet.dart';
 import 'package:find_the_words/config/theme/custom_text_type.dart';
 import 'package:find_the_words/core/constants/constants.dart';
 import 'package:find_the_words/core/utils/theme_extensions.dart';
@@ -44,8 +44,8 @@ class LanguageButton extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
-                    width: AppSizes.flagImageSize + 4,
-                    height: AppSizes.flagImageSize,
+                    width: AppSizes.iconS + 4,
+                    height: AppSizes.iconS,
                     decoration: BoxDecoration(
                       image: DecorationImage(
                         image: AssetImage(

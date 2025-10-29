@@ -3,7 +3,7 @@ import 'package:find_the_words/core/constants/constants.dart';
 import 'package:find_the_words/core/utils/theme_extensions.dart';
 import 'package:find_the_words/core/widgets/custom_svg_icon.dart';
 import 'package:find_the_words/core/widgets/custom_text.dart';
-import 'package:find_the_words/features/auth/auth_cubit/auth_cubit.dart';
+import 'package:find_the_words/features/points/cubit/points_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -28,14 +28,12 @@ class PointsContainer extends StatelessWidget {
           CustomSvgIcon(
             icon: 'star',
             color: context.colors.secondary,
-            height: AppSizes.starPointsIconSize,
+            height: AppSizes.iconS,
           ),
-          BlocBuilder<AuthCubit, AuthState>(
-            builder: (context, state) {
+          BlocBuilder<PointsCubit, int>(
+            builder: (context, points) {
               return CustomText(
-                state is! AuthAuthenticated
-                    ? '0'
-                    : state.user.points.toString(),
+                points.toString(),
                 textStyle: TextStyle(
                   fontSize: CustomTextType.regularBody.fontSize,
                   fontWeight: FontWeight.bold,

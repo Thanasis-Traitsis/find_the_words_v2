@@ -43,7 +43,7 @@ class TotalPointsEarned extends StatelessWidget {
             CustomSvgIcon(
               icon: 'star',
               color: context.colors.secondary,
-              height: AppSizes.stageButtonIcon,
+              height: AppSizes.iconS,
             ),
           ],
         ),

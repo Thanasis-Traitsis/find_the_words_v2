@@ -15,8 +15,8 @@ class CustomIconButton extends StatelessWidget {
       onTap: onTap,
       child: Container(
         constraints: BoxConstraints(
-          minHeight: AppSizes.minAccessibleToucharea,
-          minWidth: AppSizes.minAccessibleToucharea,
+          minHeight: AppSizes.minTouchTarget,
+          minWidth: AppSizes.minTouchTarget,
         ),
         alignment: Alignment.center,
         child: Material(

@@ -1,5 +1,6 @@
 import 'package:find_the_words/core/services/service_locator.dart';
 import 'package:find_the_words/features/auth/auth_cubit/auth_cubit.dart';
+import 'package:find_the_words/features/points/cubit/points_cubit.dart';
 import 'package:find_the_words/features/stage/presentation/stage_bloc/stage_bloc.dart';
 import 'package:find_the_words/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -37,6 +38,7 @@ Future<void> runMyApp() async {
         BlocProvider.value(value: themeCubit),
         BlocProvider.value(value: langCubit),
         BlocProvider.value(value: getIt<AuthCubit>()),
+        BlocProvider.value(value: getIt<PointsCubit>()),
         BlocProvider.value(value: getIt<StageBloc>()),
       ],
       child: const MyApp(),

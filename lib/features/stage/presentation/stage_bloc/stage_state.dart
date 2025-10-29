@@ -9,6 +9,12 @@ sealed class StageState extends Equatable {
 
 final class StageInitial extends StageState {}
 
+final class StageError extends StageState {
+  final String errorMessage;
+
+  const StageError({required this.errorMessage});
+}
+
 final class StageLoading extends StageState {}
 
 abstract class StageActive extends StageState {

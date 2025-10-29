@@ -3,7 +3,7 @@ import 'package:find_the_words/config/language/cubit/language_cubit.dart';
 import 'package:find_the_words/core/constants/constants.dart';
 import 'package:find_the_words/core/services/service_locator.dart';
 import 'package:find_the_words/core/utils/theme_extensions.dart';
-import 'package:find_the_words/features/language/presentation/widgets/language_selection_item.dart';
+import 'package:find_the_words/config/language/presentation/screen/widgets/language_selection_item.dart';
 import 'package:flutter/material.dart';
 
 class LanguageListContainer extends StatefulWidget {

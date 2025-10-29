@@ -33,7 +33,7 @@ class GetRewardCard extends StatelessWidget {
             CustomSvgIcon(
               icon: 'gift',
               color: context.colors.white,
-              height: AppSizes.rewardPrimaryIconSize,
+              height: AppSizes.iconS,
             ),
             Row(
               spacing: AppSpacing.spacingM,
@@ -48,7 +48,7 @@ class GetRewardCard extends StatelessWidget {
                 CustomSvgIcon(
                   icon: 'star',
                   color: context.colors.white,
-                  height: AppSizes.rewardStarIconSize,
+                  height: AppSizes.iconXS,
                 ),
               ],
             ),

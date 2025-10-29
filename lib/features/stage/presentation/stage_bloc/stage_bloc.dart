@@ -1,378 +1,186 @@
-import 'dart:math';
-
 import 'package:equatable/equatable.dart';
 import 'package:find_the_words/core/services/service_locator.dart';
-import 'package:find_the_words/core/services/storage_service.dart';
-import 'package:find_the_words/core/utils/file_utils.dart';
-import 'package:find_the_words/features/auth/auth_cubit/auth_cubit.dart';
 import 'package:find_the_words/features/auth/data/models/profile_status_model.dart';
+import 'package:find_the_words/features/points/cubit/points_cubit.dart';
 import 'package:find_the_words/features/stage/data/models/current_stage.dart';
-import 'package:find_the_words/features/stage/domain/helpers/word_placement.dart';
-import 'package:find_the_words/features/stage/domain/helpers/word_placement_tracker.dart';
-import 'package:find_the_words/features/stage/domain/services/stage_generator_service.dart';
-import 'package:find_the_words/features/stage/presentation/usecases/crossword_usecase.dart';
+import 'package:find_the_words/features/stage/domain/repositories/stage_repository.dart';
+import 'package:find_the_words/features/stage/domain/usecases/check_intersection_usecase.dart';
+import 'package:find_the_words/features/stage/domain/usecases/load_stage_usecase.dart';
+import 'package:find_the_words/features/stage/domain/usecases/reveal_letter_usecase.dart';
+import 'package:find_the_words/features/stage/domain/usecases/submit_word_usecase.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'stage_event.dart';
 part 'stage_state.dart';
 
 class StageBloc extends Bloc<StageEvent, StageState> {
-  final StageGeneratorService _stageGeneratorService;
-  final CrosswordUsecase _crosswordUsecase = CrosswordUsecase();
-  final AuthCubit _authCubit = getIt<AuthCubit>();
-  final StorageService _storageService = getIt<StorageService>();
+  final LoadStageUsecase _loadStageUsecase;
+  final SubmitWordUsecase _submitWordUsecase;
+  final CheckIntersectionsUsecase _checkIntersectionsUsecase;
+  final RevealLetterUsecase _revealLetterUsecase;
+  final StageRepository _stageRepo;
 
-  StageBloc({required StageGeneratorService stageGeneratorService})
-    : _stageGeneratorService = stageGeneratorService,
-      super(StageInitial()) {
+  StageBloc({
+    required LoadStageUsecase loadStageUsecase,
+    required SubmitWordUsecase submitWordUsecase,
+    required CheckIntersectionsUsecase checkIntersectionsUsecase,
+    required RevealLetterUsecase revealLetterUsecase,
+    required StageRepository stageRepo,
+  }) : _loadStageUsecase = loadStageUsecase,
+       _submitWordUsecase = submitWordUsecase,
+       _checkIntersectionsUsecase = checkIntersectionsUsecase,
+       _revealLetterUsecase = revealLetterUsecase,
+       _stageRepo = stageRepo,
+       super(StageInitial()) {
     on<NextStageButtonPressed>(_onNextStageButtonPressed);
     on<SubmitFormatedWord>(_onSubmitFormatedWord);
     on<CrosswordLetterReveal>(_onCrosswordLetterReveal);
   }
 
-  void _onNextStageButtonPressed(
+  Future<void> _onNextStageButtonPressed(
     NextStageButtonPressed event,
     Emitter<StageState> emit,
   ) async {
     emit(StageLoading());
 
-    final stage = _checkForSavedStage();
-
-    if (stage != null) {
+    try {
+      final stage = await _loadStageUsecase(event.profileStatus);
       emit(StageReady(stage));
-      return;
+    } catch (e) {
+      emit(StageError(errorMessage: e.toString()));
     }
-
-    final int userLevel = event.profileStatus.level;
-    final int letterFileNum = userLevel + 2;
-
-    final stageData = await _stageGeneratorService.generateStage(
-      filePath: FileUtils.stageFile(letterFileNum),
-      level: userLevel,
-      progress: event.profileStatus.progress,
-    );
-
-    final updatedStage = _enrichStageWithCommonPositions(stageData);
-
-    _storageService.saveCurrentStage(updatedStage);
-
-    // TODO: Upload the current stage online
-
-    emit(StageReady(updatedStage));
   }
 
-  void _onSubmitFormatedWord(
+  Future<void> _onSubmitFormatedWord(
     SubmitFormatedWord event,
     Emitter<StageState> emit,
   ) async {
     if (state is! StageActive) return;
 
     final currentState = state as StageActive;
-    final submittedWord = event.formatedWord.toUpperCase();
-    final tracker = currentState.stage.placementTracker;
+    final wordResult = await _submitWordUsecase(
+      submittedWord: event.formatedWord,
+      currentStage: currentState.stage,
+    );
 
-    if (tracker.containsWord(submittedWord) &&
-        !tracker.isWordFound(submittedWord)) {
-      tracker.markWordAsFound(submittedWord);
-      final List<int>? wordPositions = tracker.getPositionsForWord(
-        submittedWord,
-      );
+    if (wordResult == null) return;
 
-      if (wordPositions != null) {
-        tracker.addRevealedPositions(wordPositions);
-
-        final updatedStage = _crosswordUsecase.updateCurrentStage(
-          oldTracker: tracker,
-          oldStage: currentState.stage,
-          placement: tracker.getPlacementFromWord(submittedWord),
-        );
-
-        _authCubit.addFoundWord(submittedWord);
-
-        updateStageState(
-          tracker: tracker,
-          newPositions: wordPositions,
-          stage: updatedStage,
+    switch (wordResult.result) {
+      case WordSubmissionResult.found:
+      case WordSubmissionResult.replaced:
+        await _handleFoundWord(
+          data: wordResult,
           emit: emit,
+          submittedWord: event.formatedWord.toUpperCase(),
         );
+        break;
 
-        _checkAndCompleteIntersectingWords(
-          wordPositions: wordPositions,
-          submittedWord: submittedWord,
-          tracker: tracker,
-          currentStage: updatedStage,
-          emit: emit,
-        );
-      }
-    } else if (currentState.stage.allWords.contains(submittedWord) &&
-        !tracker.isWordFound(submittedWord)) {
-      for (var placement in tracker.placements) {
-        if (placement.word.length == submittedWord.length) {
-          if (_crosswordUsecase.canReplacePlacement(
-            tracker,
-            placement,
-            submittedWord,
-          )) {
-            tracker.markWordAsFound(submittedWord);
-            final updatedStage = _crosswordUsecase.replacePlacement(
-              currentStage: currentState.stage,
-              tracker: tracker,
-              placement: placement,
-              submittedWord: submittedWord,
-            );
+      case WordSubmissionResult.extra:
+        emit(ExtraWordFound(wordResult.updatedStage));
+        break;
 
-            _authCubit.addFoundWord(submittedWord);
-
-            updateStageState(
-              tracker: tracker,
-              newPositions: placement.positions,
-              stage: updatedStage,
-              emit: emit,
-            );
-
-            _checkAndCompleteIntersectingWords(
-              wordPositions: placement.positions,
-              submittedWord: submittedWord,
-              tracker: tracker,
-              currentStage: updatedStage,
-              emit: emit,
-            );
-            return;
-          }
-        }
-      }
-
-      tracker.markWordAsExtra(submittedWord);
-      _authCubit.addFoundWord(submittedWord);
-      final updatedStage = CurrentStage(
-        allWords: currentState.stage.allWords,
-        letters: currentState.stage.letters,
-        board: currentState.stage.board,
-        placementTracker: tracker,
-      );
-      _storageService.saveCurrentStage(updatedStage);
-      emit(ExtraWordFound(updatedStage));
+      case WordSubmissionResult.notFound:
+        break;
     }
   }
 
-  void _onCrosswordLetterReveal(
+  Future<void> _onCrosswordLetterReveal(
     CrosswordLetterReveal event,
     Emitter<StageState> emit,
   ) async {
     if (state is! StageActive) return;
 
+    final pointsCubit = getIt<PointsCubit>();
+    final int revealCost = event.position != null ? 15 : 10;
+
+    final success = await pointsCubit.deductPoints(
+      revealCost,
+      reason: 'Letter reveal',
+    );
+
+    if (!success) {
+      emit(StageError(errorMessage: 'Not enough points to reveal letter'));
+      return;
+    }
+
     final currentState = state as StageActive;
-    final tracker = currentState.stage.placementTracker;
-    final unrevealedPositions = tracker.remainingPositions;
 
-    final randomSpot =
-        event.position ??
-        unrevealedPositions.elementAt(
-          Random().nextInt(unrevealedPositions.length),
-        );
+    final result = await _revealLetterUsecase(
+      currentStage: currentState.stage,
+      position: event.position,
+    );
 
-    tracker.addRevealedPositions([randomSpot]);
-    _handleRandomSpotSelection(randomSpot, tracker, emit, currentState.stage);
+    _emitStageState(
+      stage: result.stageAfterReveal,
+      newPositions: [result.revealedPosition],
+      emit: emit,
+    );
 
-    final affectedPlacements = tracker.placements
-        .where((placement) => placement.positions.contains(randomSpot))
-        .toList();
+    for (int i = 0; i < result.autoCompletedWords.length; i++) {
+      final completedWord = result.autoCompletedWords[i];
 
-    for (var placement in affectedPlacements) {
-      final allRevealed = placement.positions.every(
-        (position) => tracker.revealedPositions.contains(position),
+      _emitStageState(
+        stage: result.stageAfterReveal,
+        newPositions: completedWord.positions,
+        emit: emit,
       );
 
-      if (allRevealed) {
-        tracker.markWordAsFound(placement.word);
+      await Future.delayed(
+        Duration(milliseconds: (completedWord.word.length * 100) + 200),
+      );
+    }
+  }
 
-        final updatedStage = _crosswordUsecase.updateCurrentStage(
-          oldTracker: tracker,
-          oldStage: currentState.stage,
-          placement: tracker.getPlacementFromWord(placement.word),
-        );
+  Future<void> _handleFoundWord({
+    required WordSubmissionData data,
+    required Emitter<StageState> emit,
+    required String submittedWord,
+  }) async {
+    if (data.positions == null) return;
 
-        _authCubit.addFoundWord(placement.word);
+    _emitStageState(
+      stage: data.updatedStage,
+      newPositions: data.positions!,
+      emit: emit,
+    );
 
-        updateStageState(
-          tracker: tracker,
-          newPositions: placement.positions,
-          stage: updatedStage,
-          emit: emit,
-        );
+    await Future.delayed(
+      Duration(milliseconds: (data.positions!.length * 100) + 200),
+    );
 
+    final intersectionResult = await _checkIntersectionsUsecase(
+      wordPositions: data.positions!,
+      submittedWord: submittedWord,
+      currentStage: data.updatedStage,
+    );
+
+    for (int i = 0; i < intersectionResult.completedWords.length; i++) {
+      final completedWord = intersectionResult.completedWords[i];
+
+      _emitStageState(
+        stage: intersectionResult.finalStage,
+        newPositions: completedWord.positions,
+        emit: emit,
+      );
+
+      if (i < intersectionResult.completedWords.length - 1) {
         await Future.delayed(
-          Duration(milliseconds: (placement.word.length * 100) + 200),
+          Duration(milliseconds: (completedWord.word.length * 100) + 200),
         );
       }
     }
   }
 
-  void updateStageState({
-    required WordPlacementTracker tracker,
-    required List<int> newPositions,
+  void _emitStageState({
     required CurrentStage stage,
+    required List<int> newPositions,
     required Emitter<StageState> emit,
-  }) async {
-    if (tracker.allWordsFound) {
-      _storageService.deleteCurrentStage();
+  }) {
+    if (stage.placementTracker.allWordsFound) {
+      _stageRepo.clearStage();
       emit(StageCompleted(stage));
     } else {
-      _storageService.saveCurrentStage(stage);
       emit(StageInProgress(stage, newPositions: newPositions));
-    }
-  }
-
-  CurrentStage? _checkForSavedStage() {
-    if (!_storageService.hasSavedStage()) return null;
-
-    CurrentStage? stage = _storageService.getCurrentStage();
-
-    return stage;
-  }
-
-  CurrentStage _enrichStageWithCommonPositions(CurrentStage stage) {
-    final commonPositions = _findCommonPositions(
-      stage.placementTracker.allPositions,
-    );
-
-    final updatedTracker = WordPlacementTracker.copyWith(
-      placements: stage.placementTracker.placements,
-      foundWords: stage.placementTracker.foundWords,
-      revealedPositions: stage.placementTracker.revealedPositions,
-      commonPositions: commonPositions,
-      extraWords: stage.placementTracker.extraWords,
-    );
-
-    return CurrentStage(
-      allWords: stage.allWords,
-      letters: stage.letters,
-      board: stage.board,
-      placementTracker: updatedTracker,
-    );
-  }
-
-  List<int> _findCommonPositions(List<List<int>> allPositions) {
-    final positionCounts = _countPositionOccurrences(allPositions);
-    return _extractRepeatedPositions(positionCounts);
-  }
-
-  Map<int, int> _countPositionOccurrences(List<List<int>> allPositions) {
-    final counts = <int, int>{};
-
-    for (final positions in allPositions) {
-      for (final position in positions) {
-        counts[position] = (counts[position] ?? 0) + 1;
-      }
-    }
-
-    return counts;
-  }
-
-  List<int> _extractRepeatedPositions(Map<int, int> positionCounts) {
-    return positionCounts.entries
-        .where((entry) => entry.value > 1)
-        .map((entry) => entry.key)
-        .toList();
-  }
-
-  void _checkAndCompleteIntersectingWords({
-    required List<int> wordPositions,
-    required String submittedWord,
-    required WordPlacementTracker tracker,
-    required CurrentStage currentStage,
-    required Emitter<StageState> emit,
-  }) async {
-    await Future.delayed(
-      Duration(milliseconds: (wordPositions.length * 100) + 200),
-    );
-
-    final commonPositionsInWord = wordPositions
-        .where((pos) => tracker.commonPositions.contains(pos))
-        .toList();
-
-    if (commonPositionsInWord.isEmpty) return;
-
-    CurrentStage latestStage = currentStage;
-
-    for (int position in commonPositionsInWord) {
-      final placements = tracker.getPlacementsFromPosition(position);
-
-      for (var placement in placements) {
-        if (placement.word != submittedWord &&
-            !tracker.isWordFound(placement.word)) {
-          if (_isWordFullyRevealed(placement, tracker)) {
-            tracker.markWordAsFound(placement.word);
-            _authCubit.addFoundWord(placement.word);
-
-            latestStage = _crosswordUsecase.updateCurrentStage(
-              oldTracker: tracker,
-              oldStage: latestStage,
-              placement: placement,
-            );
-
-            updateStageState(
-              tracker: tracker,
-              newPositions: placement.positions,
-              stage: latestStage,
-              emit: emit,
-            );
-
-            await Future.delayed(
-              Duration(milliseconds: (placement.word.length * 100) + 200),
-            );
-          }
-        }
-      }
-    }
-  }
-
-  bool _isWordFullyRevealed(
-    WordPlacement placement,
-    WordPlacementTracker tracker,
-  ) {
-    return placement.positions.every(
-      (position) => tracker.revealedPositions.contains(position),
-    );
-  }
-
-  void _handleRandomSpotSelection(
-    int randomSpot,
-    WordPlacementTracker tracker,
-    Emitter<StageState> emit,
-    CurrentStage stage,
-  ) {
-    try {
-      final foundInPlacement = tracker.getPlacementFromUniquePosition(
-        randomSpot,
-      );
-
-      final updatedStage = _crosswordUsecase.updateCurrentStage(
-        oldTracker: tracker,
-        placement: foundInPlacement,
-        oldStage: stage,
-      );
-
-      updateStageState(
-        tracker: tracker,
-        newPositions: [randomSpot],
-        stage: updatedStage,
-        emit: emit,
-      );
-    } on StateError {
-      final updatedStage = CurrentStage(
-        allWords: stage.allWords,
-        letters: stage.letters,
-        board: stage.board,
-        placementTracker: tracker,
-      );
-
-      updateStageState(
-        tracker: tracker,
-        newPositions: [randomSpot],
-        stage: updatedStage,
-        emit: emit,
-      );
     }
   }
 }

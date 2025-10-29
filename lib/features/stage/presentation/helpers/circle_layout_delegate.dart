@@ -68,5 +68,5 @@ class CircleLayoutDelegate extends FlowDelegate {
     return Size(totalDiameter, totalDiameter);
   }
 
-  double get maxChildSize => AppSizes.stageLetterSize;
+  double get maxChildSize => AppSizes.stageLetter;
 }

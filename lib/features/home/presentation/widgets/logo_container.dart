@@ -14,7 +14,7 @@ class LogoContainer extends StatelessWidget {
 
       child: SvgPicture.asset(
         'assets/icons/${context.translate.logo}',
-        height: AppSizes.homeLogoSize,
+        height: AppSizes.logo,
       ),
     );
   }

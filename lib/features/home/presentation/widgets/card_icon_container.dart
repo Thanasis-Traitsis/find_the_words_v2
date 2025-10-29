@@ -25,7 +25,7 @@ class CardIconContainer extends StatelessWidget {
       child: CustomSvgIcon(
         icon: icon,
         color: context.colors.white,
-        height: AppSizes.primaryContainerIcon,
+        height: AppSizes.iconL,
       ),
     );
   }

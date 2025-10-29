@@ -43,8 +43,8 @@ class LanguageSelectionItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
-              width: AppSizes.flagImageSize + 4,
-              height: AppSizes.flagImageSize,
+              width: AppSizes.iconS + 4,
+              height: AppSizes.iconS,
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage('assets/images/${language.flag}'),

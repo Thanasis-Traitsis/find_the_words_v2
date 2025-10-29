@@ -29,7 +29,7 @@ class InfoContainer extends StatelessWidget {
           CustomSvgIcon(
             icon: 'info',
             color: context.colors.darkBlue,
-            height: AppSizes.buttonIconSize,
+            height: AppSizes.iconM,
           ),
           Expanded(
             child: CustomText(

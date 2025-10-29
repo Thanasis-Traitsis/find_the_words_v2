@@ -30,13 +30,13 @@ class ThemeSelectionRow extends StatelessWidget {
           children: [
             state.themeMode.name == theme.name
                 ? SizedBox(
-                    width: AppSizes.minAccessibleToucharea,
+                    width: AppSizes.minTouchTarget,
                     child: CustomSvgIcon(
                       icon: 'check',
                       color: context.colors.text,
                     ),
                   )
-                : SizedBox(width: AppSizes.minAccessibleToucharea),
+                : SizedBox(width: AppSizes.minTouchTarget),
             Expanded(
               child: InkWell(
                 onTap: () async {

@@ -64,7 +64,7 @@ class HelpListItem extends StatelessWidget {
                       CustomSvgIcon(
                         icon: 'star',
                         color: context.colors.darkPink,
-                        height: AppSizes.rewardStarIconSize,
+                        height: AppSizes.iconXS,
                       ),
                     ],
                   )

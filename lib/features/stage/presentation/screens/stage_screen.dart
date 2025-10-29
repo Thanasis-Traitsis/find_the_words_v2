@@ -7,6 +7,7 @@ import 'package:find_the_words/core/utils/text_extensions.dart';
 import 'package:find_the_words/core/utils/theme_extensions.dart';
 import 'package:find_the_words/core/widgets/custom_svg_icon.dart';
 import 'package:find_the_words/features/auth/auth_cubit/auth_cubit.dart';
+import 'package:find_the_words/features/points/cubit/points_cubit.dart';
 import 'package:find_the_words/features/stage/domain/services/stage_xp_service.dart';
 import 'package:find_the_words/features/stage/presentation/stage_bloc/stage_bloc.dart';
 import 'package:find_the_words/features/stage/presentation/widgets/circle_container_with_word.dart';
@@ -99,6 +100,7 @@ class _StageScreenState extends State<StageScreen> {
           await Future.delayed(const Duration(seconds: 1));
 
           final AuthCubit authCubit = getIt<AuthCubit>();
+          final PointsCubit pointsCubit = getIt<PointsCubit>();
           final authState = authCubit.state;
           final currentUser = (authState as AuthAuthenticated).user;
 
@@ -113,7 +115,11 @@ class _StageScreenState extends State<StageScreen> {
           await authCubit.updateAfterStage(
             stageResults.xpEarned,
             stageResults.newProgress,
+          );
+
+          await pointsCubit.addPoints(
             stageResults.totalPointsForStage(),
+            reason: 'Stage completion',
           );
 
           AppPages.complete.pushReplacement(extra: stageResults);

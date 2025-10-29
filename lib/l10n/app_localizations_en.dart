@@ -238,4 +238,52 @@ class AppLocalizationsEn extends AppLocalizations {
   String completeTotalPoints(int totalPoints) {
     return 'Total: + $totalPoints';
   }
+
+  @override
+  String get gameRulesTitle1 => 'How to Play';
+
+  @override
+  String get gameRulesContent1 => 'Your goal is simple, find all the hidden words in each crossword puzzle.';
+
+  @override
+  String get gameRulesTitle2 => 'Game Rules';
+
+  @override
+  String get gameRulesContent2a => 'Connect letters to form valid words.';
+
+  @override
+  String get gameRulesContent2b => 'Each stage is generated dynamically, so no two puzzles are the same!';
+
+  @override
+  String get gameRulesContent2c => 'The level number determines the size of the puzzle:';
+
+  @override
+  String get gameRulesSubcontent2a => 'Level 1 → the longest word has 3 letters';
+
+  @override
+  String get gameRulesSubcontent2b => 'Level 2 → the longest word has 4 letters';
+
+  @override
+  String get gameRulesSubcontent2c => 'Level 3 → the longest word has 5 letters, and so on';
+
+  @override
+  String get gameRulesTitle3 => 'Tips';
+
+  @override
+  String get gameRulesContent3a => 'Try forming different word combinations, you might discover bonus words!';
+
+  @override
+  String get gameRulesContent3b => 'Stuck? Use available hints to reveal letters or words.';
+
+  @override
+  String get gameRulesContent3c => 'The more you play, the more your vocabulary and word-finding skills will grow!';
+
+  @override
+  String get gameRulesTitle4 => 'Endless Fun';
+
+  @override
+  String get gameRulesContent4 => 'There’s no fixed path. Every puzzle is unique, offering endless word challenges and a fresh experience each time you play.';
+
+  @override
+  String get gameRulesTitle5 => 'Enjoy your word adventure in Βρες τις Λέξεις!';
 }
