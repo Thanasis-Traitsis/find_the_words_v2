@@ -133,13 +133,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get searchPlaceholder => 'Search';
 
   @override
-  String get sortByAlphabetical => 'Alphabetical order';
+  String get sortByAlphabeticalAZ => 'Alphabetical order A-Z';
+
+  @override
+  String get sortByAlphabeticalZA => 'Alphabetical order Z-A';
 
   @override
   String get sortBySmallestToBiggest => 'Smallest to largest';
 
   @override
   String get sortByBiggestToSmallest => 'Largest to smallest';
+
+  @override
+  String get sortByNewestToOldest => 'Most recent';
+
+  @override
+  String get sortByOldestToNewest => 'Oldest';
 
   @override
   String get extraWordsDialogEmpty => 'No extra words found yet!';
@@ -229,6 +238,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get completeStageExtraWordsPoints => 'Extra words';
 
   @override
+  String get completeStageLevelUp => 'Level completion';
+
+  @override
   String get completeStageTotalPoints => 'Total';
 
   @override
@@ -286,4 +298,39 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get gameRulesTitle5 => 'Enjoy your word adventure in Βρες τις Λέξεις!';
+
+  @override
+  String get filterInfoText => 'All letters are selected automatically, unless specific letters have been selected.';
+
+  @override
+  String get totalWordsEmptyResult => 'No words found.';
+
+  @override
+  String get filtersHeaderTitle => 'Filters';
+
+  @override
+  String get filtersSectionHeaderAllLetters => 'All letters';
+
+  @override
+  String get filtersSectionContentShowAllLetters => 'Show words from all letters';
+
+  @override
+  String get filtersSectionHeaderSelectedLetters => 'Select letters';
+
+  @override
+  String get filtersSectionButtonClearLetters => 'Clear letters';
+
+  @override
+  String get filtersSectionHeaderWordLength => 'Word length';
+
+  @override
+  String filtersSectionContentWordLength(int minLength, int maxLength) {
+    return 'Selected word length from: $minLength - $maxLength';
+  }
+
+  @override
+  String get filtersButtonApply => 'Apply filters';
+
+  @override
+  String get filtersButtonClean => 'Clear';
 }

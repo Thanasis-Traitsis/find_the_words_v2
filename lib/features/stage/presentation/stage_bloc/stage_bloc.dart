@@ -92,6 +92,7 @@ class StageBloc extends Bloc<StageEvent, StageState> {
 
     final pointsCubit = getIt<PointsCubit>();
     final int revealCost = event.position != null ? 15 : 10;
+    final currentState = state as StageActive;
 
     final success = await pointsCubit.deductPoints(
       revealCost,
@@ -99,12 +100,9 @@ class StageBloc extends Bloc<StageEvent, StageState> {
     );
 
     if (!success) {
-      emit(StageError(errorMessage: 'Not enough points to reveal letter'));
+      emit(StageInGameError(currentState.stage, errorMessage: 'Not enough points to reveal letter'));
       return;
     }
-
-    final currentState = state as StageActive;
-
     final result = await _revealLetterUsecase(
       currentStage: currentState.stage,
       position: event.position,

@@ -57,9 +57,12 @@
     "themeOptionSystem": "Σύστημα",
     "themeOptionSystemDescription": "Ακολουθεί αυτόματα τις ρυθμίσεις της συσκευής",
     "searchPlaceholder": "Αναζήτηση",
-    "sortByAlphabetical": "Αλφαβητική σειρά",
+    "sortByAlphabeticalAZ": "Αλφαβητική σειρά Α-Ω",
+    "sortByAlphabeticalZA": "Αλφαβητική σειρά Ω-Α",
     "sortBySmallestToBiggest": "Από μικρ. στο μεγ.",
     "sortByBiggestToSmallest": "Από μεγ. στο μικρ.",
+    "sortByNewestToOldest": "Πιο πρόσφατα",
+    "sortByOldestToNewest": "Πιο παλιά",
     "extraWordsDialogEmpty": "Δεν έχει βρεθεί καμία έξτρα λέξη!",
     "extraWordsDialogTitle": "Έξτρα Λέξεις",
     "extraWordsDialogSubtitle": "Βρες κρυφές λέξεις που δεν χωράνε στο σταυρόλεξο και κέρδισε επιπλέον πόντους!",
@@ -89,6 +92,7 @@
     "completeStageCompletionPoints": "Ολοκλήρωση σταδίου",
     "completeStageWordsPoints": "Λέξεις σταδίου",
     "completeStageExtraWordsPoints": "Έξτρα λέξεις",
+    "completeStageLevelUp": "Ολοκλήρωση επιπέδου",
     "completeStageTotalPoints": "Σύνολο",
     "completeStageBackToHomeBtn": "Πίσω στην αρχική",
     "completeTotalPoints": "Σύνολο: + {totalPoints}",
@@ -116,5 +120,29 @@
     "gameRulesContent3c": "Όσο περισσότερο παίζεις, τόσο βελτιώνεις το λεξιλόγιο και την ικανότητα εύρεσης λέξεων!",
     "gameRulesTitle4": "Ατελείωτη Διασκέδαση",
     "gameRulesContent4": "Δεν υπάρχει προκαθορισμένη πορεία. Κάθε παζλ είναι μοναδικό, προσφέροντας ατελείωτες προκλήσεις λέξεων και μια φρέσκια εμπειρία κάθε φορά που παίζεις.",
-    "gameRulesTitle5": "Απόλαυσε την περιπέτεια λέξεων στο Βρες τις Λέξεις!"
+    "gameRulesTitle5": "Απόλαυσε την περιπέτεια λέξεων στο Βρες τις Λέξεις!",
+    "filterInfoText": "Η επιλογή όλων των γραμμάτων γίνεται αυτόματα, εφόσον δεν έχουν επιλεγεί συγκεκριμένα γράμματα.",
+    "totalWordsEmptyResult": "Δε βρέθηκε καμία λέξη.",
+    "filtersHeaderTitle": "Φίλτρα",
+    "filtersSectionHeaderAllLetters": "Όλα τα γράμματα",
+    "filtersSectionContentShowAllLetters": "Εμφάνισε τις λέξεις από όλα τα γράμματα",
+    "filtersSectionHeaderSelectedLetters": "Επιλογή γραμμάτων",
+    "filtersSectionButtonClearLetters": "Καθαρισμός γραμμάτων",
+    "filtersSectionHeaderWordLength": "Μέγεθος λέξεων",
+    "filtersSectionContentWordLength": "Επιλεγμένο μέγεθος λέξεων: {minLength} - {maxLength}",
+    "@filtersSectionContentWordLength": {
+        "description": "Show min and max word length",
+        "placeholders": {
+            "minLength": {
+                "type": "int",
+                "example": "3"
+            },
+            "maxLength": {
+                "type": "int",
+                "example": "12"
+            }
+        }
+    },
+    "filtersButtonApply": "Εφαρμογή φίλτρων",
+    "filtersButtonClean": "Καθαρισμός"
 }

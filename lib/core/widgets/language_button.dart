@@ -15,7 +15,7 @@ class LanguageButton extends StatelessWidget {
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        borderRadius: AppBorders.regularBorderRadius,
+        borderRadius: AppBorders.smallBorderRadius,
         onTap: () {
           showModalBottomSheet(
             context: context,
@@ -29,7 +29,7 @@ class LanguageButton extends StatelessWidget {
         },
         child: Container(
           decoration: BoxDecoration(
-            borderRadius: AppBorders.regularBorderRadius,
+            borderRadius: AppBorders.smallBorderRadius,
             border: Border.all(
               width: AppBorders.smallBorderWidth,
               color: context.colors.black,

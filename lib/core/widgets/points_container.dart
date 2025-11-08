@@ -20,7 +20,7 @@ class PointsContainer extends StatelessWidget {
           width: AppBorders.smallBorderWidth,
           color: context.colors.darkPink,
         ),
-        borderRadius: AppBorders.bigBorderRadius,
+        borderRadius: AppBorders.regularBorderRadius,
       ),
       child: Row(
         spacing: AppSpacing.spacingM,

@@ -91,8 +91,34 @@ class StageResults {
     }
   }
 
+  int getPointsForLevelup() {
+    switch (level) {
+      case 1:
+        return 15;
+      case 2:
+        return 25;
+      case 3:
+        return 40;
+      case 4:
+        return 60;
+      case 5:
+        return 80;
+      case 6:
+        return 100;
+      case 7:
+        return 120;
+      case 8:
+        return 150;
+      case 9:
+        return 200;
+      default:
+        return 250;
+    }
+  }
+
   int totalPointsForStage() =>
       getPointsForStage() +
       getPointsForCrosswordWords() +
-      getPointsForExtraWords();
+      getPointsForExtraWords() +
+      (newProgress == 100 ? getPointsForLevelup() : 0);
 }

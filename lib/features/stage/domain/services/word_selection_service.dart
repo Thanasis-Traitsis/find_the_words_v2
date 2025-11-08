@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:find_the_words/core/constants/app_keys.dart';
+import 'package:find_the_words/features/stage/data/models/current_stage.dart';
 import 'package:find_the_words/features/stage/data/models/stage_criteria.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -28,7 +29,6 @@ class WordSelectionService {
       usedStages,
       bannedStages,
     );
-
 
     var selectedStage = await _trySelectValidStage(availableStages, criteria);
 
@@ -92,7 +92,9 @@ class WordSelectionService {
         .where((word) => word.length < mainWordLength)
         .toList();
 
-    final bigWordsToKeep = shouldSeparateWords ? bigWords.take(criteria.minBigWords).toList() : bigWords;
+    final bigWordsToKeep = shouldSeparateWords
+        ? bigWords.take(criteria.minBigWords).toList()
+        : bigWords;
 
     final filteredWords = [...bigWordsToKeep, ...smallerWords];
 
@@ -135,8 +137,6 @@ class WordSelectionService {
   ) {
     final mainWordLength = stage.key.length;
     final words = List<String>.from(stage.value);
-
-    print(criteria);
 
     if (mainWordLength != criteria.biggestWordLength) {
       return false;
@@ -224,5 +224,14 @@ class WordSelectionService {
 
   Future<void> _clearBannedStages() async {
     await _prefs.remove(_bannedStageKey);
+  }
+
+  Future<bool> validBackupStage(CurrentStage stage) async {
+    final usedStages = await _getUsedStages();
+
+    if (usedStages.contains(stage.letters.toString())) return false;
+
+    await _markStageAsUsed(stage.letters.toString());
+    return true;
   }
 }

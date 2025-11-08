@@ -7,8 +7,13 @@ import 'package:flutter/material.dart';
 
 class BigHeading extends StatelessWidget {
   final String pageTitle;
+  final VoidCallback? onBackButtonPressed;
 
-  const BigHeading({super.key, required this.pageTitle});
+  const BigHeading({
+    super.key,
+    required this.pageTitle,
+    this.onBackButtonPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,9 +24,11 @@ class BigHeading extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           CustomIconButton(
-            onTap: () {
-              NavigationService.instance.pop();
-            },
+            onTap:
+                onBackButtonPressed ??
+                () {
+                  NavigationService.instance.pop();
+                },
             icon: 'arrow_left',
           ),
           CustomText(pageTitle, textType: CustomTextType.bigHeading),

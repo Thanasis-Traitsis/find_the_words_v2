@@ -51,3 +51,14 @@ final class ExtraWordFound extends StageActive {
 final class StageCompleted extends StageActive {
   const StageCompleted(super.stage);
 }
+
+final class StageInGameError extends StageActive {
+  final String errorMessage;
+  final DateTime timestamp;
+
+  StageInGameError(super.stage, {required this.errorMessage})
+    : timestamp = DateTime.now();
+
+  @override
+  List<Object> get props => [stage, errorMessage, timestamp];
+}

@@ -2,6 +2,7 @@ import 'package:find_the_words/config/language/cubit/language_cubit.dart';
 import 'package:find_the_words/config/routes/app_pages.dart';
 import 'package:find_the_words/config/routes/app_routes.dart';
 import 'package:find_the_words/config/theme/screens/theme_screen.dart';
+import 'package:find_the_words/core/models/words_model.dart';
 import 'package:find_the_words/core/services/navigation_service.dart';
 import 'package:find_the_words/core/services/service_locator.dart';
 import 'package:find_the_words/error_screen.dart';
@@ -90,8 +91,8 @@ class AppRouter {
         path: AppPages.words.info.path,
         name: AppPages.words.info.name,
         pageBuilder: (context, state) {
-          final words = state.extra as Map<String, dynamic>? ?? {};
-          return _noAnimationPage(TotalWordsScreen(words: words), state);
+          final wordsModel = state.extra as WordsModel? ?? WordsModel(words: {});
+          return _noAnimationPage(TotalWordsScreen(wordsModel: wordsModel), state);
         },
       ),
       GoRoute(

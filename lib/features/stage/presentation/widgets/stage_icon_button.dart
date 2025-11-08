@@ -26,12 +26,12 @@ class StageIconButton extends StatelessWidget {
       child: InkWell(
         highlightColor: Colors.transparent,
         splashColor: context.colors.stageBlue.withValues(alpha: 0.4),
-        borderRadius: AppBorders.regularBorderRadius,
+        borderRadius: AppBorders.smallBorderRadius,
         onTap: onTap,
         child: Container(
           padding: const EdgeInsets.all(AppSpacing.iconButtonPadding),
           decoration: BoxDecoration(
-            borderRadius: AppBorders.regularBorderRadius,
+            borderRadius: AppBorders.smallBorderRadius,
             border: Border.all(
               width: AppBorders.mediumBorderWidth,
               color: context.colors.black,
@@ -71,7 +71,7 @@ class StageIconButton extends StatelessWidget {
                       CustomSvgIcon(
                         icon: 'star',
                         color: context.colors.darkPink,
-                        height: 8,
+                        height: AppSizes.tinyHeight,
                       ),
                     ],
                   ),

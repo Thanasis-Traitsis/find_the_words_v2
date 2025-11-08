@@ -133,13 +133,22 @@ class AppLocalizationsEl extends AppLocalizations {
   String get searchPlaceholder => 'Αναζήτηση';
 
   @override
-  String get sortByAlphabetical => 'Αλφαβητική σειρά';
+  String get sortByAlphabeticalAZ => 'Αλφαβητική σειρά Α-Ω';
+
+  @override
+  String get sortByAlphabeticalZA => 'Αλφαβητική σειρά Ω-Α';
 
   @override
   String get sortBySmallestToBiggest => 'Από μικρ. στο μεγ.';
 
   @override
   String get sortByBiggestToSmallest => 'Από μεγ. στο μικρ.';
+
+  @override
+  String get sortByNewestToOldest => 'Πιο πρόσφατα';
+
+  @override
+  String get sortByOldestToNewest => 'Πιο παλιά';
 
   @override
   String get extraWordsDialogEmpty => 'Δεν έχει βρεθεί καμία έξτρα λέξη!';
@@ -229,6 +238,9 @@ class AppLocalizationsEl extends AppLocalizations {
   String get completeStageExtraWordsPoints => 'Έξτρα λέξεις';
 
   @override
+  String get completeStageLevelUp => 'Ολοκλήρωση επιπέδου';
+
+  @override
   String get completeStageTotalPoints => 'Σύνολο';
 
   @override
@@ -286,4 +298,39 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String get gameRulesTitle5 => 'Απόλαυσε την περιπέτεια λέξεων στο Βρες τις Λέξεις!';
+
+  @override
+  String get filterInfoText => 'Η επιλογή όλων των γραμμάτων γίνεται αυτόματα, εφόσον δεν έχουν επιλεγεί συγκεκριμένα γράμματα.';
+
+  @override
+  String get totalWordsEmptyResult => 'Δε βρέθηκε καμία λέξη.';
+
+  @override
+  String get filtersHeaderTitle => 'Φίλτρα';
+
+  @override
+  String get filtersSectionHeaderAllLetters => 'Όλα τα γράμματα';
+
+  @override
+  String get filtersSectionContentShowAllLetters => 'Εμφάνισε τις λέξεις από όλα τα γράμματα';
+
+  @override
+  String get filtersSectionHeaderSelectedLetters => 'Επιλογή γραμμάτων';
+
+  @override
+  String get filtersSectionButtonClearLetters => 'Καθαρισμός γραμμάτων';
+
+  @override
+  String get filtersSectionHeaderWordLength => 'Μέγεθος λέξεων';
+
+  @override
+  String filtersSectionContentWordLength(int minLength, int maxLength) {
+    return 'Επιλεγμένο μέγεθος λέξεων: $minLength - $maxLength';
+  }
+
+  @override
+  String get filtersButtonApply => 'Εφαρμογή φίλτρων';
+
+  @override
+  String get filtersButtonClean => 'Καθαρισμός';
 }

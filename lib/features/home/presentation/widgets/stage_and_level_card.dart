@@ -7,6 +7,7 @@ import 'package:find_the_words/core/widgets/custom_border_container.dart';
 import 'package:find_the_words/core/widgets/custom_text.dart';
 import 'package:find_the_words/features/auth/data/models/profile_status_model.dart';
 import 'package:find_the_words/features/home/presentation/widgets/level_progress_bar.dart';
+import 'package:find_the_words/features/home/presentation/widgets/level_up_tag.dart';
 import 'package:find_the_words/features/stage/data/models/stage_results.dart';
 import 'package:flutter/material.dart';
 
@@ -67,23 +68,28 @@ class StageAndLevelCard extends StatelessWidget {
               child: Column(
                 children: [
                   if (stageResults != null)
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: AppSpacing.spacingM,
-                          horizontal: AppSpacing.spacingL,
+                    Row(
+                      spacing: AppSpacing.spacingM,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        if (stageResults!.level != profileStatus.level)
+                        const LevelUpTag(),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: AppSpacing.spacingM,
+                            horizontal: AppSpacing.spacingL,
+                          ),
+                          decoration: BoxDecoration(
+                            color: context.colors.darkGreen,
+                            borderRadius: AppBorders.hugeBorderRadius,
+                          ),
+                          child: CustomText(
+                            '+ ${stageResults!.xpEarned} XP',
+                            textType: CustomTextType.smallTag,
+                            isWhite: true,
+                          ),
                         ),
-                        decoration: BoxDecoration(
-                          color: context.colors.darkGreen,
-                          borderRadius: AppBorders.hugeBorderRadius,
-                        ),
-                        child: CustomText(
-                          '+ ${stageResults!.xpEarned} XP',
-                          textType: CustomTextType.smallTag,
-                          isWhite: true,
-                        ),
-                      ),
+                      ],
                     ),
                   Container(
                     margin: const EdgeInsets.only(bottom: AppSpacing.spacingL),

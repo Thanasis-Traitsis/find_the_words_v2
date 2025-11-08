@@ -3,7 +3,7 @@ import 'package:find_the_words/config/theme/custom_text_type.dart';
 import 'package:find_the_words/core/constants/constants.dart';
 import 'package:find_the_words/core/screens/custom_screen.dart';
 import 'package:find_the_words/core/utils/text_extensions.dart';
-import 'package:find_the_words/core/widgets/custom_filled_button.dart';
+import 'package:find_the_words/core/widgets/custom_primary_button.dart';
 import 'package:find_the_words/core/widgets/custom_text.dart';
 import 'package:find_the_words/config/language/presentation/screen/widgets/language_list_container.dart';
 import 'package:flutter/material.dart';
@@ -32,11 +32,9 @@ class LanguageSelectionScreen extends StatelessWidget {
                 const LanguageListContainer(),
                 Align(
                   alignment: Alignment.centerRight,
-                  child: CustomFilledButton(
-                    fullWidth: false,
-                    withIcon: false,
+                  child: CustomPrimaryButton.large(
                     text: context.translate.submit,
-                    onPressed: () {
+                    onTap: () {
                       AppPages.home.go();
                     },
                   ),

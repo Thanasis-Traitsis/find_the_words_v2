@@ -335,11 +335,17 @@ abstract class AppLocalizations {
   /// **'Search'**
   String get searchPlaceholder;
 
-  /// No description provided for @sortByAlphabetical.
+  /// No description provided for @sortByAlphabeticalAZ.
   ///
   /// In en, this message translates to:
-  /// **'Alphabetical order'**
-  String get sortByAlphabetical;
+  /// **'Alphabetical order A-Z'**
+  String get sortByAlphabeticalAZ;
+
+  /// No description provided for @sortByAlphabeticalZA.
+  ///
+  /// In en, this message translates to:
+  /// **'Alphabetical order Z-A'**
+  String get sortByAlphabeticalZA;
 
   /// No description provided for @sortBySmallestToBiggest.
   ///
@@ -352,6 +358,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Largest to smallest'**
   String get sortByBiggestToSmallest;
+
+  /// No description provided for @sortByNewestToOldest.
+  ///
+  /// In en, this message translates to:
+  /// **'Most recent'**
+  String get sortByNewestToOldest;
+
+  /// No description provided for @sortByOldestToNewest.
+  ///
+  /// In en, this message translates to:
+  /// **'Oldest'**
+  String get sortByOldestToNewest;
 
   /// No description provided for @extraWordsDialogEmpty.
   ///
@@ -527,6 +545,12 @@ abstract class AppLocalizations {
   /// **'Extra words'**
   String get completeStageExtraWordsPoints;
 
+  /// No description provided for @completeStageLevelUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Level completion'**
+  String get completeStageLevelUp;
+
   /// No description provided for @completeStageTotalPoints.
   ///
   /// In en, this message translates to:
@@ -640,6 +664,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Enjoy your word adventure in Βρες τις Λέξεις!'**
   String get gameRulesTitle5;
+
+  /// No description provided for @filterInfoText.
+  ///
+  /// In en, this message translates to:
+  /// **'All letters are selected automatically, unless specific letters have been selected.'**
+  String get filterInfoText;
+
+  /// No description provided for @totalWordsEmptyResult.
+  ///
+  /// In en, this message translates to:
+  /// **'No words found.'**
+  String get totalWordsEmptyResult;
+
+  /// No description provided for @filtersHeaderTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Filters'**
+  String get filtersHeaderTitle;
+
+  /// No description provided for @filtersSectionHeaderAllLetters.
+  ///
+  /// In en, this message translates to:
+  /// **'All letters'**
+  String get filtersSectionHeaderAllLetters;
+
+  /// No description provided for @filtersSectionContentShowAllLetters.
+  ///
+  /// In en, this message translates to:
+  /// **'Show words from all letters'**
+  String get filtersSectionContentShowAllLetters;
+
+  /// No description provided for @filtersSectionHeaderSelectedLetters.
+  ///
+  /// In en, this message translates to:
+  /// **'Select letters'**
+  String get filtersSectionHeaderSelectedLetters;
+
+  /// No description provided for @filtersSectionButtonClearLetters.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear letters'**
+  String get filtersSectionButtonClearLetters;
+
+  /// No description provided for @filtersSectionHeaderWordLength.
+  ///
+  /// In en, this message translates to:
+  /// **'Word length'**
+  String get filtersSectionHeaderWordLength;
+
+  /// Show min and max word length
+  ///
+  /// In en, this message translates to:
+  /// **'Selected word length from: {minLength} - {maxLength}'**
+  String filtersSectionContentWordLength(int minLength, int maxLength);
+
+  /// No description provided for @filtersButtonApply.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply filters'**
+  String get filtersButtonApply;
+
+  /// No description provided for @filtersButtonClean.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get filtersButtonClean;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

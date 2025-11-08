@@ -1,6 +1,8 @@
+import 'package:find_the_words/core/constants/backup_stages_el.dart';
 import 'package:find_the_words/core/utils/file_utils.dart';
 import 'package:find_the_words/features/stage/data/models/current_stage.dart';
 import 'package:find_the_words/features/stage/data/models/stage_criteria.dart';
+import 'package:find_the_words/features/stage/domain/helpers/word_placement_tracker.dart';
 import 'package:find_the_words/features/stage/domain/services/board_setup_service.dart';
 import 'package:find_the_words/features/stage/domain/services/stage_validation_service.dart';
 import 'package:find_the_words/features/stage/domain/services/word_selection_service.dart';
@@ -41,7 +43,7 @@ class StageGeneratorService {
 
       if (selectedWord == null) {
         debugPrint('No valid words found, using backup stage');
-        return _loadBackupStage(level, criteria);
+        return _loadBackupStage(level);
       }
 
       debugPrint('Attempt $attempt: Trying stage "${selectedWord.key}"');
@@ -63,7 +65,7 @@ class StageGeneratorService {
     // If all attempts failed, use backup
     if (validStage == null) {
       debugPrint('All $maxAttempts attempts failed, loading backup stage');
-      return _loadBackupStage(level, criteria);
+      return _loadBackupStage(level);
     }
 
     return validStage;
@@ -76,9 +78,6 @@ class StageGeneratorService {
     final sortedWords = _prepareSortedWords(selectedWord.value);
     final board = _initializeEmptyBoard();
     StageValidationService.instance.clearFailedWords();
-
-    print(sortedWords);
-    print(selectedWord.key);
 
     return await _boardSetupService.placeWordsOnBoard(
       board: board,
@@ -103,15 +102,11 @@ class StageGeneratorService {
 
   Future<CurrentStage> _loadBackupStage(
     int level,
-    StageCriteria criteria,
   ) async {
-    // final backupStages = await _loadBackupStages();
-    final backupStages = [];
-    final suitableStage = backupStages.firstWhere(
-      (stage) => stage.minLevel <= level && stage.maxLevel >= level,
-      orElse: () => backupStages.first,
-    );
+    // TODO: Add the EN language as well
+    final backupEL = BackupStagesEL(_wordSelectionService);
+    final currentBackup = await backupEL.getBackupStage(level);
 
-    return suitableStage.toCurrentStage();
+    return currentBackup;
   }
 }

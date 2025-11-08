@@ -41,7 +41,6 @@ class StageXPService {
     );
     
     final xpEarned = xpCalc.calculateTotalXP();
-    print(xpCalc.getXPBreakdown());
 
     int totalXP = XPConstants.getXPForLevel(level);
     double progressPercentage = (xpEarned * 100) / totalXP;

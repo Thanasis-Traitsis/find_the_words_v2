@@ -62,7 +62,7 @@ class _ExtraWordsBoxState extends State<ExtraWordsBox>
             padding: const EdgeInsets.all(AppSpacing.spacingM),
             decoration: BoxDecoration(
               color: context.colors.lightBlue,
-              borderRadius: AppBorders.bigBorderRadius,
+              borderRadius: AppBorders.regularBorderRadius,
               border: Border.all(
                 width: AppBorders.smallBorderWidth,
                 color: context.colors.darkBlue,
@@ -86,7 +86,7 @@ class _ExtraWordsBoxState extends State<ExtraWordsBox>
             _previousCount = currentCount;
 
             return Positioned(
-              left: -AppSizes.extraWordsNumberSpacing,
+              left: -AppSizes.tinyHeight,
               bottom: 0,
               child: Opacity(
                 opacity: currentCount > 0 ? 1.0 : 0.0,

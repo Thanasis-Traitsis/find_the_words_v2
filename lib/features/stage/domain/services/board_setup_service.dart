@@ -154,6 +154,7 @@ class BoardSetupService {
       startPosition: startPosition,
       tracker: tracker,
       maxWords: criteria.maxStageWords,
+      minWordLength: criteria.smallestWordLength,
     );
 
     return _isValidStage(tracker, criteria);
@@ -173,6 +174,7 @@ class BoardSetupService {
       startPosition: startPosition,
       tracker: tracker,
       maxWords: criteria.maxStageWords,
+      minWordLength: criteria.smallestWordLength,
     );
 
     final validation = validateStageCriteria(
@@ -205,6 +207,7 @@ class BoardSetupService {
       startPosition: originalPosition,
       tracker: tracker,
       maxWords: criteria.maxStageWords,
+      minWordLength: criteria.smallestWordLength,
     );
 
     // NOW analyze where the empty spaces are
@@ -229,6 +232,7 @@ class BoardSetupService {
       startPosition: newPosition,
       tracker: tracker,
       maxWords: criteria.maxStageWords,
+      minWordLength: criteria.smallestWordLength,
     );
 
     return _isValidStage(tracker, criteria);
@@ -243,16 +247,19 @@ class BoardSetupService {
     StageCriteria criteria,
   ) async {
     // Place first word
+    print("ATTEMPT I AM HERE");
     _placeInitialWord(board, words[0], startPosition, tracker);
 
     for (int attempt = 1; attempt < words[0].length; attempt++) {
       for (int i = 1; i < words.length; i++) {
-        _placeCrossingWord(
-          board,
-          words[i],
-          tracker,
-          alternativePosition: attempt,
-        );
+        if (words[i].length > criteria.smallestWordLength) {
+          _placeCrossingWord(
+            board,
+            words[i],
+            tracker,
+            alternativePosition: attempt,
+          );
+        }
 
         if (tracker.wordCount == criteria.maxStageWords) break;
       }
@@ -278,9 +285,11 @@ class BoardSetupService {
     required int startPosition,
     required WordPlacementTracker tracker,
     required int maxWords,
+    required int minWordLength,
   }) {
     for (final word in words) {
       if (tracker.wordCount == maxWords) break;
+      if (word.length < minWordLength) break;
 
       final success = tracker.isEmpty
           ? _placeInitialWord(board, word, startPosition, tracker)

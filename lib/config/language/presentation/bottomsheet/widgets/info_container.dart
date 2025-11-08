@@ -1,19 +1,33 @@
 import 'package:find_the_words/config/theme/custom_text_type.dart';
 import 'package:find_the_words/core/constants/constants.dart';
-import 'package:find_the_words/core/utils/text_extensions.dart';
 import 'package:find_the_words/core/utils/theme_extensions.dart';
 import 'package:find_the_words/core/widgets/custom_svg_icon.dart';
 import 'package:find_the_words/core/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 
 class InfoContainer extends StatelessWidget {
-  const InfoContainer({super.key});
+  final String infoText;
+  final double iconSize;
+  final double infoSpacing;
+
+  const InfoContainer.small({
+    super.key,
+    required this.infoText,
+    this.iconSize = AppSizes.iconS,
+    this.infoSpacing = AppSpacing.spacingM,
+  });
+  const InfoContainer.regular({
+    super.key,
+    required this.infoText,
+    this.iconSize = AppSizes.iconM,
+    this.infoSpacing = AppSpacing.spacingL,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(bottom: AppSpacing.spacingXL),
-      padding: const EdgeInsets.all(AppSpacing.spacingL),
+      margin: const EdgeInsets.only(bottom: AppSpacing.spacingS),
+      padding: EdgeInsets.all(infoSpacing),
       decoration: BoxDecoration(
         color: context.colors.lightBlue,
         borderRadius: AppBorders.regularBorderRadius,
@@ -23,19 +37,16 @@ class InfoContainer extends StatelessWidget {
         ),
       ),
       child: Row(
-        spacing: AppSpacing.spacingL,
+        spacing: infoSpacing,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomSvgIcon(
             icon: 'info',
             color: context.colors.darkBlue,
-            height: AppSizes.iconM,
+            height: iconSize,
           ),
           Expanded(
-            child: CustomText(
-              context.translate.languageBottomsheetDescription,
-              textType: CustomTextType.regularBody,
-            ),
+            child: CustomText(infoText, textType: CustomTextType.regularBody),
           ),
         ],
       ),

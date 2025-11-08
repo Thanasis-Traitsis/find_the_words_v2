@@ -4,7 +4,7 @@ import 'package:find_the_words/core/screens/custom_screen.dart';
 import 'package:find_the_words/core/services/service_locator.dart';
 import 'package:find_the_words/core/utils/text_extensions.dart';
 import 'package:find_the_words/core/widgets/custom_appbar.dart';
-import 'package:find_the_words/core/widgets/custom_filled_button.dart';
+import 'package:find_the_words/core/widgets/custom_primary_button.dart';
 import 'package:find_the_words/core/widgets/language_button.dart';
 import 'package:find_the_words/features/auth/auth_cubit/auth_cubit.dart';
 import 'package:find_the_words/features/home/presentation/widgets/logo_container.dart';
@@ -50,16 +50,16 @@ class HomeScreen extends StatelessWidget {
                       children: [
                         const LogoContainer(),
                         StageAndLevelCard(profileStatus: progress),
-                        TotalWordsCard(words: progress.wordsModel.words),
+                        TotalWordsCard(wordsModel: progress.wordsModel),
                       ],
                     ),
                     Container(
                       margin: const EdgeInsets.symmetric(
                         vertical: AppSpacing.spacingXL,
                       ),
-                      child: CustomFilledButton(
+                      child: CustomPrimaryButton.large(
                         text: context.translate.nextStageBtnText,
-                        onPressed: () {
+                        onTap: () {
                           getIt<StageBloc>().add(
                             NextStageButtonPressed(progress),
                           );
@@ -71,6 +71,8 @@ class HomeScreen extends StatelessWidget {
                             },
                           );
                         },
+                        suffixIcon: 'arrow_right',
+                        fullWidth: true,
                       ),
                     ),
                   ],

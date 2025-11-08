@@ -30,6 +30,7 @@ class _CompleteStageScreenState extends State<CompleteStageScreen> {
   double _bottomButtonOpacity = 0.0;
   double _inlineButtonOpacity = 1.0;
   final GlobalKey _inlineButtonKey = GlobalKey();
+  final GlobalKey _floatingButtonKey = GlobalKey();
   bool _isScrollable = false;
 
   @override
@@ -68,18 +69,21 @@ class _CompleteStageScreenState extends State<CompleteStageScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final RenderBox? renderBox =
           _inlineButtonKey.currentContext?.findRenderObject() as RenderBox?;
+      final RenderBox? renderBoxFloating =
+          _floatingButtonKey.currentContext?.findRenderObject() as RenderBox?;
 
       if (renderBox == null) return;
+      if (renderBoxFloating == null) return;
 
       final buttonPosition = renderBox.localToGlobal(Offset.zero);
-      final screenHeight = MediaQuery.of(context).size.height;
       final buttonTop = buttonPosition.dy;
-      final buttonHeight = renderBox.size.height;
 
-      final fixedButtonBottom = screenHeight;
+      final buttonPositionFloating = renderBoxFloating.localToGlobal(
+        Offset.zero,
+      );
+      final buttonTopFloating = buttonPositionFloating.dy;
 
-      final buttonBottom = buttonTop + buttonHeight;
-      final isButtonReachingFixedPosition = buttonBottom <= fixedButtonBottom;
+      final isButtonReachingFixedPosition = buttonTop <= buttonTopFloating;
 
       setState(() {
         if (isButtonReachingFixedPosition) {
@@ -176,6 +180,14 @@ class _CompleteStageScreenState extends State<CompleteStageScreen> {
                               .toString(),
                           isPoints: true,
                         ),
+                        if (widget.stageResults.newProgress == 100)
+                          StageDataListItem(
+                            title: context.translate.completeStageLevelUp,
+                            value: widget.stageResults
+                                .getPointsForLevelup()
+                                .toString(),
+                            isPoints: true,
+                          ),
                       ],
                     ),
                   ),
@@ -217,6 +229,7 @@ class _CompleteStageScreenState extends State<CompleteStageScreen> {
                 right: 0,
                 bottom: AppSpacing.spacingM,
                 child: Opacity(
+                  key: _floatingButtonKey,
                   opacity: _bottomButtonOpacity,
                   child: IgnorePointer(
                     ignoring: _bottomButtonOpacity == 0.0,

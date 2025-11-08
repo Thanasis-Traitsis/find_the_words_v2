@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:find_the_words/config/routes/app_pages.dart';
 import 'package:find_the_words/core/services/service_locator.dart';
+import 'package:find_the_words/core/utils/snackbar_helper.dart';
 import 'package:find_the_words/core/utils/text_extensions.dart';
 import 'package:find_the_words/core/utils/theme_extensions.dart';
 import 'package:find_the_words/core/widgets/custom_svg_icon.dart';
@@ -89,42 +90,59 @@ class _StageScreenState extends State<StageScreen> {
     await prefs.remove(_timerKey);
   }
 
+  void _handleStageStateChange(BuildContext context, StageState state) {
+    if (state is StageCompleted) {
+      _handleStageCompletion(context, state);
+    }
+
+    if (state is StageInGameError) {
+      SnackbarHelper.showError(context, state.errorMessage);
+    }
+  }
+
+  Future<void> _handleStageCompletion(
+    BuildContext context,
+    StageCompleted state,
+  ) async {
+    _timer?.cancel();
+    await _clearTimerFromPrefs();
+    await Future.delayed(const Duration(seconds: 1));
+
+    final authCubit = getIt<AuthCubit>();
+    final pointsCubit = getIt<PointsCubit>();
+    final authState = authCubit.state;
+
+    if (authState is! AuthAuthenticated) return;
+
+    final currentUser = authState.user;
+
+    final stageResults = StageXPService.calculateStageResults(
+      stage: state.stage,
+      level: widget.level,
+      stageNumber: widget.stage,
+      timeInSeconds: _elapsedSeconds,
+      currentProgress: currentUser.currentProgress.progress,
+    );
+
+    await authCubit.updateAfterStage(
+      stageResults.xpEarned,
+      stageResults.newProgress,
+    );
+
+    await pointsCubit.addPoints(
+      stageResults.totalPointsForStage(),
+      reason: 'Stage completion',
+    );
+
+    if (!context.mounted) return;
+
+    AppPages.complete.pushReplacement(extra: stageResults);
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<StageBloc, StageState>(
-      listener: (context, state) async {
-        if (state is StageCompleted) {
-          _timer?.cancel();
-          await _clearTimerFromPrefs();
-
-          await Future.delayed(const Duration(seconds: 1));
-
-          final AuthCubit authCubit = getIt<AuthCubit>();
-          final PointsCubit pointsCubit = getIt<PointsCubit>();
-          final authState = authCubit.state;
-          final currentUser = (authState as AuthAuthenticated).user;
-
-          final stageResults = StageXPService.calculateStageResults(
-            stage: state.stage,
-            level: widget.level,
-            stageNumber: widget.stage,
-            timeInSeconds: _elapsedSeconds,
-            currentProgress: currentUser.currentProgress.progress,
-          );
-
-          await authCubit.updateAfterStage(
-            stageResults.xpEarned,
-            stageResults.newProgress,
-          );
-
-          await pointsCubit.addPoints(
-            stageResults.totalPointsForStage(),
-            reason: 'Stage completion',
-          );
-
-          AppPages.complete.pushReplacement(extra: stageResults);
-        }
-      },
+      listener: _handleStageStateChange,
       builder: (context, state) {
         if (state is! StageActive) {
           return CustomScreen(
@@ -241,6 +259,7 @@ class _StageScreenState extends State<StageScreen> {
                         child: CustomSvgIcon(
                           icon: 'info',
                           color: context.colors.text,
+                          height: AppSizes.iconS,
                         ),
                       ),
                       Expanded(

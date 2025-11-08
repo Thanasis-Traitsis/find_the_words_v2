@@ -1,9 +1,8 @@
-import 'package:find_the_words/config/theme/custom_text_type.dart';
 import 'package:find_the_words/core/constants/constants.dart';
 import 'package:find_the_words/core/services/navigation_service.dart';
 import 'package:find_the_words/core/utils/text_extensions.dart';
 import 'package:find_the_words/core/utils/theme_extensions.dart';
-import 'package:find_the_words/core/widgets/custom_text.dart';
+import 'package:find_the_words/core/widgets/custom_outline_button.dart';
 import 'package:flutter/material.dart';
 
 class CustomGameDialog extends StatelessWidget {
@@ -32,14 +31,11 @@ class CustomGameDialog extends StatelessWidget {
               contentWidget,
               Align(
                 alignment: Alignment.centerRight,
-                child: OutlinedButton(
+                child: CustomOutlineButton(
+                  text: context.translate.gameDialogCloseBtn,
                   onPressed: () {
                     NavigationService.instance.pop();
                   },
-                  child: CustomText(
-                    context.translate.gameDialogCloseBtn,
-                    textType: CustomTextType.regularBody,
-                  ),
                 ),
               ),
             ],

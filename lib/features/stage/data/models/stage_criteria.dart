@@ -53,8 +53,7 @@ class StageCriteria {
 
   static int _getSmallestWordLength(int level) {
     if (level <= 6) return 3;
-    if (level <= 8) return 4;
-    return 5;
+    return 4;
   }
 
   static LevelProgressDifficulty _selectDifficultyWeighted(double progress) {
@@ -88,9 +87,9 @@ enum LevelProgressDifficulty {
   int minWordsPerLevel(int level) {
     const wordCounts = [
       [2, 3, 4, 5, 7, 7, 8, 9, 9, 10],
-      [2, 4, 5, 6, 7, 8, 9, 9, 10, 11],
-      [2, 5, 6, 7, 8, 8, 9, 10, 11, 12],
-      [2, 6, 7, 7, 8, 9, 10, 11, 11, 14],
+      [2, 4, 5, 6, 7, 8, 9, 9, 10, 10],
+      [2, 5, 6, 7, 8, 8, 9, 10, 11, 11],
+      [2, 6, 7, 7, 8, 9, 10, 11, 11, 11],
     ];
 
     return wordCounts[index][level - 1];

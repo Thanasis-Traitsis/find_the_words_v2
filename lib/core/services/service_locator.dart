@@ -18,6 +18,7 @@ import 'package:find_the_words/features/stage/domain/usecases/load_stage_usecase
 import 'package:find_the_words/features/stage/domain/usecases/reveal_letter_usecase.dart';
 import 'package:find_the_words/features/stage/domain/usecases/submit_word_usecase.dart';
 import 'package:find_the_words/features/stage/presentation/stage_bloc/stage_bloc.dart';
+import 'package:find_the_words/features/words/presentation/total_words_bloc/total_words_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -28,7 +29,7 @@ Future<void> setupServiceLocator() async {
   await _registerRepositories();
   await _registerUsecases();
   await _registerBlocs();
-  
+
   await getIt.allReady();
 }
 
@@ -48,15 +49,11 @@ Future<void> _registerCoreServices() async {
     return service;
   });
 
-  getIt.registerLazySingleton<ConnectivityService>(
-    () => ConnectivityService(),
-  );
+  getIt.registerLazySingleton<ConnectivityService>(() => ConnectivityService());
 }
 
 Future<void> _registerRepositories() async {
-  getIt.registerLazySingleton<UserRepository>(
-    () => UserRepositoryImpl(),
-  );
+  getIt.registerLazySingleton<UserRepository>(() => UserRepositoryImpl());
 
   getIt.registerLazySingleton<StageRepository>(() {
     final wordService = WordSelectionService(getIt<SharedPreferences>());
@@ -74,9 +71,7 @@ Future<void> _registerRepositories() async {
 }
 
 Future<void> _registerUsecases() async {
-  getIt.registerLazySingleton<CrosswordUsecase>(
-    () => CrosswordUsecase(),
-  );
+  getIt.registerLazySingleton<CrosswordUsecase>(() => CrosswordUsecase());
 
   getIt.registerLazySingleton<LoadStageUsecase>(
     () => LoadStageUsecase(repository: getIt<StageRepository>()),
@@ -105,9 +100,7 @@ Future<void> _registerUsecases() async {
 }
 
 Future<void> _registerBlocs() async {
-  getIt.registerLazySingleton<LanguageCubit>(
-    () => LanguageCubit(),
-  );
+  getIt.registerLazySingleton<LanguageCubit>(() => LanguageCubit());
 
   getIt.registerSingletonAsync<AuthCubit>(
     () async => AuthCubit(getIt<UserRepository>()),
@@ -121,6 +114,8 @@ Future<void> _registerBlocs() async {
     ),
     dependsOn: [AuthCubit, StorageService],
   );
+
+  getIt.registerLazySingleton<TotalWordsBloc>(() => TotalWordsBloc());
 
   getIt.registerLazySingleton<StageBloc>(
     () => StageBloc(

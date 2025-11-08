@@ -3,50 +3,67 @@ import 'package:find_the_words/core/constants/constants.dart';
 import 'package:find_the_words/core/utils/theme_extensions.dart';
 import 'package:find_the_words/core/widgets/custom_svg_icon.dart';
 import 'package:find_the_words/core/widgets/custom_text.dart';
+import 'package:find_the_words/features/words/presentation/total_words_bloc/total_words_bloc.dart';
+import 'package:find_the_words/features/words/presentation/widgets/filters_bottomsheet.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class FilterButton extends StatelessWidget {
   const FilterButton({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(
-      child: InkWell(
-        borderRadius: AppBorders.bigBorderRadius,
-        onTap: () {},
-        child: Container(
-          padding: const EdgeInsets.all(AppSpacing.spacingM),
-          decoration: BoxDecoration(
+    return BlocBuilder<TotalWordsBloc, TotalWordsState>(
+      builder: (context, state) {
+        return Flexible(
+          child: InkWell(
             borderRadius: AppBorders.bigBorderRadius,
-            border: Border.all(
-              width: AppBorders.smallBorderWidth,
-              color: context.colors.black,
-            ),
-          ),
-          child: Row(
-            spacing: AppSpacing.spacingM,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              CustomSvgIcon(icon: 'filter', color: context.colors.black),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  vertical: AppSpacing.spacingS,
-                  horizontal: AppSpacing.spacingM,
-                ),
-                decoration: BoxDecoration(
-                  color: context.colors.primary,
-                  borderRadius: AppBorders.regularBorderRadius,
-                ),
-                child: CustomText(
-                  '1',
-                  textType: CustomTextType.regularBody,
-                  isWhite: true,
+            onTap: () {
+              showModalBottomSheet(
+                context: context,
+                useRootNavigator: true,
+                isScrollControlled: true,
+                backgroundColor: Colors.transparent,
+                builder: (context) {
+                  return FiltersBottomsheet(filters: state.filters,);
+                },
+              );
+            },
+            child: Container(
+              padding: const EdgeInsets.all(AppSpacing.spacingM),
+              decoration: BoxDecoration(
+                borderRadius: AppBorders.bigBorderRadius,
+                border: Border.all(
+                  width: AppBorders.smallBorderWidth,
+                  color: context.colors.black,
                 ),
               ),
-            ],
+              child: Row(
+                spacing: AppSpacing.spacingM,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  CustomSvgIcon(icon: 'filter', color: context.colors.black),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: AppSpacing.spacingS,
+                      horizontal: AppSpacing.spacingM,
+                    ),
+                    decoration: BoxDecoration(
+                      color: context.colors.primary,
+                      borderRadius: AppBorders.regularBorderRadius,
+                    ),
+                    child: CustomText(
+                      state.filters.filtersCount.toString(),
+                      textType: CustomTextType.regularBody,
+                      isWhite: true,
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

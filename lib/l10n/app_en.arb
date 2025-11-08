@@ -57,9 +57,12 @@
     "themeOptionSystem": "System",
     "themeOptionSystemDescription": "Automatically match your device settings",
     "searchPlaceholder": "Search",
-    "sortByAlphabetical": "Alphabetical order",
+    "sortByAlphabeticalAZ": "Alphabetical order A-Z",
+    "sortByAlphabeticalZA": "Alphabetical order Z-A",
     "sortBySmallestToBiggest": "Smallest to largest",
     "sortByBiggestToSmallest": "Largest to smallest",
+    "sortByNewestToOldest": "Most recent",
+    "sortByOldestToNewest": "Oldest",
     "extraWordsDialogEmpty": "No extra words found yet!",
     "extraWordsDialogTitle": "Extra Words",
     "extraWordsDialogSubtitle": "Find hidden words that don't fit in the crossword and earn bonus points!",
@@ -89,6 +92,7 @@
     "completeStageCompletionPoints": "Stage completion",
     "completeStageWordsPoints": "Stage words",
     "completeStageExtraWordsPoints": "Extra words",
+    "completeStageLevelUp": "Level completion",
     "completeStageTotalPoints": "Total",
     "completeStageBackToHomeBtn": "Back to home",
     "completeTotalPoints": "Total: + {totalPoints}",
@@ -116,5 +120,29 @@
     "gameRulesContent3c": "The more you play, the more your vocabulary and word-finding skills will grow!",
     "gameRulesTitle4": "Endless Fun",
     "gameRulesContent4": "There’s no fixed path. Every puzzle is unique, offering endless word challenges and a fresh experience each time you play.",
-    "gameRulesTitle5": "Enjoy your word adventure in Βρες τις Λέξεις!"
+    "gameRulesTitle5": "Enjoy your word adventure in Βρες τις Λέξεις!",
+    "filterInfoText": "All letters are selected automatically, unless specific letters have been selected.",
+    "totalWordsEmptyResult": "No words found.",
+    "filtersHeaderTitle": "Filters",
+    "filtersSectionHeaderAllLetters": "All letters",
+    "filtersSectionContentShowAllLetters": "Show words from all letters",
+    "filtersSectionHeaderSelectedLetters": "Select letters",
+    "filtersSectionButtonClearLetters": "Clear letters",
+    "filtersSectionHeaderWordLength": "Word length",
+    "filtersSectionContentWordLength": "Selected word length from: {minLength} - {maxLength}",
+    "@filtersSectionContentWordLength": {
+        "description": "Show min and max word length",
+        "placeholders": {
+            "minLength": {
+                "type": "int",
+                "example": "3"
+            },
+            "maxLength": {
+                "type": "int",
+                "example": "12"
+            }
+        }
+    },
+    "filtersButtonApply": "Apply filters",
+    "filtersButtonClean": "Clear"
 }

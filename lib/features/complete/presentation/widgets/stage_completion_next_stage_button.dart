@@ -1,7 +1,7 @@
 import 'package:find_the_words/config/routes/app_pages.dart';
 import 'package:find_the_words/core/services/service_locator.dart';
 import 'package:find_the_words/core/utils/text_extensions.dart';
-import 'package:find_the_words/core/widgets/custom_filled_button.dart';
+import 'package:find_the_words/core/widgets/custom_primary_button.dart';
 import 'package:find_the_words/features/auth/domain/entities/user_entity.dart';
 import 'package:find_the_words/features/stage/presentation/stage_bloc/stage_bloc.dart';
 import 'package:flutter/material.dart';
@@ -30,13 +30,13 @@ class StageCompletionNextStageButton extends StatelessWidget {
           );
         }
       },
-      child: CustomFilledButton(
+      child: CustomPrimaryButton.large(
         text: context.translate.nextStageBtnText,
-        onPressed: () {
-          getIt<StageBloc>().add(
-            NextStageButtonPressed(user.currentProgress),
-          );
+        onTap: () {
+          getIt<StageBloc>().add(NextStageButtonPressed(user.currentProgress));
         },
+        suffixIcon: 'arrow_right',
+        fullWidth: true,
       ),
     );
   }
