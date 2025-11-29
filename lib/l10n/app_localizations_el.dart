@@ -118,6 +118,51 @@ class AppLocalizationsEl extends AppLocalizations {
   String get settingsItemReportTermsConditions => 'Όροι και Προϋποθέσεις';
 
   @override
+  String get settingsEmailSubjectReportBug => 'Μόλις βρήκα ένα σφάλμα';
+
+  @override
+  String get settingsEmailSubjectBadWord => 'Αναφορά κακής λέξης';
+
+  @override
+  String get settingsEmailSubjectContact => 'Σχόλια για το παιχνίδι';
+
+  @override
+  String get settingsResetStageBottomsheetDescription => 'Δυσκολεύεσαι να λύσεις το στάδιο; Ή μήπως κάτι πήγε στραβά και το σταυρόλεξο δεν εμφανίστηκε σωστά; Μπορείς να επαναφέρεις το στάδιο και να δοκιμάσεις ξανά.';
+
+  @override
+  String get settingsResetStageBottomsheetRestartButton => 'Επανεκκίνηση';
+
+  @override
+  String get settingsResetStageDialogHeader => 'Προσοχή!';
+
+  @override
+  String get settingsResetStageDialogDescription => 'Είσαι σίγουρος ότι θέλεις να διαγράψεις το τρέχον στάδιο; Αν συνεχίσεις, όλη η πρόοδος που έχεις κάνει θα χαθεί και ένα νέο στάδιο θα ξεκινήσει ξανά από την αρχή';
+
+  @override
+  String get settingsResetStageDialogButtonCancel => 'Κλείσιμο';
+
+  @override
+  String get settingsResetStageDialogButtonSubmit => 'Υποβολή';
+
+  @override
+  String get settingsBadWordBottomsheetDescription => 'Συνάντησες μια λέξη που θεωρείς ακατάλληλη; Αν εντόπισες κάποια προσβλητική ή ακατάλληλη λέξη, μπορείς να την αναφέρεις. Επίλεξε μία από τις λέξεις του προηγούμενου σταδίου ή πληκτρολόγησε τη λέξη που θεωρείς ότι πρέπει να αφαιρεθεί.';
+
+  @override
+  String get settingsBadWordBottomsheetSectionTitleStageWords => 'Λέξεις από το προηγόυμενο στάδιο';
+
+  @override
+  String get settingsBadWordBottomsheetSectionTitleSelectedWord => 'Γράψε τη λέξη που θα ήθελες να αφαιρεθεί';
+
+  @override
+  String get settingsBadWordBottomsheetTextfieldHint => 'Γράψε τη λέξη εδώ';
+
+  @override
+  String get settingsBadWordBottomsheetButtonClear => 'Καθαρισμός';
+
+  @override
+  String get settingsBadWordBottomsheetButtonSubmit => 'Υποβολή';
+
+  @override
   String get themeOptionLight => 'Ανοιχτό';
 
   @override
@@ -333,4 +378,17 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String get filtersButtonClean => 'Καθαρισμός';
+
+  @override
+  String get chipAllLetters => 'Όλα τα γράμματα';
+
+  @override
+  String chipSelectedLetters(String letters) {
+    return 'Επιλεγμένα γράμματα: $letters';
+  }
+
+  @override
+  String chipSelectedRangeOfWordLength(int minWordLength, int maxWordLength) {
+    return 'Μέγεθος λέξεων: $minWordLength - $maxWordLength';
+  }
 }

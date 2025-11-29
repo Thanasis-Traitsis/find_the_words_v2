@@ -52,6 +52,21 @@
     "settingsItemReportContact": "Contact us",
     "settingsItemReportPrivacy": "Privacy & Policy",
     "settingsItemReportTermsConditions": "Terms & Conditions",
+    "settingsEmailSubjectReportBug": "Just found a bug",
+    "settingsEmailSubjectBadWord": "Report a bad word",
+    "settingsEmailSubjectContact": "Game Feedback",
+    "settingsResetStageBottomsheetDescription": "Having trouble solving the stage? Or maybe something went wrong and the crossword didn’t load correctly? You can reset the stage and try again.",
+    "settingsResetStageBottomsheetRestartButton": "Restart",
+    "settingsResetStageDialogHeader": "Warning!",
+    "settingsResetStageDialogDescription": "Are you sure you want to delete the current stage? If you continue, all your progress will be lost and a new stage will start from the beginning.",
+    "settingsResetStageDialogButtonCancel": "Close",
+    "settingsResetStageDialogButtonSubmit": "Submit",
+    "settingsBadWordBottomsheetDescription": "Did you come across a word that you find inappropriate? If you noticed any offensive or unsuitable word, you can report it. Choose one of the words from the previous stage or type the word you think should be removed.",
+    "settingsBadWordBottomsheetSectionTitleStageWords": "Words from the previous stage",
+    "settingsBadWordBottomsheetSectionTitleSelectedWord": "Type the word you want to be removed",
+    "settingsBadWordBottomsheetTextfieldHint": "Type the word here",
+    "settingsBadWordBottomsheetButtonClear": "Clear",
+    "settingsBadWordBottomsheetButtonSubmit": "Submit",
     "themeOptionLight": "Light",
     "themeOptionDark": "Dark",
     "themeOptionSystem": "System",
@@ -144,5 +159,30 @@
         }
     },
     "filtersButtonApply": "Apply filters",
-    "filtersButtonClean": "Clear"
+    "filtersButtonClean": "Clear",
+    "chipAllLetters": "All letters",
+    "chipSelectedLetters": "Selected letters: {letters}",
+    "@chipSelectedLetters": {
+        "description": "Show selected letters",
+        "placeholders": {
+            "letters": {
+                "type": "String",
+                "example": "X, O"
+            }
+        }
+    },
+    "chipSelectedRangeOfWordLength": "Word length: {minWordLength} - {maxWordLength}",
+    "@chipSelectedRangeOfWordLength": {
+        "description": "Show selected letters",
+        "placeholders": {
+            "minWordLength": {
+                "type": "int",
+                "example": "3"
+            },
+            "maxWordLength": {
+                "type": "int",
+                "example": "12"
+            }
+        }
+    }
 }

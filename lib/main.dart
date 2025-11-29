@@ -1,6 +1,8 @@
+import 'package:find_the_words/config/sound/cubit/sound_cubit.dart';
 import 'package:find_the_words/core/services/service_locator.dart';
 import 'package:find_the_words/features/auth/auth_cubit/auth_cubit.dart';
 import 'package:find_the_words/features/points/cubit/points_cubit.dart';
+import 'package:find_the_words/features/settings/presentation/settings_cubit/settings_cubit.dart';
 import 'package:find_the_words/features/stage/presentation/stage_bloc/stage_bloc.dart';
 import 'package:find_the_words/features/words/presentation/total_words_bloc/total_words_bloc.dart';
 import 'package:find_the_words/firebase_options.dart';
@@ -29,6 +31,8 @@ void main() async {
 Future<void> runMyApp() async {
   final themeCubit = ThemeCubit();
   final langCubit = getIt<LanguageCubit>();
+  final soundCubit = SoundCubit();
+  final settingsCubit = getIt<SettingsCubit>();
 
   await themeCubit.loadTheme();
   await langCubit.loadSelectedLang();
@@ -38,10 +42,12 @@ Future<void> runMyApp() async {
       providers: [
         BlocProvider.value(value: themeCubit),
         BlocProvider.value(value: langCubit),
+        BlocProvider.value(value: soundCubit),
+        BlocProvider.value(value: settingsCubit),
         BlocProvider.value(value: getIt<AuthCubit>()),
         BlocProvider.value(value: getIt<PointsCubit>()),
         BlocProvider.value(value: getIt<StageBloc>()),
-        BlocProvider.value(value: getIt<TotalWordsBloc>())
+        BlocProvider.value(value: getIt<TotalWordsBloc>()),
       ],
       child: const MyApp(),
     ),

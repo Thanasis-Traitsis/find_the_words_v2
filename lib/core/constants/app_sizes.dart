@@ -4,6 +4,7 @@ class AppSizes {
   static const double minTouchTarget = 48.0;
 
   // Icon Scale (prefer these for consistency)
+  static const double iconXXS = 12.0;
   static const double iconXS = 14.0;
   static const double iconS = 18.0;
   static const double iconM = 24.0;

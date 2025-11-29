@@ -52,6 +52,21 @@
     "settingsItemReportContact": "Επικοινωνία",
     "settingsItemReportPrivacy": "Πολιτική Απορρήτου",
     "settingsItemReportTermsConditions": "Όροι και Προϋποθέσεις",
+    "settingsEmailSubjectReportBug": "Μόλις βρήκα ένα σφάλμα",
+    "settingsEmailSubjectBadWord": "Αναφορά κακής λέξης",
+    "settingsEmailSubjectContact": "Σχόλια για το παιχνίδι",
+    "settingsResetStageBottomsheetDescription": "Δυσκολεύεσαι να λύσεις το στάδιο; Ή μήπως κάτι πήγε στραβά και το σταυρόλεξο δεν εμφανίστηκε σωστά; Μπορείς να επαναφέρεις το στάδιο και να δοκιμάσεις ξανά.",
+    "settingsResetStageBottomsheetRestartButton": "Επανεκκίνηση",
+    "settingsResetStageDialogHeader": "Προσοχή!", 
+    "settingsResetStageDialogDescription": "Είσαι σίγουρος ότι θέλεις να διαγράψεις το τρέχον στάδιο; Αν συνεχίσεις, όλη η πρόοδος που έχεις κάνει θα χαθεί και ένα νέο στάδιο θα ξεκινήσει ξανά από την αρχή",
+    "settingsResetStageDialogButtonCancel": "Κλείσιμο",
+    "settingsResetStageDialogButtonSubmit": "Υποβολή",
+    "settingsBadWordBottomsheetDescription": "Συνάντησες μια λέξη που θεωρείς ακατάλληλη; Αν εντόπισες κάποια προσβλητική ή ακατάλληλη λέξη, μπορείς να την αναφέρεις. Επίλεξε μία από τις λέξεις του προηγούμενου σταδίου ή πληκτρολόγησε τη λέξη που θεωρείς ότι πρέπει να αφαιρεθεί.",
+    "settingsBadWordBottomsheetSectionTitleStageWords":  "Λέξεις από το προηγόυμενο στάδιο",
+    "settingsBadWordBottomsheetSectionTitleSelectedWord":  "Γράψε τη λέξη που θα ήθελες να αφαιρεθεί",
+    "settingsBadWordBottomsheetTextfieldHint": "Γράψε τη λέξη εδώ",
+    "settingsBadWordBottomsheetButtonClear":  "Καθαρισμός",
+    "settingsBadWordBottomsheetButtonSubmit":  "Υποβολή",
     "themeOptionLight": "Ανοιχτό",
     "themeOptionDark": "Σκούρο",
     "themeOptionSystem": "Σύστημα",
@@ -144,5 +159,30 @@
         }
     },
     "filtersButtonApply": "Εφαρμογή φίλτρων",
-    "filtersButtonClean": "Καθαρισμός"
+    "filtersButtonClean": "Καθαρισμός",
+    "chipAllLetters": "Όλα τα γράμματα",
+    "chipSelectedLetters": "Επιλεγμένα γράμματα: {letters}",
+    "@chipSelectedLetters": {
+        "description": "Show selected letters",
+        "placeholders": {
+            "letters": {
+                "type": "String",
+                "example": "X, O"
+            }
+        }
+    },
+    "chipSelectedRangeOfWordLength": "Μέγεθος λέξεων: {minWordLength} - {maxWordLength}",
+    "@chipSelectedRangeOfWordLength": {
+        "description": "Show selected letters",
+        "placeholders": {
+            "minWordLength": {
+                "type": "int",
+                "example": "3"
+            },
+            "maxWordLength": {
+                "type": "int",
+                "example": "12"
+            }
+        }
+    }
 }

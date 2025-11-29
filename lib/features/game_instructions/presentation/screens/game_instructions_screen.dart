@@ -13,21 +13,23 @@ class GameInstructionsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomScreen(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: AppSpacing.spacingL),
-        child: SingleChildScrollView(
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: AppSpacing.spacingL),
           child: Column(
-            spacing: AppSpacing.spacingXL,
+            spacing: AppSpacing.spacingM,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               BigHeading(
                 pageTitle: context.translate.gameInstructionsScreenName,
               ),
               RulesSection(
+                icon: 'questionmark',
                 title: context.translate.gameRulesTitle1,
                 content: [context.translate.gameRulesContent1],
               ),
               RulesSection(
+                icon: 'rules',
                 title: context.translate.gameRulesTitle2,
                 content: [
                   context.translate.gameRulesContent2a,
@@ -41,6 +43,7 @@ class GameInstructionsScreen extends StatelessWidget {
                 ],
               ),
               RulesSection(
+                icon: 'tips',
                 title: context.translate.gameRulesTitle3,
                 content: [
                   context.translate.gameRulesContent3a,
@@ -49,10 +52,17 @@ class GameInstructionsScreen extends StatelessWidget {
                 ],
               ),
               RulesSection(
+                icon: 'stars',
                 title: context.translate.gameRulesTitle4,
                 content: [context.translate.gameRulesContent4],
               ),
-              CustomText(context.translate.gameRulesTitle5, textType: CustomTextType.regularHeading,)
+              Container(
+                margin: const EdgeInsets.only(top: AppSpacing.spacingM),
+                child: CustomText(
+                  context.translate.gameRulesTitle5,
+                  textType: CustomTextType.regularHeading,
+                ),
+              ),
             ],
           ),
         ),

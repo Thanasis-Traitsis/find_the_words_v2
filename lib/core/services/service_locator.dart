@@ -1,10 +1,13 @@
 import 'package:find_the_words/config/language/cubit/language_cubit.dart';
 import 'package:find_the_words/core/services/connectivity_service.dart';
+import 'package:find_the_words/core/services/previous_stage_words_service.dart';
 import 'package:find_the_words/core/services/storage_service.dart';
 import 'package:find_the_words/features/auth/auth_cubit/auth_cubit.dart';
 import 'package:find_the_words/features/auth/data/repositories/user_repository_impl.dart';
 import 'package:find_the_words/features/auth/domain/repositories/user_repository.dart';
 import 'package:find_the_words/features/points/cubit/points_cubit.dart';
+import 'package:find_the_words/features/settings/domain/usecases/open_email_usecase.dart';
+import 'package:find_the_words/features/settings/presentation/settings_cubit/settings_cubit.dart';
 import 'package:find_the_words/features/stage/data/datasources/stage_local_datasource.dart';
 import 'package:find_the_words/features/stage/data/repositories/stage_repository_impl.dart';
 import 'package:find_the_words/features/stage/domain/repositories/stage_repository.dart';
@@ -50,6 +53,9 @@ Future<void> _registerCoreServices() async {
   });
 
   getIt.registerLazySingleton<ConnectivityService>(() => ConnectivityService());
+  getIt.registerLazySingleton<PreviousStageWordsService>(
+    () => PreviousStageWordsService(),
+  );
 }
 
 Future<void> _registerRepositories() async {
@@ -66,6 +72,7 @@ Future<void> _registerRepositories() async {
     return StageRepositoryImpl(
       localDataSource: StageLocalDataSource(),
       generatorService: generatorService,
+      previousStageWordsService: getIt<PreviousStageWordsService>(),
     );
   });
 }
@@ -116,6 +123,15 @@ Future<void> _registerBlocs() async {
   );
 
   getIt.registerLazySingleton<TotalWordsBloc>(() => TotalWordsBloc());
+
+  getIt.registerSingletonAsync<SettingsCubit>(
+    () async => SettingsCubit(
+      openEmailUseCase: OpenEmailUseCase(),
+      previousStageWordsService: getIt<PreviousStageWordsService>(),
+      stageRepo: getIt<StageRepository>()
+    ),
+    dependsOn: [AuthCubit, StorageService],
+  );
 
   getIt.registerLazySingleton<StageBloc>(
     () => StageBloc(

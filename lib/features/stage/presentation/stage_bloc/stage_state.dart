@@ -19,45 +19,47 @@ final class StageLoading extends StageState {}
 
 abstract class StageActive extends StageState {
   final CurrentStage stage;
+  final DateTime timestamp;
 
-  const StageActive(this.stage);
+  StageActive(this.stage) : timestamp = DateTime.now();
 
   @override
-  List<Object> get props => [stage];
+  List<Object> get props => [stage, timestamp];
 }
 
 final class StageReady extends StageActive {
-  const StageReady(super.stage);
+  StageReady(super.stage);
 }
 
 final class StageInProgress extends StageActive {
   final List<int> newPositions;
 
-  const StageInProgress(super.stage, {required this.newPositions});
+  StageInProgress(super.stage, {required this.newPositions});
+
+  @override
+  List<Object> get props => [stage, timestamp, newPositions];
 }
 
 final class WordInvalid extends StageActive {
-  const WordInvalid(super.stage);
+  WordInvalid(super.stage);
 }
 
 final class WordAlreadyFound extends StageActive {
-  const WordAlreadyFound(super.stage);
+  WordAlreadyFound(super.stage);
 }
 
 final class ExtraWordFound extends StageActive {
-  const ExtraWordFound(super.stage);
+  ExtraWordFound(super.stage);
 }
 
 final class StageCompleted extends StageActive {
-  const StageCompleted(super.stage);
+  StageCompleted(super.stage);
 }
 
 final class StageInGameError extends StageActive {
   final String errorMessage;
-  final DateTime timestamp;
 
-  StageInGameError(super.stage, {required this.errorMessage})
-    : timestamp = DateTime.now();
+  StageInGameError(super.stage, {required this.errorMessage});
 
   @override
   List<Object> get props => [stage, errorMessage, timestamp];

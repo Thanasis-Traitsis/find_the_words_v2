@@ -26,7 +26,7 @@ class CustomPrimaryButton extends StatelessWidget {
     this.type = CustomTextType.smallBody,
     this.suffixIcon,
     this.prefixIcon,
-    this.iconSize = AppSizes.iconXS - 2,
+    this.iconSize = AppSizes.iconXXS,
     this.fullWidth = false,
     this.spacing = AppSpacing.spacingM,
     this.padding = const EdgeInsets.symmetric(
@@ -83,7 +83,7 @@ class CustomPrimaryButton extends StatelessWidget {
         ),
       ),
       child: AnimatedOpacity(
-        duration: const Duration(milliseconds: 500),
+        duration: const Duration(milliseconds: 300),
         opacity: isDisabled ? 0.7 : 1.0,
         child: Row(
           spacing: spacing,

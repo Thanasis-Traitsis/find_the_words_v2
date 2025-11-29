@@ -17,4 +17,9 @@ abstract class StageRepository {
   Future<void> clearStage();
 
   bool hasSavedStage();
+
+  void saveStageWordsAfterCompletion({
+    required List<String> foundWords,
+    required List<String> extraWords,
+  });
 }

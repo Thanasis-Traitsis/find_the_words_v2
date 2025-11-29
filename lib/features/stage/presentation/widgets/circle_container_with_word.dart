@@ -12,8 +12,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CircleContainerWithWord extends StatefulWidget {
   final List<String> letters;
+  final ValueChanged<bool>? onWordFormationChange;
 
-  const CircleContainerWithWord({super.key, required this.letters});
+  const CircleContainerWithWord({
+    super.key,
+    required this.letters,
+    this.onWordFormationChange,
+  });
 
   @override
   State<CircleContainerWithWord> createState() =>
@@ -73,23 +78,21 @@ class _CircleContainerWithWordState extends State<CircleContainerWithWord> {
   }
 
   void _handlePointerUp() {
+    widget.onWordFormationChange?.call(true);
     if (formatedWord.length > 2) {
-      getIt<StageBloc>().add(
-        SubmitFormatedWord(formatedWord.toString()),
-      );
+      getIt<StageBloc>().add(SubmitFormatedWord(formatedWord.toString()));
+    } else {
+      setState(() {
+        formatedWord.clear();
+        widget.onWordFormationChange?.call(false);
+      });
     }
 
     setState(() {
       isDragging = false;
       currentDragPosition = null;
-
-      if (mounted) {
-        setState(() {
-          selectedIndices.clear();
-          selectedPositions.clear();
-          formatedWord.clear();
-        });
-      }
+      selectedIndices.clear();
+      selectedPositions.clear();
     });
   }
 
@@ -108,7 +111,35 @@ class _CircleContainerWithWordState extends State<CircleContainerWithWord> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        FormatedWordContainer(word: formatedWord),
+        BlocListener<StageBloc, StageState>(
+          listener: (context, state) {
+            if (state is WordAlreadyFound || state is WordInvalid) {
+              Future.delayed(
+                const Duration(
+                  milliseconds: AppValues.wrongWordAnimationDurationMil,
+                ),
+                () {
+                  if (mounted) {
+                    setState(() {
+                      formatedWord.clear();
+                      widget.onWordFormationChange?.call(false);
+                    });
+                  }
+                },
+              );
+            } else {
+              if (mounted) {
+                setState(() {
+                  selectedIndices.clear();
+                  selectedPositions.clear();
+                  formatedWord.clear();
+                  widget.onWordFormationChange?.call(false);
+                });
+              }
+            }
+          },
+          child: FormatedWordContainer(word: formatedWord),
+        ),
         Container(
           margin: const EdgeInsets.symmetric(vertical: AppSpacing.spacingM),
           alignment: Alignment.center,

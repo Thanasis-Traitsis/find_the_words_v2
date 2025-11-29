@@ -38,7 +38,7 @@ class SortByButton extends StatelessWidget {
                         vertical: AppSpacing.spacingS,
                       ),
                       child: CustomText(
-                        '- ${sortType.getLabel(context)}',
+                        '• ${sortType.getLabel(context)}',
                         textType: state.sortType == sortType
                             ? CustomTextType.smallHeading
                             : CustomTextType.regularBody,

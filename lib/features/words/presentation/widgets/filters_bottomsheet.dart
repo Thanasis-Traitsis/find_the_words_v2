@@ -11,8 +11,9 @@ import 'package:find_the_words/core/widgets/custom_primary_button.dart';
 import 'package:find_the_words/core/widgets/custom_text.dart';
 import 'package:find_the_words/features/words/domain/models/word_filters.dart';
 import 'package:find_the_words/features/words/presentation/total_words_bloc/total_words_bloc.dart';
-import 'package:find_the_words/features/words/presentation/widgets/filters_letter_button.dart';
+import 'package:find_the_words/core/widgets/selected_option_button.dart';
 import 'package:find_the_words/features/words/presentation/widgets/filters_section.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class FiltersBottomsheet extends StatefulWidget {
@@ -60,12 +61,15 @@ class _FiltersBottomsheetState extends State<FiltersBottomsheet> {
   }
 
   void _applyFilters() {
+    final bool hasStaringLengths =
+        wordLengthValue.start.round() == 3 && wordLengthValue.end.round() == 12;
+    final Set<int> wordLength = hasStaringLengths
+        ? {}
+        : {wordLengthValue.start.round(), wordLengthValue.end.round()};
+
     final updatedFilters = newFilters.copyWith(
       selectedLetters: Set.from(selectedLetters),
-      selectedWordLengths: {
-        wordLengthValue.start.round(),
-        wordLengthValue.end.round(),
-      },
+      selectedWordLengths: wordLength,
     );
 
     getIt<TotalWordsBloc>().add(UpdateFiltersEvent(updatedFilters));
@@ -79,6 +83,18 @@ class _FiltersBottomsheetState extends State<FiltersBottomsheet> {
     });
     getIt<TotalWordsBloc>().add(ResetFiltersEvent());
     NavigationService.instance.pop();
+  }
+
+  bool applyButtonDisable() {
+    return listEquals(
+          selectedLetters,
+          widget.filters.selectedLetters.toList(),
+        ) &&
+        wordLengthValue ==
+            RangeValues(
+              newFilters.minWordLength.toDouble(),
+              newFilters.maxWordLength.toDouble(),
+            );
   }
 
   @override
@@ -128,10 +144,10 @@ class _FiltersBottomsheetState extends State<FiltersBottomsheet> {
                     newFilters.lettersFromSelectedLang.length,
                     (index) {
                       final letter = newFilters.lettersFromSelectedLang[index];
-                      return FiltersLetterButton(
-                        letter: letter,
-                        selectedLetters: selectedLetters,
+                      return SelectedOptionButton(
+                        content: letter,
                         onTap: () => _toggleLetter(letter),
+                        isSelected: selectedLetters.contains(letter),
                       );
                     },
                   ),
@@ -238,6 +254,7 @@ class _FiltersBottomsheetState extends State<FiltersBottomsheet> {
               Flexible(
                 fit: FlexFit.loose,
                 child: CustomPrimaryButton.regular(
+                  isDisabled: applyButtonDisable(),
                   text: context.translate.filtersButtonApply,
                   onTap: _applyFilters,
                 ),

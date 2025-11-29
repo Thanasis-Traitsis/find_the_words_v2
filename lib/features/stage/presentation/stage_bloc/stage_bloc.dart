@@ -58,6 +58,7 @@ class StageBloc extends Bloc<StageEvent, StageState> {
     if (state is! StageActive) return;
 
     final currentState = state as StageActive;
+
     final wordResult = await _submitWordUsecase(
       submittedWord: event.formatedWord,
       currentStage: currentState.stage,
@@ -78,8 +79,11 @@ class StageBloc extends Bloc<StageEvent, StageState> {
       case WordSubmissionResult.extra:
         emit(ExtraWordFound(wordResult.updatedStage));
         break;
-
       case WordSubmissionResult.notFound:
+        emit(WordInvalid(wordResult.updatedStage));
+        break;
+      case WordSubmissionResult.alreadyFound:
+        emit(WordAlreadyFound(wordResult.updatedStage));
         break;
     }
   }
@@ -100,7 +104,12 @@ class StageBloc extends Bloc<StageEvent, StageState> {
     );
 
     if (!success) {
-      emit(StageInGameError(currentState.stage, errorMessage: 'Not enough points to reveal letter'));
+      emit(
+        StageInGameError(
+          currentState.stage,
+          errorMessage: 'Not enough points to reveal letter',
+        ),
+      );
       return;
     }
     final result = await _revealLetterUsecase(
@@ -108,7 +117,7 @@ class StageBloc extends Bloc<StageEvent, StageState> {
       position: event.position,
     );
 
-    _emitStageState(
+    await _emitStageState(
       stage: result.stageAfterReveal,
       newPositions: [result.revealedPosition],
       emit: emit,
@@ -117,7 +126,7 @@ class StageBloc extends Bloc<StageEvent, StageState> {
     for (int i = 0; i < result.autoCompletedWords.length; i++) {
       final completedWord = result.autoCompletedWords[i];
 
-      _emitStageState(
+      await _emitStageState(
         stage: result.stageAfterReveal,
         newPositions: completedWord.positions,
         emit: emit,
@@ -129,6 +138,10 @@ class StageBloc extends Bloc<StageEvent, StageState> {
     }
   }
 
+  Future<void> _clearStage() async {
+    await _stageRepo.clearStage();
+  }
+
   Future<void> _handleFoundWord({
     required WordSubmissionData data,
     required Emitter<StageState> emit,
@@ -136,7 +149,7 @@ class StageBloc extends Bloc<StageEvent, StageState> {
   }) async {
     if (data.positions == null) return;
 
-    _emitStageState(
+    await _emitStageState(
       stage: data.updatedStage,
       newPositions: data.positions!,
       emit: emit,
@@ -155,7 +168,7 @@ class StageBloc extends Bloc<StageEvent, StageState> {
     for (int i = 0; i < intersectionResult.completedWords.length; i++) {
       final completedWord = intersectionResult.completedWords[i];
 
-      _emitStageState(
+      await _emitStageState(
         stage: intersectionResult.finalStage,
         newPositions: completedWord.positions,
         emit: emit,
@@ -169,13 +182,17 @@ class StageBloc extends Bloc<StageEvent, StageState> {
     }
   }
 
-  void _emitStageState({
+  Future<void> _emitStageState({
     required CurrentStage stage,
     required List<int> newPositions,
     required Emitter<StageState> emit,
-  }) {
+  }) async {
     if (stage.placementTracker.allWordsFound) {
-      _stageRepo.clearStage();
+      await _clearStage();
+      _stageRepo.saveStageWordsAfterCompletion(
+        foundWords: stage.placementTracker.foundWords,
+        extraWords: stage.placementTracker.extraWords,
+      );
       emit(StageCompleted(stage));
     } else {
       emit(StageInProgress(stage, newPositions: newPositions));

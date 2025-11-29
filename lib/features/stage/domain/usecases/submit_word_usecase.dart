@@ -3,7 +3,7 @@ import 'package:find_the_words/features/stage/domain/helpers/word_placement_trac
 import 'package:find_the_words/features/stage/domain/usecases/crossword_usecase.dart';
 import 'package:find_the_words/features/stage/domain/repositories/stage_repository.dart';
 
-enum WordSubmissionResult { found, replaced, extra, notFound }
+enum WordSubmissionResult { found, replaced, extra, notFound, alreadyFound }
 
 class WordSubmissionData {
   final WordSubmissionResult result;
@@ -24,8 +24,8 @@ class SubmitWordUsecase {
   SubmitWordUsecase({
     required CrosswordUsecase crosswordUsecase,
     required StageRepository repository,
-  })  : _crosswordUsecase = crosswordUsecase,
-        _repository = repository;
+  }) : _crosswordUsecase = crosswordUsecase,
+       _repository = repository;
 
   Future<WordSubmissionData?> call({
     required String submittedWord,
@@ -34,7 +34,23 @@ class SubmitWordUsecase {
     final formattedWord = submittedWord.toUpperCase();
     final boardTracker = currentStage.placementTracker;
 
-    // Case 1: Word is part of the crossword
+    // Case 1: Word doesn't exist
+    if (!currentStage.allWords.contains(formattedWord)) {
+      return WordSubmissionData(
+        result: WordSubmissionResult.notFound,
+        updatedStage: currentStage,
+      );
+    }
+
+    // Case 2: Word has already been found
+    if (boardTracker.isWordFound(formattedWord)) {
+      return WordSubmissionData(
+        result: WordSubmissionResult.alreadyFound,
+        updatedStage: currentStage,
+      );
+    }
+
+    // Case 3: Word is part of the crossword
     if (_wordInsideBoard(boardTracker, formattedWord)) {
       return await _handleDirectMatch(
         formattedWord,
@@ -43,7 +59,7 @@ class SubmitWordUsecase {
       );
     }
 
-    // Case 2: Word is valid and we can try to place it in the crossword
+    // Case 4: Word is valid and we can try to place it in the crossword
     if (_wordIsValid(currentStage, boardTracker, formattedWord)) {
       return await _handleReplacement(
         formattedWord,
@@ -80,10 +96,7 @@ class SubmitWordUsecase {
       placement: newWordPlacement,
     );
 
-    await _repository.saveStageProgress(
-      stage: updatedStage,
-      foundWord: word,
-    );
+    await _repository.saveStageProgress(stage: updatedStage, foundWord: word);
 
     return WordSubmissionData(
       result: WordSubmissionResult.found,
@@ -99,11 +112,7 @@ class SubmitWordUsecase {
   ) async {
     for (var placement in tracker.placements) {
       if (placement.word.length == word.length) {
-        if (_crosswordUsecase.canReplacePlacement(
-          tracker,
-          placement,
-          word,
-        )) {
+        if (_crosswordUsecase.canReplacePlacement(tracker, placement, word)) {
           tracker.markWordAsFound(word);
 
           final updatedStage = _crosswordUsecase.replacePlacement(
@@ -137,10 +146,7 @@ class SubmitWordUsecase {
       placementTracker: tracker,
     );
 
-    await _repository.saveStageProgress(
-      stage: updatedStage,
-      foundWord: word,
-    );
+    await _repository.saveStageProgress(stage: updatedStage, foundWord: word);
 
     return WordSubmissionData(
       result: WordSubmissionResult.extra,
@@ -153,7 +159,11 @@ class SubmitWordUsecase {
         !placementTracker.isWordFound(word);
   }
 
-  bool _wordIsValid(CurrentStage currentStage, WordPlacementTracker placementTracker, String word) {
+  bool _wordIsValid(
+    CurrentStage currentStage,
+    WordPlacementTracker placementTracker,
+    String word,
+  ) {
     return currentStage.allWords.contains(word) &&
         !placementTracker.isWordFound(word);
   }

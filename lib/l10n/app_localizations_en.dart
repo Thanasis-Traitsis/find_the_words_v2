@@ -118,6 +118,51 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsItemReportTermsConditions => 'Terms & Conditions';
 
   @override
+  String get settingsEmailSubjectReportBug => 'Just found a bug';
+
+  @override
+  String get settingsEmailSubjectBadWord => 'Report a bad word';
+
+  @override
+  String get settingsEmailSubjectContact => 'Game Feedback';
+
+  @override
+  String get settingsResetStageBottomsheetDescription => 'Having trouble solving the stage? Or maybe something went wrong and the crossword didn’t load correctly? You can reset the stage and try again.';
+
+  @override
+  String get settingsResetStageBottomsheetRestartButton => 'Restart';
+
+  @override
+  String get settingsResetStageDialogHeader => 'Warning!';
+
+  @override
+  String get settingsResetStageDialogDescription => 'Are you sure you want to delete the current stage? If you continue, all your progress will be lost and a new stage will start from the beginning.';
+
+  @override
+  String get settingsResetStageDialogButtonCancel => 'Close';
+
+  @override
+  String get settingsResetStageDialogButtonSubmit => 'Submit';
+
+  @override
+  String get settingsBadWordBottomsheetDescription => 'Did you come across a word that you find inappropriate? If you noticed any offensive or unsuitable word, you can report it. Choose one of the words from the previous stage or type the word you think should be removed.';
+
+  @override
+  String get settingsBadWordBottomsheetSectionTitleStageWords => 'Words from the previous stage';
+
+  @override
+  String get settingsBadWordBottomsheetSectionTitleSelectedWord => 'Type the word you want to be removed';
+
+  @override
+  String get settingsBadWordBottomsheetTextfieldHint => 'Type the word here';
+
+  @override
+  String get settingsBadWordBottomsheetButtonClear => 'Clear';
+
+  @override
+  String get settingsBadWordBottomsheetButtonSubmit => 'Submit';
+
+  @override
   String get themeOptionLight => 'Light';
 
   @override
@@ -333,4 +378,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get filtersButtonClean => 'Clear';
+
+  @override
+  String get chipAllLetters => 'All letters';
+
+  @override
+  String chipSelectedLetters(String letters) {
+    return 'Selected letters: $letters';
+  }
+
+  @override
+  String chipSelectedRangeOfWordLength(int minWordLength, int maxWordLength) {
+    return 'Word length: $minWordLength - $maxWordLength';
+  }
 }

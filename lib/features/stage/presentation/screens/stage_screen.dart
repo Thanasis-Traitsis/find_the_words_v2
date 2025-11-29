@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:find_the_words/config/routes/app_pages.dart';
 import 'package:find_the_words/core/services/service_locator.dart';
+import 'package:find_the_words/core/services/sound_service.dart';
 import 'package:find_the_words/core/utils/snackbar_helper.dart';
 import 'package:find_the_words/core/utils/text_extensions.dart';
 import 'package:find_the_words/core/utils/theme_extensions.dart';
@@ -35,6 +36,7 @@ class StageScreen extends StatefulWidget {
 
 class _StageScreenState extends State<StageScreen> {
   bool _showOverlay = false;
+  bool _blockWordCreation = false;
   final GlobalKey _buttonKey = GlobalKey();
   final GlobalKey _activeDescription = GlobalKey();
   final Map<int, GlobalKey> _gridKeys = {};
@@ -43,6 +45,8 @@ class _StageScreenState extends State<StageScreen> {
   Timer? _timer;
   int _elapsedSeconds = 0;
   late final String _timerKey = AppKeys.timerKey(widget.stage);
+
+  final _soundService = SoundService();
 
   @override
   void initState() {
@@ -53,6 +57,7 @@ class _StageScreenState extends State<StageScreen> {
   @override
   void dispose() {
     _saveTimerToPrefs();
+    _soundService.dispose();
     _timer?.cancel();
     super.dispose();
   }
@@ -97,6 +102,10 @@ class _StageScreenState extends State<StageScreen> {
 
     if (state is StageInGameError) {
       SnackbarHelper.showError(context, state.errorMessage);
+    }
+
+    if (state is StageActive) {
+      _soundService.playResultSound(state);
     }
   }
 
@@ -167,7 +176,7 @@ class _StageScreenState extends State<StageScreen> {
             state.stage.placementTracker.remainingPositions;
 
         return AbsorbPointer(
-          absorbing: state is StageCompleted,
+          absorbing: state is StageCompleted || _blockWordCreation,
           child: CustomScreen.withOverlay(
             showOverlay: _showOverlay,
             overlayWidgetKeys: keysToHighlight,
@@ -244,7 +253,14 @@ class _StageScreenState extends State<StageScreen> {
                       ),
                     ),
                   ),
-                  CircleContainerWithWord(letters: state.stage.letters),
+                  CircleContainerWithWord(
+                    letters: state.stage.letters,
+                    onWordFormationChange: (blockWord) {
+                      setState(() {
+                        _blockWordCreation = blockWord;
+                      });
+                    },
+                  ),
                   Row(
                     spacing: AppSpacing.spacingM,
                     mainAxisAlignment: MainAxisAlignment.end,

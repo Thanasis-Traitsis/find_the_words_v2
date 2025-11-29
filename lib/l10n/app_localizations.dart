@@ -305,6 +305,96 @@ abstract class AppLocalizations {
   /// **'Terms & Conditions'**
   String get settingsItemReportTermsConditions;
 
+  /// No description provided for @settingsEmailSubjectReportBug.
+  ///
+  /// In en, this message translates to:
+  /// **'Just found a bug'**
+  String get settingsEmailSubjectReportBug;
+
+  /// No description provided for @settingsEmailSubjectBadWord.
+  ///
+  /// In en, this message translates to:
+  /// **'Report a bad word'**
+  String get settingsEmailSubjectBadWord;
+
+  /// No description provided for @settingsEmailSubjectContact.
+  ///
+  /// In en, this message translates to:
+  /// **'Game Feedback'**
+  String get settingsEmailSubjectContact;
+
+  /// No description provided for @settingsResetStageBottomsheetDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Having trouble solving the stage? Or maybe something went wrong and the crossword didn’t load correctly? You can reset the stage and try again.'**
+  String get settingsResetStageBottomsheetDescription;
+
+  /// No description provided for @settingsResetStageBottomsheetRestartButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Restart'**
+  String get settingsResetStageBottomsheetRestartButton;
+
+  /// No description provided for @settingsResetStageDialogHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'Warning!'**
+  String get settingsResetStageDialogHeader;
+
+  /// No description provided for @settingsResetStageDialogDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete the current stage? If you continue, all your progress will be lost and a new stage will start from the beginning.'**
+  String get settingsResetStageDialogDescription;
+
+  /// No description provided for @settingsResetStageDialogButtonCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get settingsResetStageDialogButtonCancel;
+
+  /// No description provided for @settingsResetStageDialogButtonSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit'**
+  String get settingsResetStageDialogButtonSubmit;
+
+  /// No description provided for @settingsBadWordBottomsheetDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Did you come across a word that you find inappropriate? If you noticed any offensive or unsuitable word, you can report it. Choose one of the words from the previous stage or type the word you think should be removed.'**
+  String get settingsBadWordBottomsheetDescription;
+
+  /// No description provided for @settingsBadWordBottomsheetSectionTitleStageWords.
+  ///
+  /// In en, this message translates to:
+  /// **'Words from the previous stage'**
+  String get settingsBadWordBottomsheetSectionTitleStageWords;
+
+  /// No description provided for @settingsBadWordBottomsheetSectionTitleSelectedWord.
+  ///
+  /// In en, this message translates to:
+  /// **'Type the word you want to be removed'**
+  String get settingsBadWordBottomsheetSectionTitleSelectedWord;
+
+  /// No description provided for @settingsBadWordBottomsheetTextfieldHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Type the word here'**
+  String get settingsBadWordBottomsheetTextfieldHint;
+
+  /// No description provided for @settingsBadWordBottomsheetButtonClear.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get settingsBadWordBottomsheetButtonClear;
+
+  /// No description provided for @settingsBadWordBottomsheetButtonSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit'**
+  String get settingsBadWordBottomsheetButtonSubmit;
+
   /// No description provided for @themeOptionLight.
   ///
   /// In en, this message translates to:
@@ -730,6 +820,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Clear'**
   String get filtersButtonClean;
+
+  /// No description provided for @chipAllLetters.
+  ///
+  /// In en, this message translates to:
+  /// **'All letters'**
+  String get chipAllLetters;
+
+  /// Show selected letters
+  ///
+  /// In en, this message translates to:
+  /// **'Selected letters: {letters}'**
+  String chipSelectedLetters(String letters);
+
+  /// Show selected letters
+  ///
+  /// In en, this message translates to:
+  /// **'Word length: {minWordLength} - {maxWordLength}'**
+  String chipSelectedRangeOfWordLength(int minWordLength, int maxWordLength);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

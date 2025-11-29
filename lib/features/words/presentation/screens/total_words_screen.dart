@@ -11,6 +11,7 @@ import 'package:find_the_words/core/widgets/big_heading.dart';
 import 'package:find_the_words/core/widgets/custom_text.dart';
 import 'package:find_the_words/features/words/presentation/total_words_bloc/total_words_bloc.dart';
 import 'package:find_the_words/features/words/presentation/widgets/filter_button.dart';
+import 'package:find_the_words/features/words/presentation/widgets/filters_chips_container.dart';
 import 'package:find_the_words/features/words/presentation/widgets/search_textfield.dart';
 import 'package:find_the_words/features/words/presentation/widgets/sort_by_button.dart';
 import 'package:find_the_words/features/words/presentation/widgets/word_row_item.dart';
@@ -110,6 +111,7 @@ class _TotalWordsViewState extends State<_TotalWordsView> {
                         children: [const FilterButton(), const SortByButton()],
                       ),
                     ),
+                    const SliverToBoxAdapter(child: FiltersChipsContainer()),
                     if (state.displayedWords.isEmpty && !state.isLoadingMore)
                       SliverToBoxAdapter(
                         child: Padding(

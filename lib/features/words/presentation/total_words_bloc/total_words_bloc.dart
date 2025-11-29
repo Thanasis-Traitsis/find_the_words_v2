@@ -89,7 +89,6 @@ class TotalWordsBloc extends Bloc<TotalWordsEvent, TotalWordsState> {
     emit(
       state.copyWith(
         filters: WordFilters.initial(),
-        searchQuery: '',
         displayedWords: [],
       ),
     );

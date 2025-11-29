@@ -24,3 +24,5 @@ class CrosswordLetterReveal extends StageEvent {
 
   const CrosswordLetterReveal(this.position);
 }
+
+class ClearCurrentStage extends StageEvent {}
