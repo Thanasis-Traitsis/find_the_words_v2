@@ -1,11 +1,12 @@
 import 'package:find_the_words/core/constants/constants.dart';
+import 'package:find_the_words/core/constants/custom_icons.dart';
 import 'package:find_the_words/core/utils/theme_extensions.dart';
 import 'package:find_the_words/core/widgets/custom_svg_icon.dart';
 import 'package:flutter/material.dart';
 
 class CardIconContainer extends StatelessWidget {
   final Color backgroundColor;
-  final String icon;
+  final CustomIcons icon;
 
   const CardIconContainer({
     super.key,

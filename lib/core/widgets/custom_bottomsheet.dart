@@ -1,9 +1,11 @@
 import 'package:find_the_words/config/theme/custom_text_type.dart';
 import 'package:find_the_words/core/constants/constants.dart';
+import 'package:find_the_words/core/constants/custom_icons.dart';
 import 'package:find_the_words/core/services/navigation_service.dart';
 import 'package:find_the_words/core/utils/screen_extensions.dart';
 import 'package:find_the_words/core/utils/theme_extensions.dart';
 import 'package:find_the_words/core/widgets/custom_icon_button.dart';
+import 'package:find_the_words/core/widgets/custom_svg_icon.dart';
 import 'package:find_the_words/core/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 
@@ -11,12 +13,16 @@ class CustomBottomsheet extends StatelessWidget {
   final String headerTitle;
   final Widget bottomsheetContent;
   final Widget? bottomFixedWidget;
+  final CustomIcons? prefixIcon;
+  final Widget? suffixWidget;
 
   const CustomBottomsheet({
     super.key,
     required this.headerTitle,
     required this.bottomsheetContent,
     this.bottomFixedWidget,
+    this.prefixIcon,
+    this.suffixWidget,
   });
 
   @override
@@ -45,17 +51,36 @@ class CustomBottomsheet extends StatelessWidget {
                     child: Row(
                       spacing: AppSpacing.spacingM,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        CustomText(
-                          headerTitle,
-                          textType: CustomTextType.regularHeading,
+                        Expanded(
+                          child: Row(
+                            spacing: AppSpacing.spacingM,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              if (prefixIcon != null)
+                                CustomSvgIcon(
+                                  icon: prefixIcon!,
+                                  color: context.colors.text,
+                                  height: AppSizes.iconL,
+                                ),
+                              Expanded(
+                                child: CustomText(
+                                  headerTitle,
+                                  textType: CustomTextType.regularHeading,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                        CustomIconButton(
-                          onTap: () {
-                            NavigationService.instance.pop();
-                          },
-                          icon: 'close',
-                        ),
+                        suffixWidget != null
+                            ? suffixWidget!
+                            : CustomIconButton(
+                                onTap: () {
+                                  NavigationService.instance.pop();
+                                },
+                                icon: CustomIcons.close,
+                              ),
                       ],
                     ),
                   ),

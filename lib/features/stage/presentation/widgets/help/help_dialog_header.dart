@@ -1,3 +1,4 @@
+import 'package:find_the_words/core/constants/custom_icons.dart';
 import 'package:find_the_words/core/utils/text_extensions.dart';
 import 'package:find_the_words/core/utils/theme_extensions.dart';
 import 'package:find_the_words/features/stage/presentation/widgets/stage_dialog_header.dart';
@@ -9,7 +10,7 @@ class HelpDialogHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StageDialogHeader(
-      icon: 'help',
+      icon: CustomIcons.help,
       headerTitle: context.translate.helpDialogTitle,
       headerDescription: context.translate.helpDialogSubtitle,
       borderColor: context.colors.secondary,

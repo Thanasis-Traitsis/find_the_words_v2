@@ -1,6 +1,7 @@
 import 'package:find_the_words/config/theme/custom_text_type.dart';
 import 'package:find_the_words/config/theme/theme_cubit/theme_cubit.dart';
 import 'package:find_the_words/core/constants/constants.dart';
+import 'package:find_the_words/core/constants/custom_icons.dart';
 import 'package:find_the_words/core/utils/text_extensions.dart';
 import 'package:find_the_words/core/utils/theme_extensions.dart';
 import 'package:find_the_words/core/widgets/custom_svg_icon.dart';
@@ -32,7 +33,7 @@ class ThemeSelectionRow extends StatelessWidget {
                 ? SizedBox(
                     width: AppSizes.minTouchTarget,
                     child: CustomSvgIcon(
-                      icon: 'check',
+                      icon: CustomIcons.check,
                       color: context.colors.text,
                     ),
                   )

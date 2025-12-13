@@ -5,10 +5,12 @@ import 'package:find_the_words/features/stage/domain/helpers/stage_difficulty_ca
 class XPCalculator {
   final StageResults stageResults;
   final StageDifficultyCalculator difficultyCalculator;
+  final int multiplier;
 
   XPCalculator({
     required this.stageResults,
     required this.difficultyCalculator,
+    required this.multiplier,
   });
 
   int calculateTotalXP() {
@@ -26,7 +28,7 @@ class XPCalculator {
 
     // Calculate final XP
     final totalXP =
-        (baseXP * difficultyMultiplier * timeMultiplier) + extraWordsBonus;
+        ((baseXP * difficultyMultiplier * timeMultiplier) + extraWordsBonus) * multiplier;
 
     return totalXP.round().clamp(10, 1000);
   }

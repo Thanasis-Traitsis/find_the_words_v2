@@ -11,6 +11,8 @@ class AppSizes {
   static const double iconL = 32.0;
   static const double iconXL = 36.0;
   static const double iconXXL = 48.0;
+  static const double currentBoosIcon = 80.0;
+  static const double rewardIcon = 120.0;
 
   // Component Heights
   static const double progressBar = 14.0;

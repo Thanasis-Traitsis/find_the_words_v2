@@ -16,7 +16,9 @@ class WordsModelAdapter extends TypeAdapter<WordsModel> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return WordsModel(words: (fields[0] as Map).cast<String, dynamic>());
+    return WordsModel(
+      words: (fields[0] as Map).cast<String, dynamic>(),
+    );
   }
 
   @override

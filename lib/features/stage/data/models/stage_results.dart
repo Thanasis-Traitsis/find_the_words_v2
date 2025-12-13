@@ -10,6 +10,7 @@ class StageResults {
   final int xpEarned;
   final double currentProgress;
   final double newProgress;
+  final int? xpBoost; 
 
   StageResults({
     required this.level,
@@ -21,6 +22,7 @@ class StageResults {
     required this.xpEarned,
     required this.currentProgress,
     required double newProgress,
+    this.xpBoost,
   }) : newProgress = newProgress.clamp(0, 100);
 
   String getFormattedTime() {

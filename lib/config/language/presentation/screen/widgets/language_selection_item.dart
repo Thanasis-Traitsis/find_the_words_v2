@@ -3,6 +3,7 @@ import 'package:find_the_words/config/theme/custom_text_type.dart';
 import 'package:find_the_words/core/constants/app_borders.dart';
 import 'package:find_the_words/core/constants/app_sizes.dart';
 import 'package:find_the_words/core/constants/app_spacing.dart';
+import 'package:find_the_words/core/constants/custom_icons.dart';
 import 'package:find_the_words/core/utils/theme_extensions.dart';
 import 'package:find_the_words/core/widgets/custom_svg_icon.dart';
 import 'package:find_the_words/core/widgets/custom_text.dart';
@@ -62,7 +63,7 @@ class LanguageSelectionItem extends StatelessWidget {
             Opacity(
               opacity: isSelected ? 1 : 0,
               child: CustomSvgIcon(
-                icon: 'flag',
+                icon: CustomIcons.flag,
                 color: context.colors.black,
                 height: 20,
               ),

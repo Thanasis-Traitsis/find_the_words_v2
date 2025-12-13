@@ -1,5 +1,6 @@
 import 'package:find_the_words/config/sound/cubit/sound_cubit.dart';
 import 'package:find_the_words/core/services/service_locator.dart';
+import 'package:find_the_words/features/auth/account_boost_cubit/account_boost_cubit.dart';
 import 'package:find_the_words/features/auth/auth_cubit/auth_cubit.dart';
 import 'package:find_the_words/features/points/cubit/points_cubit.dart';
 import 'package:find_the_words/features/settings/presentation/settings_cubit/settings_cubit.dart';
@@ -46,6 +47,7 @@ Future<void> runMyApp() async {
         BlocProvider.value(value: settingsCubit),
         BlocProvider.value(value: getIt<AuthCubit>()),
         BlocProvider.value(value: getIt<PointsCubit>()),
+        BlocProvider.value(value: getIt<AccountBoostCubit>()),
         BlocProvider.value(value: getIt<StageBloc>()),
         BlocProvider.value(value: getIt<TotalWordsBloc>()),
       ],

@@ -1,3 +1,4 @@
+import 'package:find_the_words/core/constants/custom_icons.dart';
 import 'package:find_the_words/core/utils/text_extensions.dart';
 import 'package:find_the_words/core/widgets/custom_game_dialog.dart';
 import 'package:find_the_words/features/stage/presentation/widgets/help/help_dialog_header.dart';
@@ -15,20 +16,20 @@ class HelpDialog extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           HelpListItem.free(
-            icon: 'shuffle',
+            icon: CustomIcons.shuffle,
             helpTitle: context.translate.helpDialogShuffleTitle,
             helpDescription: context.translate.helpDialogShuffleDescription,
           ),
           HelpListItem(
             points: 10,
-            icon: 'magic_wond',
+            icon: CustomIcons.magicWand,
             helpTitle: context.translate.helpDialogRandomLetterTitle,
             helpDescription:
                 context.translate.helpDialogRandomLetterDescription,
           ),
           HelpListItem(
             points: 25,
-            icon: 'target',
+            icon: CustomIcons.target,
             helpTitle: context.translate.helpDialogSpecificLetterTitle,
             helpDescription:
                 context.translate.helpDialogSpecificLetterDescription,

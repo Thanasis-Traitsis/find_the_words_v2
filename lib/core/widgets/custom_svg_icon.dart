@@ -1,8 +1,9 @@
+import 'package:find_the_words/core/constants/custom_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class CustomSvgIcon extends StatelessWidget {
-  final String icon;
+  final CustomIcons icon;
   final Color color;
   final double? height;
 
@@ -16,7 +17,7 @@ class CustomSvgIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SvgPicture.asset(
-      'assets/icons/$icon.svg',
+      'assets/icons/${icon.fileName}.svg',
       colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
       height: height,
     );

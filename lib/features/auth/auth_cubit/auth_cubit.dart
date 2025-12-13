@@ -18,7 +18,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'auth_state.dart';
 
-class AuthCubit extends Cubit<AuthState> with ChangeNotifier {
+class AuthCubit extends Cubit<AuthState> {
   final UserRepository _userRepo;
 
   AuthCubit(this._userRepo) : super(AuthLoading()) {
@@ -167,11 +167,5 @@ class AuthCubit extends Cubit<AuthState> with ChangeNotifier {
 
       emit(AuthAuthenticated(user: updatedUser));
     }
-  }
-
-  @override
-  void emit(AuthState state) {
-    super.emit(state);
-    notifyListeners();
   }
 }

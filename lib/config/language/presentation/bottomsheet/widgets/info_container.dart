@@ -1,5 +1,6 @@
 import 'package:find_the_words/config/theme/custom_text_type.dart';
 import 'package:find_the_words/core/constants/constants.dart';
+import 'package:find_the_words/core/constants/custom_icons.dart';
 import 'package:find_the_words/core/utils/theme_extensions.dart';
 import 'package:find_the_words/core/widgets/custom_svg_icon.dart';
 import 'package:find_the_words/core/widgets/custom_text.dart';
@@ -41,7 +42,7 @@ class InfoContainer extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomSvgIcon(
-            icon: 'info',
+            icon: CustomIcons.info,
             color: context.colors.darkBlue,
             height: iconSize,
           ),

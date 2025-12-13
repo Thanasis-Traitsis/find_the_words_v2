@@ -1,12 +1,13 @@
 import 'package:find_the_words/config/theme/custom_text_type.dart';
 import 'package:find_the_words/core/constants/constants.dart';
+import 'package:find_the_words/core/constants/custom_icons.dart';
 import 'package:find_the_words/core/utils/theme_extensions.dart';
 import 'package:find_the_words/core/widgets/custom_svg_icon.dart';
 import 'package:find_the_words/core/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 
 class StageIconButton extends StatelessWidget {
-  final String icon;
+  final CustomIcons icon;
   final String? text;
   final int? points;
   final VoidCallback onTap;
@@ -69,7 +70,7 @@ class StageIconButton extends StatelessWidget {
                         ),
                       ),
                       CustomSvgIcon(
-                        icon: 'star',
+                        icon: CustomIcons.star,
                         color: context.colors.darkPink,
                         height: AppSizes.tinyHeight,
                       ),

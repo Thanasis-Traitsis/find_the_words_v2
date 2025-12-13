@@ -1,5 +1,6 @@
 import 'package:find_the_words/config/theme/custom_text_type.dart';
 import 'package:find_the_words/core/constants/constants.dart';
+import 'package:find_the_words/core/constants/custom_icons.dart';
 import 'package:find_the_words/core/utils/theme_extensions.dart';
 import 'package:find_the_words/core/widgets/custom_svg_icon.dart';
 import 'package:find_the_words/core/widgets/custom_text.dart';
@@ -68,7 +69,7 @@ class _ExtraWordsBoxState extends State<ExtraWordsBox>
                 color: context.colors.darkBlue,
               ),
             ),
-            child: CustomSvgIcon(icon: 'box', color: context.colors.darkBlue),
+            child: CustomSvgIcon(icon: CustomIcons.box, color: context.colors.darkBlue),
           ),
         ),
         BlocBuilder<StageBloc, StageState>(

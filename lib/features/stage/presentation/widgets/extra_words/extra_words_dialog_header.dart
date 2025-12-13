@@ -1,3 +1,4 @@
+import 'package:find_the_words/core/constants/custom_icons.dart';
 import 'package:find_the_words/core/utils/text_extensions.dart';
 import 'package:find_the_words/core/utils/theme_extensions.dart';
 import 'package:find_the_words/features/stage/presentation/widgets/stage_dialog_header.dart';
@@ -9,7 +10,7 @@ class ExtraWordsDialogHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StageDialogHeader(
-      icon: 'box',
+      icon: CustomIcons.box,
       headerTitle: context.translate.extraWordsDialogTitle,
       headerDescription: context.translate.extraWordsDialogSubtitle,
       borderColor: context.colors.primary,

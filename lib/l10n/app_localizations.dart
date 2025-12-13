@@ -838,6 +838,186 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Word length: {minWordLength} - {maxWordLength}'**
   String chipSelectedRangeOfWordLength(int minWordLength, int maxWordLength);
+
+  /// No description provided for @storeBottomsheetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Store'**
+  String get storeBottomsheetTitle;
+
+  /// No description provided for @storeBottomsheetDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Here you\'ll find many offers and boosts for your game!'**
+  String get storeBottomsheetDescription;
+
+  /// No description provided for @currentBoostTag.
+  ///
+  /// In en, this message translates to:
+  /// **'ACTIVE BOOST'**
+  String get currentBoostTag;
+
+  /// No description provided for @currentBoostXpMultiplierHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'Level XP Multiplier'**
+  String get currentBoostXpMultiplierHeader;
+
+  /// No description provided for @currentBoostXpMultiplierDurationSubtitle1.
+  ///
+  /// In en, this message translates to:
+  /// **'minutes'**
+  String get currentBoostXpMultiplierDurationSubtitle1;
+
+  /// Plural form for levels
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{level} other{levels}}'**
+  String currentBoostXpMultiplierStageSubtitle1(int count);
+
+  /// Plural form for remaining
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{remaining} other{remaining}}'**
+  String currentBoostXpMultiplierSubtitle2(num count);
+
+  /// No description provided for @xpMultiplierHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'Multiplier'**
+  String get xpMultiplierHeader;
+
+  /// Define the multiplier
+  ///
+  /// In en, this message translates to:
+  /// **'Multiply your experience! Earn x{multiplier} XP for every level you complete.'**
+  String xpMultiplierDescription(int multiplier);
+
+  /// No description provided for @xpMultiplierFirstOfferHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'By Time'**
+  String get xpMultiplierFirstOfferHeader;
+
+  /// No description provided for @xpMultiplierFirstOfferDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose how long your boost will last.'**
+  String get xpMultiplierFirstOfferDescription;
+
+  /// Plural form for minutes
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{minute} other{minutes}}'**
+  String xpMultiplierFirstOfferCardText(int count);
+
+  /// No description provided for @xpMultiplierSecondOfferHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'By Levels'**
+  String get xpMultiplierSecondOfferHeader;
+
+  /// No description provided for @xpMultiplierSecondOfferDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose how many levels you want to boost your experience for.'**
+  String get xpMultiplierSecondOfferDescription;
+
+  /// Plural form for levels
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{level} other{levels}}'**
+  String xpMultiplierSecondOfferCardText(int count);
+
+  /// No description provided for @freezeHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'Freeze'**
+  String get freezeHeader;
+
+  /// No description provided for @freezeDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop the timer and solve the level at your own pace! Think through your moves without the rush.'**
+  String get freezeDescription;
+
+  /// No description provided for @rewardsHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'Rewards'**
+  String get rewardsHeader;
+
+  /// No description provided for @rewardsFirstOfferTitleSmall.
+  ///
+  /// In en, this message translates to:
+  /// **'Earn'**
+  String get rewardsFirstOfferTitleSmall;
+
+  /// Points the user will earn
+  ///
+  /// In en, this message translates to:
+  /// **'{rewardPoints} {rewardPoints, plural, =1{point} other{points}}!'**
+  String rewardsFirstOfferTitleBig(int rewardPoints);
+
+  /// Points the user will earn
+  ///
+  /// In en, this message translates to:
+  /// **'Watch a short ad and earn {rewardPoints} {rewardPoints, plural, =1{point} other{points}}!'**
+  String rewardsFirstOfferDescription(int rewardPoints);
+
+  /// No description provided for @rewardsSecondOfferTitleSmall.
+  ///
+  /// In en, this message translates to:
+  /// **'Activate'**
+  String get rewardsSecondOfferTitleSmall;
+
+  /// Percentage the user will earn
+  ///
+  /// In en, this message translates to:
+  /// **'{offerPercentage}% discount!'**
+  String rewardsSecondOfferTitleBig(int offerPercentage);
+
+  /// Percentage the user will earn
+  ///
+  /// In en, this message translates to:
+  /// **'Watch an ad and activate {offerPercentage}% off on all products!'**
+  String rewardsSecondOfferDescription(int offerPercentage);
+
+  /// No description provided for @rewardsThirdOfferTitleSmall.
+  ///
+  /// In en, this message translates to:
+  /// **'Earn'**
+  String get rewardsThirdOfferTitleSmall;
+
+  /// How many freezes the user will earn
+  ///
+  /// In en, this message translates to:
+  /// **'{freezes} {freezes, plural, =1{freeze} other{freezes}}!'**
+  String rewardsThirdOfferTitleBig(int freezes);
+
+  /// How many freezes the user will earn
+  ///
+  /// In en, this message translates to:
+  /// **'Watch an ad and {freezes} freeze {freezes, plural, =1{power} other{powers}} will instantly be yours!'**
+  String rewardsThirdOfferDescription(int freezes);
+
+  /// No description provided for @rewardActiveCard.
+  ///
+  /// In en, this message translates to:
+  /// **'ACTIVE'**
+  String get rewardActiveCard;
+
+  /// No description provided for @stageCompletionXpBoostHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'Multiplier XP'**
+  String get stageCompletionXpBoostHeader;
+
+  /// No description provided for @stageCompletionXpBoostDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'You won extra points of experience from this stage'**
+  String get stageCompletionXpBoostDescription;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

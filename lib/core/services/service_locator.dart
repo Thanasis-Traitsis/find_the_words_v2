@@ -2,6 +2,7 @@ import 'package:find_the_words/config/language/cubit/language_cubit.dart';
 import 'package:find_the_words/core/services/connectivity_service.dart';
 import 'package:find_the_words/core/services/previous_stage_words_service.dart';
 import 'package:find_the_words/core/services/storage_service.dart';
+import 'package:find_the_words/features/auth/account_boost_cubit/account_boost_cubit.dart';
 import 'package:find_the_words/features/auth/auth_cubit/auth_cubit.dart';
 import 'package:find_the_words/features/auth/data/repositories/user_repository_impl.dart';
 import 'package:find_the_words/features/auth/domain/repositories/user_repository.dart';
@@ -122,13 +123,21 @@ Future<void> _registerBlocs() async {
     dependsOn: [AuthCubit, StorageService],
   );
 
+  getIt.registerSingletonAsync<AccountBoostCubit>(
+    () async => AccountBoostCubit(
+      authCubit: getIt<AuthCubit>(),
+      storageService: getIt<StorageService>(),
+    ),
+    dependsOn: [AuthCubit, StorageService],
+  );
+
   getIt.registerLazySingleton<TotalWordsBloc>(() => TotalWordsBloc());
 
   getIt.registerSingletonAsync<SettingsCubit>(
     () async => SettingsCubit(
       openEmailUseCase: OpenEmailUseCase(),
       previousStageWordsService: getIt<PreviousStageWordsService>(),
-      stageRepo: getIt<StageRepository>()
+      stageRepo: getIt<StageRepository>(),
     ),
     dependsOn: [AuthCubit, StorageService],
   );

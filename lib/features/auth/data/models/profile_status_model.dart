@@ -1,5 +1,6 @@
 import 'package:find_the_words/config/language/app_language.dart';
 import 'package:find_the_words/core/models/words_model.dart';
+import 'package:find_the_words/features/auth/data/models/account_boost_model.dart';
 import 'package:hive/hive.dart';
 
 part 'profile_status_model.g.dart';
@@ -26,12 +27,17 @@ class ProfileStatusModel {
   @override
   final WordsModel wordsModel;
 
+  @HiveField(5)
+  @override
+  final AccountBoostModel? activeBoost;
+
   ProfileStatusModel({
     required this.language,
     required this.level,
     required double progress,
     required this.stage,
     required this.wordsModel,
+    this.activeBoost,
   }) : progress = progress.clamp(0, 100);
 
   factory ProfileStatusModel.initial(AppLanguage language) {
@@ -41,8 +47,14 @@ class ProfileStatusModel {
       progress: 0,
       stage: 1,
       wordsModel: WordsModel(words: {}),
+      activeBoost: null,
     );
   }
+
+  bool get hasActiveBoost =>
+      activeBoost != null && activeBoost!.isActive && !activeBoost!.isExpired;
+
+  int get xpMultiplier => hasActiveBoost ? activeBoost!.multiplier : 1;
 
   ProfileStatusModel copyWith({
     AppLanguage? language,
@@ -50,6 +62,8 @@ class ProfileStatusModel {
     double? progress,
     int? stage,
     WordsModel? words,
+    AccountBoostModel? activeBoost,
+    bool clearBoost = false,
   }) {
     return ProfileStatusModel(
       language: language ?? this.language,
@@ -57,6 +71,7 @@ class ProfileStatusModel {
       progress: progress ?? this.progress,
       stage: stage ?? this.stage,
       wordsModel: words ?? wordsModel,
+      activeBoost: clearBoost ? null : (activeBoost ?? this.activeBoost),
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:find_the_words/config/routes/app_pages.dart';
 import 'package:find_the_words/config/theme/custom_text_type.dart';
 import 'package:find_the_words/core/constants/constants.dart';
+import 'package:find_the_words/core/constants/custom_icons.dart';
 import 'package:find_the_words/core/models/words_model.dart';
 import 'package:find_the_words/core/utils/text_extensions.dart';
 import 'package:find_the_words/core/utils/theme_extensions.dart';
@@ -31,7 +32,7 @@ class TotalWordsCard extends StatelessWidget {
             children: [
               CardIconContainer(
                 backgroundColor: context.colors.primary,
-                icon: 'list',
+                icon: CustomIcons.list,
               ),
               Expanded(
                 child: Column(
@@ -51,7 +52,7 @@ class TotalWordsCard extends StatelessWidget {
                 ),
               ),
               CustomSvgIcon(
-                icon: 'arrow_right',
+                icon: CustomIcons.arrowRight,
                 color: context.colors.darkBlue,
                 height: AppSizes.iconS,
               ),

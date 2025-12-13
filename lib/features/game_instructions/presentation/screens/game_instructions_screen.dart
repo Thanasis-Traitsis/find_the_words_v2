@@ -1,5 +1,6 @@
 import 'package:find_the_words/config/theme/custom_text_type.dart';
 import 'package:find_the_words/core/constants/constants.dart';
+import 'package:find_the_words/core/constants/custom_icons.dart';
 import 'package:find_the_words/core/screens/custom_screen.dart';
 import 'package:find_the_words/core/utils/text_extensions.dart';
 import 'package:find_the_words/core/widgets/big_heading.dart';
@@ -24,12 +25,12 @@ class GameInstructionsScreen extends StatelessWidget {
                 pageTitle: context.translate.gameInstructionsScreenName,
               ),
               RulesSection(
-                icon: 'questionmark',
+                icon: CustomIcons.questionmark,
                 title: context.translate.gameRulesTitle1,
                 content: [context.translate.gameRulesContent1],
               ),
               RulesSection(
-                icon: 'rules',
+                icon: CustomIcons.rules,
                 title: context.translate.gameRulesTitle2,
                 content: [
                   context.translate.gameRulesContent2a,
@@ -43,7 +44,7 @@ class GameInstructionsScreen extends StatelessWidget {
                 ],
               ),
               RulesSection(
-                icon: 'tips',
+                icon: CustomIcons.tips,
                 title: context.translate.gameRulesTitle3,
                 content: [
                   context.translate.gameRulesContent3a,
@@ -52,7 +53,7 @@ class GameInstructionsScreen extends StatelessWidget {
                 ],
               ),
               RulesSection(
-                icon: 'stars',
+                icon: CustomIcons.stars,
                 title: context.translate.gameRulesTitle4,
                 content: [context.translate.gameRulesContent4],
               ),

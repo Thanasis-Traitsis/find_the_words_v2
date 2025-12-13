@@ -7,6 +7,7 @@ import 'package:find_the_words/core/services/navigation_service.dart';
 import 'package:find_the_words/core/services/service_locator.dart';
 import 'package:find_the_words/error_screen.dart';
 import 'package:find_the_words/features/auth/auth_cubit/auth_cubit.dart';
+import 'package:find_the_words/features/auth/auth_cubit/auth_status_listener.dart';
 import 'package:find_the_words/features/complete/presentation/screens/complete_stage_screen.dart';
 import 'package:find_the_words/features/game_instructions/presentation/screens/game_instructions_screen.dart';
 import 'package:find_the_words/features/home/presentation/screens/home_screen.dart';
@@ -24,8 +25,10 @@ class AppRouter {
     return NoTransitionPage(key: state.pageKey, child: child);
   }
 
+  static final authStatusNotifier = AuthStatusNotifier(getIt<AuthCubit>());
+
   static final GoRouter router = GoRouter(
-    refreshListenable: getIt<AuthCubit>(),
+    refreshListenable: authStatusNotifier,
     redirect: (context, state) {
       final authState = getIt<AuthCubit>().state;
       final langState = getIt<LanguageCubit>().state;

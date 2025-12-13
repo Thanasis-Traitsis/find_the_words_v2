@@ -184,5 +184,130 @@
                 "example": "12"
             }
         }
-    }
+    },
+    "storeBottomsheetTitle": "Κατάστημα",
+    "storeBottomsheetDescription": "Εδώ θα βρεις πολλές προσφορές και ενισχύσεις για το παιχνίδι σου!",
+    "currentBoostTag": "ΕΝΕΡΓΗ ΕΝΙΣΧΥΣΗ",
+    "currentBoostXpMultiplierHeader": "Διπλασιασμός XP Σταδίου",
+    "currentBoostXpMultiplierDurationSubtitle1": "λεπτά",
+    "currentBoostXpMultiplierStageSubtitle1": "{count, plural, =1{στάδιο} other{στάδια}}",
+    "@currentBoostXpMultiplierStageSubtitle1": {
+        "description": "Plural form for stages",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "currentBoostXpMultiplierSubtitle2": "{count, plural, =1{απομένει} other{απομένουν}}",
+    "@currentBoostXpMultiplierSubtitle2": {
+        "description": "Plural form for remaining",
+        "placeholders": {
+            "count": {
+                "type": "num"
+            }
+        }
+    },
+    "xpMultiplierHeader": "Πολλαπλασιαστής",
+    "xpMultiplierDescription": "Πολλαπλασίασε την εμπειρία σου! Κέρδισε x{multiplier} XP σε κάθε στάδιο που ολοκληρώνεις.",
+    "@xpMultiplierDescription": {
+        "description": "Define the multiplier",
+        "placeholders": {
+            "multiplier": {
+                "type": "int",
+                "example": "2"
+            }
+        }
+    },
+    "xpMultiplierFirstOfferHeader": "Με χρόνο",
+    "xpMultiplierFirstOfferDescription": "Διάλεξε πόσο θα διαρκέσει η ενίσχυσή σου.",
+    "xpMultiplierFirstOfferCardText": "{count, plural, =1{λεπτό} other{λεπτά}}",
+    "@xpMultiplierFirstOfferCardText": {
+        "description": "Plural form for minutes",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "xpMultiplierSecondOfferHeader": "Με στάδια",
+    "xpMultiplierSecondOfferDescription": "Διάλεξε για πόσα στάδια θέλεις να ενισχύσεις την εμπειρία σου.",
+    "xpMultiplierSecondOfferCardText": "{count, plural, =1{στάδιο} other{στάδια}}",
+    "@xpMultiplierSecondOfferCardText": {
+        "description": "Plural form for stages",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "freezeHeader": "Πάγωμα",
+    "freezeDescription": "Σταμάτα το χρονόμετρο και λύσε το στάδιο με την ησυχία σου! Σκέψου τις κινήσεις σου χωρίς τη βιασύνη του χρόνου.",
+    "rewardsHeader": "Επιβραβεύσεις",
+    "rewardsFirstOfferTitleSmall": "Κέρδισε",
+    "rewardsFirstOfferTitleBig": "{rewardPoints} {rewardPoints, plural, =1{πόντο} other{πόντους}}!",
+    "@rewardsFirstOfferTitleBig": {
+        "description": "Points the user will earn",
+        "placeholders": {
+            "rewardPoints": {
+                "type": "int",
+                "example": "60"
+            }
+        }
+    },
+    "rewardsFirstOfferDescription": "Παρακολούθησε μια σύντομη διαφήμιση και κέρδισε {rewardPoints} {rewardPoints, plural, =1{πόντο} other{πόντους}}!",
+    "@rewardsFirstOfferDescription": {
+        "description": "Points the user will earn",
+        "placeholders": {
+            "rewardPoints": {
+                "type": "int",
+                "example": "60"
+            }
+        }
+    },
+    "rewardsSecondOfferTitleSmall": "Ενεργοποίησε",
+    "rewardsSecondOfferTitleBig": "{offerPercentage}% έκπτωση!",
+    "@rewardsSecondOfferTitleBig": {
+        "description": "Percentage the user will earn",
+        "placeholders": {
+            "offerPercentage": {
+                "type": "int",
+                "example": "50"
+            }
+        }
+    },
+    "rewardsSecondOfferDescription": "Δες μια διαφήμιση και ενεργοποίησε {offerPercentage}% έκπτωση για όλα τα προϊόντα!",
+    "@rewardsSecondOfferDescription": {
+        "description": "Percentage the user will earn",
+        "placeholders": {
+            "offerPercentage": {
+                "type": "int",
+                "example": "50"
+            }
+        }
+    },
+    "rewardsThirdOfferTitleSmall": "Κέρδισε",
+    "rewardsThirdOfferTitleBig": "{freezes} {freezes, plural, =1{πάγωμα} other{παγώματα}}!",
+    "@rewardsThirdOfferTitleBig": {
+        "description": "How many freezes the user will earn",
+        "placeholders": {
+            "freezes": {
+                "type": "int",
+                "example": "2"
+            }
+        }
+    },
+    "rewardsThirdOfferDescription": "Δες μια διαφήμιση και {freezes} {freezes, plural, =1{δύναμη παγώματος} other{δυνάμεις παγώματος}} θα {freezes, plural, =1{γίνει} other{γίνουν}} αμέσως {freezes, plural, =1{δική} other{δικές}} σου!",
+    "@rewardsThirdOfferDescription": {
+        "description": "How many freezes the user will earn",
+        "placeholders": {
+            "freezes": {
+                "type": "int",
+                "example": "2"
+            }
+        }
+    },
+    "rewardActiveCard": "ΕΝΕΡΓΗ",
+    "stageCompletionXpBoostHeader": "Πολλαπλασιαστής XP",
+    "stageCompletionXpBoostDescription": "Κέρδισες έξτρα πόντους εμπειρίας σε αυτό το στάδιο"
 }

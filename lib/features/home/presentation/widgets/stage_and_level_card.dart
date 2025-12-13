@@ -3,6 +3,7 @@ import 'package:find_the_words/core/constants/constants.dart';
 import 'package:find_the_words/core/utils/double_extensions.dart';
 import 'package:find_the_words/core/utils/text_extensions.dart';
 import 'package:find_the_words/core/utils/theme_extensions.dart';
+import 'package:find_the_words/core/widgets/active_boost_tag.dart';
 import 'package:find_the_words/core/widgets/custom_border_container.dart';
 import 'package:find_the_words/core/widgets/custom_text.dart';
 import 'package:find_the_words/features/auth/data/models/profile_status_model.dart';
@@ -36,6 +37,7 @@ class StageAndLevelCard extends StatelessWidget {
     return CustomBorderContainer(
       backgroundColor: context.colors.lightGreen,
       borderColor: context.colors.darkGreen,
+      withTopSpacing: stageResults == null,
       child: IntrinsicHeight(
         child: Row(
           spacing: AppSpacing.spacingM,
@@ -66,6 +68,7 @@ class StageAndLevelCard extends StatelessWidget {
               ),
             Expanded(
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   if (stageResults != null)
                     Row(
@@ -73,7 +76,7 @@ class StageAndLevelCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         if (stageResults!.level != profileStatus.level)
-                        const LevelUpTag(),
+                          const LevelUpTag(),
                         Container(
                           padding: const EdgeInsets.symmetric(
                             vertical: AppSpacing.spacingM,
@@ -91,6 +94,8 @@ class StageAndLevelCard extends StatelessWidget {
                         ),
                       ],
                     ),
+                  if (stageResults == null)
+                    const ActiveBoostTag(withData: true),
                   Container(
                     margin: const EdgeInsets.only(bottom: AppSpacing.spacingL),
                     child: Row(

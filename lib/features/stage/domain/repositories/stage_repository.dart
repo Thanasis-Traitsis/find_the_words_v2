@@ -14,6 +14,8 @@ abstract class StageRepository {
     required double progress,
   });
 
+  Future<void> resetStage(int stageNumber);
+
   Future<void> clearStage();
 
   bool hasSavedStage();

@@ -1,5 +1,6 @@
 import 'package:find_the_words/config/theme/custom_text_type.dart';
 import 'package:find_the_words/core/constants/constants.dart';
+import 'package:find_the_words/core/constants/custom_icons.dart';
 import 'package:find_the_words/core/services/navigation_service.dart';
 import 'package:find_the_words/core/utils/text_extensions.dart';
 import 'package:find_the_words/core/widgets/custom_bottomsheet.dart';
@@ -36,7 +37,7 @@ class ResetStageBottomsheet extends StatelessWidget {
                 NavigationService.instance.pop(true);
               }
             },
-            suffixIcon: 'reset',
+            suffixIcon: CustomIcons.reset,
           ),
         ],
       ),

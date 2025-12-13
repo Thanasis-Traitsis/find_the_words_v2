@@ -19,9 +19,10 @@ class SettingsCubit extends Cubit<SettingsState> {
        _stageRepo = stageRepo,
        super(SettingsInitial());
 
-  Future<void> resetStage() async {
+  Future<void> resetStage(int currentStageNumber) async {
     emit(SettingsLoading());
-    await _stageRepo.clearStage();
+
+    await _stageRepo.resetStage(currentStageNumber);
     emit(SettingsStageReset());
   }
 

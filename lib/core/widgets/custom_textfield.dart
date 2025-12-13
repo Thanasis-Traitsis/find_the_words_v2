@@ -1,5 +1,6 @@
 import 'package:find_the_words/config/theme/custom_text_type.dart';
 import 'package:find_the_words/core/constants/constants.dart';
+import 'package:find_the_words/core/constants/custom_icons.dart';
 import 'package:find_the_words/core/utils/theme_extensions.dart';
 import 'package:find_the_words/core/widgets/custom_svg_icon.dart';
 import 'package:flutter/material.dart';
@@ -65,7 +66,10 @@ class _CustomTextfieldState extends State<CustomTextfield> {
         border: OutlineInputBorder(borderRadius: AppBorders.bigBorderRadius),
         suffixIcon: showClearIcon
             ? IconButton(
-                icon: CustomSvgIcon(icon: 'close', color: context.colors.text),
+                icon: CustomSvgIcon(
+                  icon: CustomIcons.close,
+                  color: context.colors.text,
+                ),
                 onPressed: () {
                   widget.textEditingController.clear();
                   widget.onClearPressed();

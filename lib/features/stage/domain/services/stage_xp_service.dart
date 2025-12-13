@@ -11,6 +11,7 @@ class StageXPService {
     required int stageNumber,
     required int timeInSeconds,
     required double currentProgress,
+    required int xpMultiplier, 
   }) {
     final difficultyCalc = StageDifficultyCalculator(
       level: level,
@@ -38,6 +39,7 @@ class StageXPService {
     final xpCalc = XPCalculator(
       stageResults: tempResults,
       difficultyCalculator: difficultyCalc,
+      multiplier: xpMultiplier
     );
     
     final xpEarned = xpCalc.calculateTotalXP();
@@ -56,6 +58,7 @@ class StageXPService {
       xpEarned: xpEarned,
       currentProgress: currentProgress,
       newProgress: newProgress,
+      xpBoost: xpMultiplier != 1 ? xpMultiplier : null
     );
   }
 }

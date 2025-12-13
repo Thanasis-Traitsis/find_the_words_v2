@@ -1,5 +1,6 @@
 import 'package:find_the_words/config/routes/app_pages.dart';
 import 'package:find_the_words/core/constants/constants.dart';
+import 'package:find_the_words/core/constants/custom_icons.dart';
 import 'package:find_the_words/core/screens/custom_screen.dart';
 import 'package:find_the_words/core/services/service_locator.dart';
 import 'package:find_the_words/core/utils/text_extensions.dart';
@@ -23,7 +24,7 @@ class HomeScreen extends StatelessWidget {
       appBar: CustomAppbar.withUserPoints(
         isHomePage: true,
         suffixWidget: LanguageButton(),
-        suffixIcon: 'settings',
+        suffixIcon: CustomIcons.settings,
         suffixOnTap: () {
           AppPages.settings.push();
         },
@@ -71,7 +72,7 @@ class HomeScreen extends StatelessWidget {
                             },
                           );
                         },
-                        suffixIcon: 'arrow_right',
+                        suffixIcon: CustomIcons.arrowRight,
                         fullWidth: true,
                       ),
                     ),

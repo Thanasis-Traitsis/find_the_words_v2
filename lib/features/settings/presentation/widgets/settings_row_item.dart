@@ -1,6 +1,7 @@
 import 'package:find_the_words/config/routes/app_pages.dart';
 import 'package:find_the_words/config/theme/custom_text_type.dart';
 import 'package:find_the_words/core/constants/constants.dart';
+import 'package:find_the_words/core/constants/custom_icons.dart';
 import 'package:find_the_words/core/utils/theme_extensions.dart';
 import 'package:find_the_words/core/widgets/custom_svg_icon.dart';
 import 'package:find_the_words/core/widgets/custom_text.dart';
@@ -74,9 +75,9 @@ class SettingsRowItem extends StatelessWidget {
                 child: CustomText(name, textType: CustomTextType.bigBody),
               ),
               if (link != null)
-                CustomSvgIcon(icon: 'web_link', color: context.colors.black),
+                CustomSvgIcon(icon: CustomIcons.webLink, color: context.colors.black),
               if (page != null)
-                CustomSvgIcon(icon: 'arrow_right', color: context.colors.black),
+                CustomSvgIcon(icon: CustomIcons.arrowRight, color: context.colors.black),
               if (iconWidget != null) iconWidget!,
             ],
           ),

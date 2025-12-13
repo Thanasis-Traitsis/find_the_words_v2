@@ -1,5 +1,6 @@
 import 'package:find_the_words/config/theme/custom_text_type.dart';
 import 'package:find_the_words/core/constants/constants.dart';
+import 'package:find_the_words/core/constants/custom_icons.dart';
 import 'package:find_the_words/core/services/navigation_service.dart';
 import 'package:find_the_words/core/widgets/custom_icon_button.dart';
 import 'package:find_the_words/core/widgets/custom_text.dart';
@@ -29,7 +30,7 @@ class BigHeading extends StatelessWidget {
                 () {
                   NavigationService.instance.pop();
                 },
-            icon: 'arrow_left',
+            icon: CustomIcons.arrowLeft,
           ),
           CustomText(pageTitle, textType: CustomTextType.bigHeading),
         ],

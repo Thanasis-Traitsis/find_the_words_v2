@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class AppBorders {
   static const double smallBorderWidth = 1.0;
   static const double mediumBorderWidth = 2.0;
+  static const double largeBorderWidth = 4.0;
 
   static const BorderRadius smallBorderRadiusConst = BorderRadius.all(Radius.circular(4.0));
   static const BorderRadius regularBorderRadiusConst = BorderRadius.all(Radius.circular(8.0));

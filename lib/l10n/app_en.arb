@@ -184,5 +184,130 @@
                 "example": "12"
             }
         }
-    }
+    },
+    "storeBottomsheetTitle": "Store",
+    "storeBottomsheetDescription": "Here you'll find many offers and boosts for your game!",
+    "currentBoostTag": "ACTIVE BOOST",
+    "currentBoostXpMultiplierHeader": "Level XP Multiplier",
+    "currentBoostXpMultiplierDurationSubtitle1": "minutes",
+    "currentBoostXpMultiplierStageSubtitle1": "{count, plural, =1{level} other{levels}}",
+    "@currentBoostXpMultiplierStageSubtitle1": {
+        "description": "Plural form for levels",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "currentBoostXpMultiplierSubtitle2": "{count, plural, =1{remaining} other{remaining}}",
+    "@currentBoostXpMultiplierSubtitle2": {
+        "description": "Plural form for remaining",
+        "placeholders": {
+            "count": {
+                "type": "num"
+            }
+        }
+    },
+    "xpMultiplierHeader": "Multiplier",
+    "xpMultiplierDescription": "Multiply your experience! Earn x{multiplier} XP for every level you complete.",
+    "@xpMultiplierDescription": {
+        "description": "Define the multiplier",
+        "placeholders": {
+            "multiplier": {
+                "type": "int",
+                "example": "2"
+            }
+        }
+    },
+    "xpMultiplierFirstOfferHeader": "By Time",
+    "xpMultiplierFirstOfferDescription": "Choose how long your boost will last.",
+    "xpMultiplierFirstOfferCardText": "{count, plural, =1{minute} other{minutes}}",
+    "@xpMultiplierFirstOfferCardText": {
+        "description": "Plural form for minutes",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "xpMultiplierSecondOfferHeader": "By Levels",
+    "xpMultiplierSecondOfferDescription": "Choose how many levels you want to boost your experience for.",
+    "xpMultiplierSecondOfferCardText": "{count, plural, =1{level} other{levels}}",
+    "@xpMultiplierSecondOfferCardText": {
+        "description": "Plural form for levels",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "freezeHeader": "Freeze",
+    "freezeDescription": "Stop the timer and solve the level at your own pace! Think through your moves without the rush.",
+    "rewardsHeader": "Rewards",
+    "rewardsFirstOfferTitleSmall": "Earn",
+    "rewardsFirstOfferTitleBig": "{rewardPoints} {rewardPoints, plural, =1{point} other{points}}!",
+    "@rewardsFirstOfferTitleBig": {
+        "description": "Points the user will earn",
+        "placeholders": {
+            "rewardPoints": {
+                "type": "int",
+                "example": "60"
+            }
+        }
+    },
+    "rewardsFirstOfferDescription": "Watch a short ad and earn {rewardPoints} {rewardPoints, plural, =1{point} other{points}}!",
+    "@rewardsFirstOfferDescription": {
+        "description": "Points the user will earn",
+        "placeholders": {
+            "rewardPoints": {
+                "type": "int",
+                "example": "60"
+            }
+        }
+    },
+    "rewardsSecondOfferTitleSmall": "Activate",
+    "rewardsSecondOfferTitleBig": "{offerPercentage}% discount!",
+    "@rewardsSecondOfferTitleBig": {
+        "description": "Percentage the user will earn",
+        "placeholders": {
+            "offerPercentage": {
+                "type": "int",
+                "example": "50"
+            }
+        }
+    },
+    "rewardsSecondOfferDescription": "Watch an ad and activate {offerPercentage}% off on all products!",
+    "@rewardsSecondOfferDescription": {
+        "description": "Percentage the user will earn",
+        "placeholders": {
+            "offerPercentage": {
+                "type": "int",
+                "example": "50"
+            }
+        }
+    },
+    "rewardsThirdOfferTitleSmall": "Earn",
+    "rewardsThirdOfferTitleBig": "{freezes} {freezes, plural, =1{freeze} other{freezes}}!",
+    "@rewardsThirdOfferTitleBig": {
+        "description": "How many freezes the user will earn",
+        "placeholders": {
+            "freezes": {
+                "type": "int",
+                "example": "2"
+            }
+        }
+    },
+    "rewardsThirdOfferDescription": "Watch an ad and {freezes} freeze {freezes, plural, =1{power} other{powers}} will instantly be yours!",
+    "@rewardsThirdOfferDescription": {
+        "description": "How many freezes the user will earn",
+        "placeholders": {
+            "freezes": {
+                "type": "int",
+                "example": "2"
+            }
+        }
+    },
+    "rewardActiveCard": "ACTIVE",
+    "stageCompletionXpBoostHeader": "Multiplier XP",
+    "stageCompletionXpBoostDescription": "You won extra points of experience from this stage"
 }

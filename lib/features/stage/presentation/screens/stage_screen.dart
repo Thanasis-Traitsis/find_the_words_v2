@@ -2,12 +2,15 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:find_the_words/config/routes/app_pages.dart';
+import 'package:find_the_words/core/constants/custom_icons.dart';
 import 'package:find_the_words/core/services/service_locator.dart';
 import 'package:find_the_words/core/services/sound_service.dart';
 import 'package:find_the_words/core/utils/snackbar_helper.dart';
 import 'package:find_the_words/core/utils/text_extensions.dart';
 import 'package:find_the_words/core/utils/theme_extensions.dart';
+import 'package:find_the_words/core/widgets/active_boost_tag.dart';
 import 'package:find_the_words/core/widgets/custom_svg_icon.dart';
+import 'package:find_the_words/features/auth/account_boost_cubit/account_boost_cubit.dart';
 import 'package:find_the_words/features/auth/auth_cubit/auth_cubit.dart';
 import 'package:find_the_words/features/points/cubit/points_cubit.dart';
 import 'package:find_the_words/features/stage/domain/services/stage_xp_service.dart';
@@ -119,6 +122,7 @@ class _StageScreenState extends State<StageScreen> {
 
     final authCubit = getIt<AuthCubit>();
     final pointsCubit = getIt<PointsCubit>();
+    final accountBoost = getIt<AccountBoostCubit>();
     final authState = authCubit.state;
 
     if (authState is! AuthAuthenticated) return;
@@ -131,6 +135,7 @@ class _StageScreenState extends State<StageScreen> {
       stageNumber: widget.stage,
       timeInSeconds: _elapsedSeconds,
       currentProgress: currentUser.currentProgress.progress,
+      xpMultiplier: accountBoost.currentMultiplier,
     );
 
     await authCubit.updateAfterStage(
@@ -142,6 +147,8 @@ class _StageScreenState extends State<StageScreen> {
       stageResults.totalPointsForStage(),
       reason: 'Stage completion',
     );
+
+    accountBoost.decrementStage();
 
     if (!context.mounted) return;
 
@@ -158,7 +165,7 @@ class _StageScreenState extends State<StageScreen> {
             appBar: CustomAppbar.withUserPoints(
               isHomePage: false,
               suffixWidget: const ExtraWordsBox(),
-              leadingIcon: 'arrow_left',
+              leadingIcon: CustomIcons.arrowLeft,
               title: context.translate.stageWithNumber(widget.stage),
             ),
             child: const Center(child: CircularProgressIndicator()),
@@ -188,7 +195,7 @@ class _StageScreenState extends State<StageScreen> {
             appBar: CustomAppbar.withUserPoints(
               isHomePage: false,
               suffixWidget: const ExtraWordsBox(),
-              leadingIcon: 'arrow_left',
+              leadingIcon: CustomIcons.arrowLeft,
               title: context.translate.stageWithNumber(widget.stage),
             ),
             child: Padding(
@@ -253,13 +260,25 @@ class _StageScreenState extends State<StageScreen> {
                       ),
                     ),
                   ),
-                  CircleContainerWithWord(
-                    letters: state.stage.letters,
-                    onWordFormationChange: (blockWord) {
-                      setState(() {
-                        _blockWordCreation = blockWord;
-                      });
-                    },
+                  Stack(
+                    children: [
+                      CircleContainerWithWord(
+                        letters: state.stage.letters,
+                        onWordFormationChange: (blockWord) {
+                          setState(() {
+                            _blockWordCreation = blockWord;
+                          });
+                        },
+                      ),
+                      const Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: ActiveBoostTag(
+                          withData: true,
+                          isExpandable: true,
+                        ),
+                      ),
+                    ],
                   ),
                   Row(
                     spacing: AppSpacing.spacingM,
@@ -273,7 +292,7 @@ class _StageScreenState extends State<StageScreen> {
                           );
                         },
                         child: CustomSvgIcon(
-                          icon: 'info',
+                          icon: CustomIcons.info,
                           color: context.colors.text,
                           height: AppSizes.iconS,
                         ),
@@ -284,7 +303,7 @@ class _StageScreenState extends State<StageScreen> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             StageIconButton(
-                              icon: 'shuffle',
+                              icon: CustomIcons.shuffle,
                               onTap: () {
                                 setState(() {
                                   state.stage.letters.shuffle();
@@ -292,7 +311,7 @@ class _StageScreenState extends State<StageScreen> {
                               },
                             ),
                             StageIconButton(
-                              icon: 'magic_wond',
+                              icon: CustomIcons.magicWand,
                               onTap: () {
                                 getIt<StageBloc>().add(
                                   CrosswordLetterReveal(null),

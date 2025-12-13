@@ -391,4 +391,164 @@ class AppLocalizationsEn extends AppLocalizations {
   String chipSelectedRangeOfWordLength(int minWordLength, int maxWordLength) {
     return 'Word length: $minWordLength - $maxWordLength';
   }
+
+  @override
+  String get storeBottomsheetTitle => 'Store';
+
+  @override
+  String get storeBottomsheetDescription => 'Here you\'ll find many offers and boosts for your game!';
+
+  @override
+  String get currentBoostTag => 'ACTIVE BOOST';
+
+  @override
+  String get currentBoostXpMultiplierHeader => 'Level XP Multiplier';
+
+  @override
+  String get currentBoostXpMultiplierDurationSubtitle1 => 'minutes';
+
+  @override
+  String currentBoostXpMultiplierStageSubtitle1(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'levels',
+      one: 'level',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String currentBoostXpMultiplierSubtitle2(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'remaining',
+      one: 'remaining',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get xpMultiplierHeader => 'Multiplier';
+
+  @override
+  String xpMultiplierDescription(int multiplier) {
+    return 'Multiply your experience! Earn x$multiplier XP for every level you complete.';
+  }
+
+  @override
+  String get xpMultiplierFirstOfferHeader => 'By Time';
+
+  @override
+  String get xpMultiplierFirstOfferDescription => 'Choose how long your boost will last.';
+
+  @override
+  String xpMultiplierFirstOfferCardText(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'minutes',
+      one: 'minute',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get xpMultiplierSecondOfferHeader => 'By Levels';
+
+  @override
+  String get xpMultiplierSecondOfferDescription => 'Choose how many levels you want to boost your experience for.';
+
+  @override
+  String xpMultiplierSecondOfferCardText(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'levels',
+      one: 'level',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get freezeHeader => 'Freeze';
+
+  @override
+  String get freezeDescription => 'Stop the timer and solve the level at your own pace! Think through your moves without the rush.';
+
+  @override
+  String get rewardsHeader => 'Rewards';
+
+  @override
+  String get rewardsFirstOfferTitleSmall => 'Earn';
+
+  @override
+  String rewardsFirstOfferTitleBig(int rewardPoints) {
+    String _temp0 = intl.Intl.pluralLogic(
+      rewardPoints,
+      locale: localeName,
+      other: 'points',
+      one: 'point',
+    );
+    return '$rewardPoints $_temp0!';
+  }
+
+  @override
+  String rewardsFirstOfferDescription(int rewardPoints) {
+    String _temp0 = intl.Intl.pluralLogic(
+      rewardPoints,
+      locale: localeName,
+      other: 'points',
+      one: 'point',
+    );
+    return 'Watch a short ad and earn $rewardPoints $_temp0!';
+  }
+
+  @override
+  String get rewardsSecondOfferTitleSmall => 'Activate';
+
+  @override
+  String rewardsSecondOfferTitleBig(int offerPercentage) {
+    return '$offerPercentage% discount!';
+  }
+
+  @override
+  String rewardsSecondOfferDescription(int offerPercentage) {
+    return 'Watch an ad and activate $offerPercentage% off on all products!';
+  }
+
+  @override
+  String get rewardsThirdOfferTitleSmall => 'Earn';
+
+  @override
+  String rewardsThirdOfferTitleBig(int freezes) {
+    String _temp0 = intl.Intl.pluralLogic(
+      freezes,
+      locale: localeName,
+      other: 'freezes',
+      one: 'freeze',
+    );
+    return '$freezes $_temp0!';
+  }
+
+  @override
+  String rewardsThirdOfferDescription(int freezes) {
+    String _temp0 = intl.Intl.pluralLogic(
+      freezes,
+      locale: localeName,
+      other: 'powers',
+      one: 'power',
+    );
+    return 'Watch an ad and $freezes freeze $_temp0 will instantly be yours!';
+  }
+
+  @override
+  String get rewardActiveCard => 'ACTIVE';
+
+  @override
+  String get stageCompletionXpBoostHeader => 'Multiplier XP';
+
+  @override
+  String get stageCompletionXpBoostDescription => 'You won extra points of experience from this stage';
 }

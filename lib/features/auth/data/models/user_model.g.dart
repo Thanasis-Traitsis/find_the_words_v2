@@ -20,8 +20,8 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       id: fields[0] as String,
       username: fields[1] as String?,
       points: fields[2] as int,
-      progressByLanguage: (fields[3] as Map)
-          .cast<AppLanguage, ProfileStatusModel>(),
+      progressByLanguage:
+          (fields[3] as Map).cast<AppLanguage, ProfileStatusModel>(),
       currentStage: fields[4] as CurrentStage?,
     );
   }

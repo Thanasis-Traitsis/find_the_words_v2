@@ -1,3 +1,4 @@
+import 'package:find_the_words/core/constants/constants.dart';
 import 'package:find_the_words/core/services/previous_stage_words_service.dart';
 import 'package:find_the_words/core/services/service_locator.dart';
 import 'package:find_the_words/core/utils/file_utils.dart';
@@ -6,6 +7,7 @@ import 'package:find_the_words/features/stage/data/datasources/stage_local_datas
 import 'package:find_the_words/features/stage/data/models/current_stage.dart';
 import 'package:find_the_words/features/stage/domain/repositories/stage_repository.dart';
 import 'package:find_the_words/features/stage/domain/services/stage_generator_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class StageRepositoryImpl implements StageRepository {
   final StageLocalDataSource _localDataSource;
@@ -72,5 +74,15 @@ class StageRepositoryImpl implements StageRepository {
     final List<String> allWordsFound = [...foundWords, ...extraWords];
 
     _previousStageWordsService.savePrevStageWords(allWordsFound);
+  }
+
+  @override
+  Future<void> resetStage(int stageNumber) async {
+    final prefs = getIt<SharedPreferences>();
+
+    await clearStage();
+
+    final String timerKey = AppKeys.timerKey(stageNumber);
+    await prefs.remove(timerKey);
   }
 }

@@ -4,6 +4,8 @@ import 'package:find_the_words/core/constants/constants.dart';
 import 'package:find_the_words/core/screens/custom_screen.dart';
 import 'package:find_the_words/core/utils/text_extensions.dart';
 import 'package:find_the_words/core/widgets/big_heading.dart';
+import 'package:find_the_words/core/widgets/custom_snackbar.dart';
+import 'package:find_the_words/features/auth/auth_cubit/auth_cubit.dart';
 import 'package:find_the_words/features/settings/presentation/settings_cubit/settings_cubit.dart';
 import 'package:find_the_words/features/settings/presentation/widgets/bad_word_bottomsheet/bad_word_bottomsheet.dart';
 import 'package:find_the_words/features/settings/presentation/widgets/reset_stage_bottomsheet/reset_stage_bottomsheet.dart';
@@ -44,10 +46,16 @@ class SettingsScreen extends StatelessWidget {
                 });
               }
               if (state is SettingsEmailOpened) {
-                // TODO: add snackbar here showing appreciation for the support
+                // TODO: implement snackbar here
+                ScaffoldMessenger.of(context).showSnackBar(
+                  CustomSnackbar.success(
+                    context: context,
+                    contentText: "Thank you for helping us improve!",
+                  ),
+                );
               }
               if (state is SettingsStageReset) {
-                print("object");
+                // TODO: implement snackbar here
               }
             },
             builder: (context, state) {
@@ -67,7 +75,7 @@ class SettingsScreen extends StatelessWidget {
                         isScrollControlled: true,
                         backgroundColor: Colors.transparent,
                         builder: (context) {
-                          return LangBottomsheet();
+                          return const LangBottomsheet();
                         },
                       );
                     },
@@ -77,25 +85,35 @@ class SettingsScreen extends StatelessWidget {
                     name: context.translate.settingsItemGameInstructions,
                     page: AppPages.gameInstructions,
                   ),
-                  SettingsRowItem(
-                    name: context.translate.settingsItemResetStage,
-                    onTap: () {
-                      showModalBottomSheet(
-                        context: context,
-                        useRootNavigator: true,
-                        isScrollControlled: true,
-                        backgroundColor: Colors.transparent,
-                        builder: (context) {
-                          return ResetStageBottomsheet();
+                  BlocBuilder<AuthCubit, AuthState>(
+                    builder: (context, state) {
+                      if (state is! AuthAuthenticated) return Container();
+
+                      return SettingsRowItem(
+                        name: context.translate.settingsItemResetStage,
+                        onTap: () {
+                          final currentStage = state.user.currentProgress.stage;
+
+                          showModalBottomSheet(
+                            context: context,
+                            useRootNavigator: true,
+                            isScrollControlled: true,
+                            backgroundColor: Colors.transparent,
+                            builder: (context) {
+                              return const ResetStageBottomsheet();
+                            },
+                          ).then((resetConfirmed) {
+                            if (context.mounted) {
+                              if (resetConfirmed != null &&
+                                  resetConfirmed == true) {
+                                context.read<SettingsCubit>().resetStage(
+                                  currentStage,
+                                );
+                              }
+                            }
+                          });
                         },
-                      ).then((resetConfirmed) {
-                        if (context.mounted) {
-                          if (resetConfirmed != null &&
-                              resetConfirmed == true) {
-                            context.read<SettingsCubit>().resetStage();
-                          }
-                        }
-                      });
+                      );
                     },
                   ),
                   SettingsRowItem(

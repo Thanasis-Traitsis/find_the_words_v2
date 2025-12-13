@@ -4,6 +4,9 @@ import 'package:find_the_words/core/constants/constants.dart';
 import 'package:find_the_words/core/screens/custom_screen.dart';
 import 'package:find_the_words/core/services/navigation_service.dart';
 import 'package:find_the_words/core/utils/text_extensions.dart';
+import 'package:find_the_words/core/utils/theme_extensions.dart';
+import 'package:find_the_words/core/widgets/active_green_dot.dart';
+import 'package:find_the_words/core/widgets/boost_multiplier_tag.dart';
 import 'package:find_the_words/core/widgets/custom_text.dart';
 import 'package:find_the_words/features/auth/auth_cubit/auth_cubit.dart';
 import 'package:find_the_words/features/complete/presentation/widgets/stage_completion_header.dart';
@@ -123,10 +126,96 @@ class _CompleteStageScreenState extends State<CompleteStageScreen> {
                   SliverPadding(
                     padding: EdgeInsets.only(bottom: AppSpacing.spacingXL),
                     sliver: SliverToBoxAdapter(
-                      child: StageAndLevelCard(
-                        profileStatus: currentUser.currentProgress,
-                        withStage: false,
-                        stageResults: widget.stageResults,
+                      child: Column(
+                        children: [
+                          if (widget.stageResults.xpBoost != null &&
+                              widget.stageResults.xpBoost != 1)
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: AppSpacing.spacingL,
+                                vertical: AppSpacing.spacingL,
+                              ),
+                              decoration: BoxDecoration(
+                                color: context.colors.darkGreen,
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(12.0),
+                                  topRight: Radius.circular(12.0),
+                                ),
+                              ),
+                              child: Row(
+                                spacing: AppSpacing.spacingM,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Expanded(
+                                    child: Row(
+                                      spacing: AppSpacing.spacingM,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          margin: const EdgeInsets.only(
+                                            top: AppSpacing.spacingXS,
+                                          ),
+                                          child: const ActiveGreenDot(),
+                                        ),
+                                        Expanded(
+                                          child: Column(
+                                            spacing: AppSpacing.spacingS,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              CustomText(
+                                                context
+                                                    .translate
+                                                    .stageCompletionXpBoostHeader,
+                                                textType:
+                                                    CustomTextType.smallHeading,
+                                                isWhite: true,
+                                              ),
+                                              CustomText(
+                                                context
+                                                    .translate
+                                                    .stageCompletionXpBoostDescription,
+                                                textType:
+                                                    CustomTextType.regularBody,
+                                                isWhite: true,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  BoostMultiplierTag(
+                                    multiplier: widget.stageResults.xpBoost!,
+                                    isWhite: true,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          Stack(
+                            children: [
+                              if (widget.stageResults.xpBoost != null &&
+                                  widget.stageResults.xpBoost != 1)
+                                Positioned(
+                                  top: 0,
+                                  left: 0,
+                                  right: 0,
+                                  child: Container(
+                                    height: 60,
+                                    color: context.colors.darkGreen,
+                                  ),
+                                ),
+                              StageAndLevelCard(
+                                profileStatus: currentUser.currentProgress,
+                                withStage: false,
+                                stageResults: widget.stageResults,
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
                   ),

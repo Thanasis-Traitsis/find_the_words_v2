@@ -7,6 +7,7 @@ class CustomBorderContainer extends StatelessWidget {
   final Widget child;
   final bool fullWidth;
   final bool isLoading;
+  final bool withTopSpacing;
 
   const CustomBorderContainer({
     super.key,
@@ -15,6 +16,7 @@ class CustomBorderContainer extends StatelessWidget {
     required this.child,
     this.fullWidth = true,
     this.isLoading = true,
+    this.withTopSpacing = true,
   });
 
   @override
@@ -29,7 +31,7 @@ class CustomBorderContainer extends StatelessWidget {
         borderRadius: AppBorders.hugeBorderRadius,
         color: backgroundColor,
       ),
-      margin: const EdgeInsets.only(top: AppSpacing.spacingL),
+      margin: EdgeInsets.only(top: withTopSpacing ? AppSpacing.spacingL : 0),
       padding: const EdgeInsets.symmetric(
         vertical: AppSpacing.spacingM,
         horizontal: AppSpacing.spacingL,

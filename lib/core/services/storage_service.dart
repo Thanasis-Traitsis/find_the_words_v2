@@ -1,6 +1,7 @@
 import 'package:find_the_words/config/language/app_language.dart';
 import 'package:find_the_words/core/models/words_model.dart';
 import 'package:find_the_words/core/services/auth_service.dart';
+import 'package:find_the_words/features/auth/data/models/account_boost_model.dart';
 import 'package:find_the_words/features/auth/data/models/profile_status_model.dart';
 import 'package:find_the_words/features/auth/data/models/user_model.dart';
 import 'package:find_the_words/features/stage/data/models/current_stage.dart';
@@ -22,9 +23,9 @@ class StorageService {
     if (_isInitialized) return;
     await Hive.initFlutter();
 
-    // AuthService.instance.deleteToken();
-    // await Hive.deleteBoxFromDisk(_userBoxKey);
-    // await Hive.deleteBoxFromDisk(_stageBoxKey);
+    AuthService.instance.deleteToken();
+    await Hive.deleteBoxFromDisk(_userBoxKey);
+    await Hive.deleteBoxFromDisk(_stageBoxKey);
 
     // Register all adapters once
     if (!Hive.isAdapterRegistered(0)) {
@@ -47,6 +48,12 @@ class StorageService {
     }
     if (!Hive.isAdapterRegistered(6)) {
       Hive.registerAdapter(WordPlacementAdapter());
+    }
+    if (!Hive.isAdapterRegistered(7)) {
+      Hive.registerAdapter(AccountBoostTypeAdapter());
+    }
+    if (!Hive.isAdapterRegistered(8)) {
+      Hive.registerAdapter(AccountBoostModelAdapter());
     }
 
     _userBox = await Hive.openBox<UserModel>(_userBoxKey);

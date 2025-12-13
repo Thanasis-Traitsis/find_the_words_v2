@@ -1,5 +1,6 @@
 import 'package:find_the_words/config/theme/custom_text_type.dart';
 import 'package:find_the_words/core/constants/constants.dart';
+import 'package:find_the_words/core/constants/custom_icons.dart';
 import 'package:find_the_words/core/utils/theme_extensions.dart';
 import 'package:find_the_words/core/widgets/custom_svg_icon.dart';
 import 'package:find_the_words/core/widgets/custom_text.dart';
@@ -10,8 +11,8 @@ class CustomPrimaryButton extends StatelessWidget {
   final VoidCallback onTap;
   final bool isDisabled;
   final CustomTextType type;
-  final String? suffixIcon;
-  final String? prefixIcon;
+  final CustomIcons? suffixIcon;
+  final CustomIcons? prefixIcon;
   final double iconSize;
   final bool fullWidth;
   final double spacing;

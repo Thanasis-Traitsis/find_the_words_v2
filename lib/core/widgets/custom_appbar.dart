@@ -1,6 +1,7 @@
 import 'package:find_the_words/config/theme/app_theme.dart';
 import 'package:find_the_words/config/theme/custom_text_type.dart';
 import 'package:find_the_words/core/constants/constants.dart';
+import 'package:find_the_words/core/constants/custom_icons.dart';
 import 'package:find_the_words/core/services/navigation_service.dart';
 import 'package:find_the_words/core/widgets/custom_icon_button.dart';
 import 'package:find_the_words/core/widgets/custom_text.dart';
@@ -8,10 +9,10 @@ import 'package:find_the_words/core/widgets/points_container.dart';
 import 'package:flutter/material.dart';
 
 class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
-  final String? leadingIcon;
+  final CustomIcons? leadingIcon;
   final String? title;
   final Widget? suffixWidget;
-  final String? suffixIcon;
+  final CustomIcons? suffixIcon;
   final VoidCallback? suffixOnTap;
   final Widget? userPoints;
   final bool? isHomePage;
@@ -63,13 +64,10 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
                   ),
                 ),
               if (title != null)
-                Flexible(
-                  fit: FlexFit.loose,
-                  child: CustomText(
-                    title!,
-                    textType: CustomTextType.smallHeading,
-                    maxLines: 2,
-                  ),
+                CustomText(
+                  title!,
+                  textType: CustomTextType.smallHeading,
+                  maxLines: 2,
                 ),
             ],
           ],

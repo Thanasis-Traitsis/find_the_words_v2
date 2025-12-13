@@ -391,4 +391,176 @@ class AppLocalizationsEl extends AppLocalizations {
   String chipSelectedRangeOfWordLength(int minWordLength, int maxWordLength) {
     return 'Μέγεθος λέξεων: $minWordLength - $maxWordLength';
   }
+
+  @override
+  String get storeBottomsheetTitle => 'Κατάστημα';
+
+  @override
+  String get storeBottomsheetDescription => 'Εδώ θα βρεις πολλές προσφορές και ενισχύσεις για το παιχνίδι σου!';
+
+  @override
+  String get currentBoostTag => 'ΕΝΕΡΓΗ ΕΝΙΣΧΥΣΗ';
+
+  @override
+  String get currentBoostXpMultiplierHeader => 'Διπλασιασμός XP Σταδίου';
+
+  @override
+  String get currentBoostXpMultiplierDurationSubtitle1 => 'λεπτά';
+
+  @override
+  String currentBoostXpMultiplierStageSubtitle1(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'στάδια',
+      one: 'στάδιο',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String currentBoostXpMultiplierSubtitle2(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'απομένουν',
+      one: 'απομένει',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get xpMultiplierHeader => 'Πολλαπλασιαστής';
+
+  @override
+  String xpMultiplierDescription(int multiplier) {
+    return 'Πολλαπλασίασε την εμπειρία σου! Κέρδισε x$multiplier XP σε κάθε στάδιο που ολοκληρώνεις.';
+  }
+
+  @override
+  String get xpMultiplierFirstOfferHeader => 'Με χρόνο';
+
+  @override
+  String get xpMultiplierFirstOfferDescription => 'Διάλεξε πόσο θα διαρκέσει η ενίσχυσή σου.';
+
+  @override
+  String xpMultiplierFirstOfferCardText(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'λεπτά',
+      one: 'λεπτό',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get xpMultiplierSecondOfferHeader => 'Με στάδια';
+
+  @override
+  String get xpMultiplierSecondOfferDescription => 'Διάλεξε για πόσα στάδια θέλεις να ενισχύσεις την εμπειρία σου.';
+
+  @override
+  String xpMultiplierSecondOfferCardText(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'στάδια',
+      one: 'στάδιο',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get freezeHeader => 'Πάγωμα';
+
+  @override
+  String get freezeDescription => 'Σταμάτα το χρονόμετρο και λύσε το στάδιο με την ησυχία σου! Σκέψου τις κινήσεις σου χωρίς τη βιασύνη του χρόνου.';
+
+  @override
+  String get rewardsHeader => 'Επιβραβεύσεις';
+
+  @override
+  String get rewardsFirstOfferTitleSmall => 'Κέρδισε';
+
+  @override
+  String rewardsFirstOfferTitleBig(int rewardPoints) {
+    String _temp0 = intl.Intl.pluralLogic(
+      rewardPoints,
+      locale: localeName,
+      other: 'πόντους',
+      one: 'πόντο',
+    );
+    return '$rewardPoints $_temp0!';
+  }
+
+  @override
+  String rewardsFirstOfferDescription(int rewardPoints) {
+    String _temp0 = intl.Intl.pluralLogic(
+      rewardPoints,
+      locale: localeName,
+      other: 'πόντους',
+      one: 'πόντο',
+    );
+    return 'Παρακολούθησε μια σύντομη διαφήμιση και κέρδισε $rewardPoints $_temp0!';
+  }
+
+  @override
+  String get rewardsSecondOfferTitleSmall => 'Ενεργοποίησε';
+
+  @override
+  String rewardsSecondOfferTitleBig(int offerPercentage) {
+    return '$offerPercentage% έκπτωση!';
+  }
+
+  @override
+  String rewardsSecondOfferDescription(int offerPercentage) {
+    return 'Δες μια διαφήμιση και ενεργοποίησε $offerPercentage% έκπτωση για όλα τα προϊόντα!';
+  }
+
+  @override
+  String get rewardsThirdOfferTitleSmall => 'Κέρδισε';
+
+  @override
+  String rewardsThirdOfferTitleBig(int freezes) {
+    String _temp0 = intl.Intl.pluralLogic(
+      freezes,
+      locale: localeName,
+      other: 'παγώματα',
+      one: 'πάγωμα',
+    );
+    return '$freezes $_temp0!';
+  }
+
+  @override
+  String rewardsThirdOfferDescription(int freezes) {
+    String _temp0 = intl.Intl.pluralLogic(
+      freezes,
+      locale: localeName,
+      other: 'δυνάμεις παγώματος',
+      one: 'δύναμη παγώματος',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      freezes,
+      locale: localeName,
+      other: 'γίνουν',
+      one: 'γίνει',
+    );
+    String _temp2 = intl.Intl.pluralLogic(
+      freezes,
+      locale: localeName,
+      other: 'δικές',
+      one: 'δική',
+    );
+    return 'Δες μια διαφήμιση και $freezes $_temp0 θα $_temp1 αμέσως $_temp2 σου!';
+  }
+
+  @override
+  String get rewardActiveCard => 'ΕΝΕΡΓΗ';
+
+  @override
+  String get stageCompletionXpBoostHeader => 'Πολλαπλασιαστής XP';
+
+  @override
+  String get stageCompletionXpBoostDescription => 'Κέρδισες έξτρα πόντους εμπειρίας σε αυτό το στάδιο';
 }
