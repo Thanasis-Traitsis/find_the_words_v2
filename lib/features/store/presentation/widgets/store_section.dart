@@ -7,11 +7,16 @@ class StoreSection extends StatelessWidget {
   final SectionHeader sectionHeader;
   final Widget sectionContent;
 
-  const StoreSection({super.key, required this.sectionHeader, required this.sectionContent});
+  const StoreSection({
+    super.key,
+    required this.sectionHeader,
+    required this.sectionContent,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: const EdgeInsets.only(top: AppSpacing.spacingXL),
       padding: const EdgeInsets.all(AppSpacing.spacingL),
       decoration: BoxDecoration(
         borderRadius: AppBorders.bigBorderRadius,
@@ -23,10 +28,7 @@ class StoreSection extends StatelessWidget {
       child: Column(
         spacing: AppSpacing.spacingL,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          sectionHeader,
-          sectionContent,
-        ],
+        children: [sectionHeader, sectionContent],
       ),
     );
   }

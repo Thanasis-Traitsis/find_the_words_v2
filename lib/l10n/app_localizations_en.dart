@@ -551,4 +551,65 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get stageCompletionXpBoostDescription => 'You won extra points of experience from this stage';
+
+  @override
+  String get notAvailableTag => 'NOT AVAILABLE';
+
+  @override
+  String priceBeforeDiscount(int totalAmount) {
+    return 'from $totalAmount';
+  }
+
+  @override
+  String get currentDiscountHeader => 'Active Discount';
+
+  @override
+  String currentDiscountDescription(int discountPercentage) {
+    return 'Get $discountPercentage% off everything! Grab your items before time runs out!';
+  }
+
+  @override
+  String get confirmPurchaseDialogTitle => 'Purchase Confirmation';
+
+  @override
+  String confirmPurchaseDialogDescription(int costPoints) {
+    return 'Are you sure you want to complete this purchase? By confirming, $costPoints points will be deducted from your account.';
+  }
+
+  @override
+  String get confirmPurchaseDialogCancelButton => 'Cancel';
+
+  @override
+  String get confirmPurchaseDialogConfirmButton => 'Confirm';
+
+  @override
+  String get purchaseSnackbarTitle => 'Purchase Completed';
+
+  @override
+  String get purchaseFreezeSnackbarMessage => 'You’ve unlocked Freeze! You can now use it in the game.';
+
+  @override
+  String get rewardNotificationTitle => 'Reward Unlocked!';
+
+  @override
+  String rewardPointsNotificationMessage(int points) {
+    return 'You’ve earned $points bonus points!';
+  }
+
+  @override
+  String rewardDiscountNotificationMessage(int percentage) {
+    return 'You’ve unlocked a $percentage% discount in the store!';
+  }
+
+  @override
+  String get rewardFreezeNotificationMessage => 'You’ve received a Freeze power-up for free!';
+
+  @override
+  String get notEnoughPointsErrorMessage => 'You don\'t have enough points for this help...';
+
+  @override
+  String get resetStageNotificationTitle => 'successful reset';
+
+  @override
+  String get resetStageNotificationMessage => 'The stage was successfully deleted. A brand new stage is waiting!';
 }

@@ -55,7 +55,7 @@ class StoreSectionHeader extends SectionHeader {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Expanded(
-              child: CustomText(header, textType: CustomTextType.bigHeading),
+              child: CustomText(header, textType: CustomTextType.regularHeading),
             ),
             Container(
               padding: const EdgeInsets.all(AppSpacing.spacingM),

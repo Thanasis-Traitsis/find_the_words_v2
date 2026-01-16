@@ -8,6 +8,7 @@ import 'package:find_the_words/features/stage/domain/usecases/check_intersection
 import 'package:find_the_words/features/stage/domain/usecases/load_stage_usecase.dart';
 import 'package:find_the_words/features/stage/domain/usecases/reveal_letter_usecase.dart';
 import 'package:find_the_words/features/stage/domain/usecases/submit_word_usecase.dart';
+import 'package:find_the_words/features/stage/presentation/helpers/error_utils.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'stage_event.dart';
@@ -107,7 +108,7 @@ class StageBloc extends Bloc<StageEvent, StageState> {
       emit(
         StageInGameError(
           currentState.stage,
-          errorMessage: 'Not enough points to reveal letter',
+          error: ErrorScenarios.notEnoughPoints,
         ),
       );
       return;

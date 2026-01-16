@@ -41,7 +41,10 @@ enum CustomIcons {
 
   // Logos
   homeLogoEn('home_logo_en'),
-  homeLogo('home_logo');
+  homeLogo('home_logo'),
+
+  // Social
+  google('google');
 
   const CustomIcons(this.fileName);
   

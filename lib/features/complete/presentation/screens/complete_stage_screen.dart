@@ -51,13 +51,46 @@ class _CompleteStageScreenState extends State<CompleteStageScreen> {
 
       setState(() {
         _isScrollable = isScrollable;
-
-        if (isScrollable) {
-          _bottomButtonOpacity = 1.0;
-          _inlineButtonOpacity = 0.0;
-        }
       });
+
+      if (isScrollable) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          _updateButtonVisibility();
+        });
+      } else {
+        setState(() {
+          _bottomButtonOpacity = 0.0;
+          _inlineButtonOpacity = 1.0;
+        });
+      }
     }
+  }
+
+  void _updateButtonVisibility() {
+    final RenderBox? renderBox =
+        _inlineButtonKey.currentContext?.findRenderObject() as RenderBox?;
+    final RenderBox? renderBoxFloating =
+        _floatingButtonKey.currentContext?.findRenderObject() as RenderBox?;
+
+    if (renderBox == null || renderBoxFloating == null) return;
+
+    final buttonPosition = renderBox.localToGlobal(Offset.zero);
+    final buttonTop = buttonPosition.dy;
+
+    final buttonPositionFloating = renderBoxFloating.localToGlobal(Offset.zero);
+    final buttonTopFloating = buttonPositionFloating.dy;
+
+    final isButtonReachingFixedPosition = buttonTop <= buttonTopFloating;
+
+    setState(() {
+      if (isButtonReachingFixedPosition) {
+        _bottomButtonOpacity = 0.0;
+        _inlineButtonOpacity = 1.0;
+      } else {
+        _bottomButtonOpacity = 1.0;
+        _inlineButtonOpacity = 0.0;
+      }
+    });
   }
 
   @override
@@ -70,33 +103,7 @@ class _CompleteStageScreenState extends State<CompleteStageScreen> {
   void _onScroll() {
     if (!_isScrollable) return;
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final RenderBox? renderBox =
-          _inlineButtonKey.currentContext?.findRenderObject() as RenderBox?;
-      final RenderBox? renderBoxFloating =
-          _floatingButtonKey.currentContext?.findRenderObject() as RenderBox?;
-
-      if (renderBox == null) return;
-      if (renderBoxFloating == null) return;
-
-      final buttonPosition = renderBox.localToGlobal(Offset.zero);
-      final buttonTop = buttonPosition.dy;
-
-      final buttonPositionFloating = renderBoxFloating.localToGlobal(
-        Offset.zero,
-      );
-      final buttonTopFloating = buttonPositionFloating.dy;
-
-      final isButtonReachingFixedPosition = buttonTop <= buttonTopFloating;
-
-      setState(() {
-        if (isButtonReachingFixedPosition) {
-          _bottomButtonOpacity = 0.0;
-          _inlineButtonOpacity = 1.0;
-        } else {
-          _bottomButtonOpacity = 1.0;
-          _inlineButtonOpacity = 0.0;
-        }
-      });
+      _updateButtonVisibility();
     });
   }
 

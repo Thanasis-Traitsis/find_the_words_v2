@@ -9,10 +9,7 @@ class CompletedWordFromReveal {
   final String word;
   final List<int> positions;
 
-  CompletedWordFromReveal({
-    required this.word,
-    required this.positions,
-  });
+  CompletedWordFromReveal({required this.word, required this.positions});
 }
 
 class RevealLetterResult {
@@ -34,8 +31,8 @@ class RevealLetterUsecase {
   RevealLetterUsecase({
     required StageRepository repository,
     required CrosswordUsecase crosswordUsecase,
-  })  : _repository = repository,
-        _crosswordUsecase = crosswordUsecase;
+  }) : _repository = repository,
+       _crosswordUsecase = crosswordUsecase;
 
   Future<RevealLetterResult> call({
     required CurrentStage currentStage,
@@ -44,7 +41,8 @@ class RevealLetterUsecase {
     final tracker = currentStage.placementTracker;
     final unrevealedPositions = tracker.remainingPositions;
 
-    final selectedPosition = position ??
+    final selectedPosition =
+        position ??
         unrevealedPositions.elementAt(
           Random().nextInt(unrevealedPositions.length),
         );
@@ -56,6 +54,8 @@ class RevealLetterUsecase {
       tracker,
       currentStage,
     );
+
+    await _repository.saveStageProgress(stage: updatedStage);
 
     final autoCompletedWords = <CompletedWordFromReveal>[];
     final affectedPlacements = tracker.placements
@@ -81,10 +81,12 @@ class RevealLetterUsecase {
           foundWord: placement.word,
         );
 
-        autoCompletedWords.add(CompletedWordFromReveal(
-          word: placement.word,
-          positions: placement.positions,
-        ));
+        autoCompletedWords.add(
+          CompletedWordFromReveal(
+            word: placement.word,
+            positions: placement.positions,
+          ),
+        );
       }
     }
 
@@ -101,9 +103,7 @@ class RevealLetterUsecase {
     CurrentStage stage,
   ) {
     try {
-      final foundInPlacement = tracker.getPlacementFromUniquePosition(
-        position,
-      );
+      final foundInPlacement = tracker.getPlacementFromUniquePosition(position);
 
       return _crosswordUsecase.updateCurrentStage(
         oldTracker: tracker,

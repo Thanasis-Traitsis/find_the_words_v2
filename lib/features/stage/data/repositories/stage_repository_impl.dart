@@ -1,3 +1,4 @@
+import 'package:find_the_words/config/language/cubit/language_cubit.dart';
 import 'package:find_the_words/core/constants/constants.dart';
 import 'package:find_the_words/core/services/previous_stage_words_service.dart';
 import 'package:find_the_words/core/services/service_locator.dart';
@@ -24,17 +25,23 @@ class StageRepositoryImpl implements StageRepository {
 
   @override
   Future<CurrentStage?> loadSavedStage() async {
-    return _localDataSource.getCurrentStage();
+    final currentLang = getIt<LanguageCubit>().state.appLanguage;
+
+    return _localDataSource.getCurrentStage(currentLang);
   }
 
   @override
   Future<void> saveStageProgress({
     required CurrentStage stage,
-    required String foundWord,
+    String? foundWord,
   }) async {
-    await _localDataSource.saveStage(stage);
+    final currentLang = getIt<LanguageCubit>().state.appLanguage;
 
-    await getIt<AuthCubit>().addFoundWord(foundWord);
+    await _localDataSource.saveStage(stage, currentLang);
+
+    if (foundWord != null) {
+      await getIt<AuthCubit>().addFoundWord(foundWord);
+    }
   }
 
   @override
@@ -43,27 +50,30 @@ class StageRepositoryImpl implements StageRepository {
     required int stageNumber,
     required double progress,
   }) async {
+    final currentLang = getIt<LanguageCubit>().state.appLanguage;
     final int wordLength = level + 2;
 
     final stage = await _generatorService.generateStage(
-      filePath: FileUtils.stageFile(wordLength),
+      filePath: FileUtils.stageFile(wordLength, currentLang.code),
       level: level,
       progress: progress,
     );
 
-    await _localDataSource.saveStage(stage);
+    await _localDataSource.saveStage(stage, currentLang);
 
     return stage;
   }
 
   @override
   Future<void> clearStage() async {
-    await _localDataSource.deleteStage();
+    final currentLang = getIt<LanguageCubit>().state.appLanguage;
+    await _localDataSource.deleteStage(currentLang);
   }
 
   @override
   bool hasSavedStage() {
-    return _localDataSource.hasSavedStage();
+    final currentLang = getIt<LanguageCubit>().state.appLanguage;
+    return _localDataSource.hasSavedStage(currentLang);
   }
 
   @override

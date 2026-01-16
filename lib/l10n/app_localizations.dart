@@ -1018,6 +1018,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You won extra points of experience from this stage'**
   String get stageCompletionXpBoostDescription;
+
+  /// No description provided for @notAvailableTag.
+  ///
+  /// In en, this message translates to:
+  /// **'NOT AVAILABLE'**
+  String get notAvailableTag;
+
+  /// Points before discount
+  ///
+  /// In en, this message translates to:
+  /// **'from {totalAmount}'**
+  String priceBeforeDiscount(int totalAmount);
+
+  /// No description provided for @currentDiscountHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'Active Discount'**
+  String get currentDiscountHeader;
+
+  /// The percentage of the discount
+  ///
+  /// In en, this message translates to:
+  /// **'Get {discountPercentage}% off everything! Grab your items before time runs out!'**
+  String currentDiscountDescription(int discountPercentage);
+
+  /// No description provided for @confirmPurchaseDialogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase Confirmation'**
+  String get confirmPurchaseDialogTitle;
+
+  /// The cost of the purchase
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to complete this purchase? By confirming, {costPoints} points will be deducted from your account.'**
+  String confirmPurchaseDialogDescription(int costPoints);
+
+  /// No description provided for @confirmPurchaseDialogCancelButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get confirmPurchaseDialogCancelButton;
+
+  /// No description provided for @confirmPurchaseDialogConfirmButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get confirmPurchaseDialogConfirmButton;
+
+  /// No description provided for @purchaseSnackbarTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase Completed'**
+  String get purchaseSnackbarTitle;
+
+  /// No description provided for @purchaseFreezeSnackbarMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You’ve unlocked Freeze! You can now use it in the game.'**
+  String get purchaseFreezeSnackbarMessage;
+
+  /// No description provided for @rewardNotificationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reward Unlocked!'**
+  String get rewardNotificationTitle;
+
+  /// Rewarded points from ad
+  ///
+  /// In en, this message translates to:
+  /// **'You’ve earned {points} bonus points!'**
+  String rewardPointsNotificationMessage(int points);
+
+  /// Store percentage offer after rewarded ad
+  ///
+  /// In en, this message translates to:
+  /// **'You’ve unlocked a {percentage}% discount in the store!'**
+  String rewardDiscountNotificationMessage(int percentage);
+
+  /// No description provided for @rewardFreezeNotificationMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You’ve received a Freeze power-up for free!'**
+  String get rewardFreezeNotificationMessage;
+
+  /// No description provided for @notEnoughPointsErrorMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You don\'t have enough points for this help...'**
+  String get notEnoughPointsErrorMessage;
+
+  /// No description provided for @resetStageNotificationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'successful reset'**
+  String get resetStageNotificationTitle;
+
+  /// No description provided for @resetStageNotificationMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The stage was successfully deleted. A brand new stage is waiting!'**
+  String get resetStageNotificationMessage;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

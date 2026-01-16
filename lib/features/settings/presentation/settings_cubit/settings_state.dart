@@ -13,7 +13,7 @@ class SettingsLoading extends SettingsState {}
 
 class SettingsStageReset extends SettingsState {}
 
-class SettingsEmailOpened extends SettingsState {}
+class SettingsEmailReturned extends SettingsState {}
 
 class SettingsEmailFailed extends SettingsState {
   final String message;

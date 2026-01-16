@@ -7,25 +7,34 @@ import 'package:find_the_words/features/stage/data/models/current_stage.dart';
 class UserEntity {
   final String id;
   final String? username;
+  final String? email;
   final int points;
   final Map<AppLanguage, ProfileStatusModel> progressByLanguage;
   final CurrentStage? currentStage;
+  final DateTime? lastSyncedAt;
+  final bool isGuest;
 
   UserEntity.guest({
     required this.id,
     required this.points,
     required this.progressByLanguage,
     this.currentStage,
-  }) : username = null;
+    this.lastSyncedAt,
+  }) : username = null,
+       email = null,
+       isGuest = true;
 
   UserEntity.authenticated({
     required this.id,
     required this.username,
+    this.email,
     required this.points,
     required this.progressByLanguage,
     this.currentStage,
-  });
+    this.lastSyncedAt,
+  }) : isGuest = false;
 
+  // Helper methods
   ProfileStatusModel get currentProgress {
     final currentLanguage = getIt<LanguageCubit>().state.appLanguage;
     return progressByLanguage[currentLanguage] ??
@@ -38,5 +47,48 @@ class UserEntity {
 
   ProfileStatusModel progressFor(AppLanguage language) {
     return progressByLanguage[language] ?? _createDefaultProgress(language);
+  }
+
+  double get totalProgressScore {
+    return progressByLanguage.values.fold(0.0, (sum, progress) {
+      return sum + progress.level + (progress.progress / 100);
+    });
+  }
+
+  int get totalLevel {
+    return progressByLanguage.values.fold(
+      0,
+      (sum, progress) => sum + progress.level,
+    );
+  }
+
+  UserEntity copyWith({
+    String? id,
+    String? username,
+    String? email,
+    int? points,
+    Map<AppLanguage, ProfileStatusModel>? progressByLanguage,
+    CurrentStage? currentStage,
+    DateTime? lastSyncedAt,
+  }) {
+    if (isGuest) {
+      return UserEntity.guest(
+        id: id ?? this.id,
+        points: points ?? this.points,
+        progressByLanguage: progressByLanguage ?? this.progressByLanguage,
+        currentStage: currentStage ?? this.currentStage,
+        lastSyncedAt: lastSyncedAt ?? this.lastSyncedAt,
+      );
+    } else {
+      return UserEntity.authenticated(
+        id: id ?? this.id,
+        username: username ?? this.username,
+        email: email ?? this.email,
+        points: points ?? this.points,
+        progressByLanguage: progressByLanguage ?? this.progressByLanguage,
+        currentStage: currentStage ?? this.currentStage,
+        lastSyncedAt: lastSyncedAt ?? this.lastSyncedAt,
+      );
+    }
   }
 }

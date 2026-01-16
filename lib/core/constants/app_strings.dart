@@ -7,4 +7,5 @@ class AppStrings {
   static const String devThemeSaveError = 'Failed to save theme';
   static const String devLanguageLoadError = 'Failed to load selected language';
   static const String devLanguageSaveError = 'Failed to save new language';
+  static const String devFreezeLoadError = 'Failed to load freeze';
 }

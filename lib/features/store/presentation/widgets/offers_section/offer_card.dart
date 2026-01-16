@@ -1,14 +1,14 @@
 import 'package:find_the_words/config/theme/custom_text_type.dart';
 import 'package:find_the_words/core/constants/constants.dart';
-import 'package:find_the_words/core/constants/custom_icons.dart';
 import 'package:find_the_words/core/services/service_locator.dart';
 import 'package:find_the_words/core/utils/text_extensions.dart';
 import 'package:find_the_words/core/utils/theme_extensions.dart';
-import 'package:find_the_words/core/widgets/custom_primary_button.dart';
 import 'package:find_the_words/core/widgets/custom_text.dart';
 import 'package:find_the_words/features/auth/account_boost_cubit/account_boost_cubit.dart';
 import 'package:find_the_words/features/auth/domain/entities/account_boost_entity.dart';
+import 'package:find_the_words/features/points/cubit/points_cubit.dart';
 import 'package:find_the_words/features/store/data/models/offer_card_model.dart';
+import 'package:find_the_words/features/store/presentation/widgets/custom_offer_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -41,7 +41,9 @@ class OfferCard extends StatelessWidget {
                   : context.colors.lightBlue,
               borderRadius: AppBorders.regularBorderRadius,
               border: Border.all(
-                width: highlightCard ? AppBorders.largeBorderWidth : AppBorders.smallBorderWidth,
+                width: highlightCard
+                    ? AppBorders.largeBorderWidth
+                    : AppBorders.smallBorderWidth,
                 color: highlightCard
                     ? context.colors.darkGreen
                     : context.colors.darkBlue,
@@ -84,17 +86,25 @@ class OfferCard extends StatelessWidget {
                           isWhite: true,
                         ),
                       )
-                    : CustomPrimaryButton.regular(
-                        text: offerCardModel.costPoints.toString(),
-                        onTap: () {
-                          getIt<AccountBoostCubit>().activate(
-                            activeKey: offerCardModel.key,
-                            type: offerCardModel.boostType,
-                            amount: offerCardModel.amount,
+                    : BlocBuilder<PointsCubit, int>(
+                        builder: (context, currentPoints) {
+                          return CustomOfferButton(
+                            originalCost: offerCardModel.originalCostPoints,
+                            actualCost: offerCardModel.getActualCost(),
+                            onTap: () {
+                              getIt<AccountBoostCubit>().activate(
+                                activeKey: offerCardModel.key,
+                                type: offerCardModel.boostType,
+                                amount: offerCardModel.amount,
+                                pointsCubit: getIt<PointsCubit>(),
+                                points: offerCardModel.getActualCost(),
+                              );
+                            },
+                            isDisabled:
+                                hideCard ||
+                                currentPoints < offerCardModel.getActualCost(),
                           );
                         },
-                        suffixIcon: CustomIcons.star,
-                        isDisabled: hideCard,
                       ),
               ],
             ),

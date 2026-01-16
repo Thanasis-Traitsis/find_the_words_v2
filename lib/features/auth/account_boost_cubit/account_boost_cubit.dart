@@ -9,6 +9,7 @@ import 'package:find_the_words/features/auth/data/models/profile_status_model.da
 import 'package:find_the_words/features/auth/data/models/user_model.dart';
 import 'package:find_the_words/features/auth/data/models/account_boost_model.dart';
 import 'package:find_the_words/features/auth/domain/entities/account_boost_entity.dart';
+import 'package:find_the_words/features/points/cubit/points_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AccountBoostCubit extends Cubit<AccountBoostEntity?> {
@@ -43,7 +44,7 @@ class AccountBoostCubit extends Cubit<AccountBoostEntity?> {
     }
 
     if (authState is AuthAuthenticated) {
-      final currentLanguage = _getCurrentLanguage(authState.user as UserModel);
+      final currentLanguage = _getCurrentLanguage();
       final boost =
           authState.user.progressByLanguage[currentLanguage]?.activeBoost;
 
@@ -66,6 +67,8 @@ class AccountBoostCubit extends Cubit<AccountBoostEntity?> {
     required AccountBoostType type,
     int multiplier = 2,
     required int amount,
+    required PointsCubit pointsCubit,
+    required int points,
   }) async {
     final authState = _authCubit.state;
     if (authState is! AuthAuthenticated) return;
@@ -78,6 +81,7 @@ class AccountBoostCubit extends Cubit<AccountBoostEntity?> {
     );
 
     await _updateBoost(boost, authState.user as UserModel);
+    await pointsCubit.deductPoints(points);
 
     if (type == AccountBoostType.minutes) {
       _startTimer();
@@ -118,7 +122,7 @@ class AccountBoostCubit extends Cubit<AccountBoostEntity?> {
     AccountBoostModel? boost,
     UserModel currentUser,
   ) async {
-    final currentLanguage = _getCurrentLanguage(currentUser);
+    final currentLanguage = _getCurrentLanguage();
     final currentProfile = currentUser.progressByLanguage[currentLanguage];
 
     if (currentProfile == null) return;
@@ -159,7 +163,7 @@ class AccountBoostCubit extends Cubit<AccountBoostEntity?> {
     _timer = null;
   }
 
-  AppLanguage _getCurrentLanguage(UserModel user) {
+  AppLanguage _getCurrentLanguage() {
     final currentLang = getIt<LanguageCubit>().state.appLanguage;
     return currentLang;
   }

@@ -309,5 +309,67 @@
     },
     "rewardActiveCard": "ACTIVE",
     "stageCompletionXpBoostHeader": "Multiplier XP",
-    "stageCompletionXpBoostDescription": "You won extra points of experience from this stage"
+    "stageCompletionXpBoostDescription": "You won extra points of experience from this stage",
+    "notAvailableTag": "NOT AVAILABLE",
+    "priceBeforeDiscount": "from {totalAmount}",
+    "@priceBeforeDiscount": {
+        "description": "Points before discount",
+        "placeholders": {
+            "totalAmount": {
+                "type": "int",
+                "example": "50"
+            }
+        }
+    },
+    "currentDiscountHeader": "Active Discount",
+    "currentDiscountDescription": "Get {discountPercentage}% off everything! Grab your items before time runs out!",
+    "@currentDiscountDescription": {
+        "description": "The percentage of the discount",
+        "placeholders": {
+            "discountPercentage": {
+                "type": "int",
+                "example": "50"
+            }
+        }
+    },
+    "confirmPurchaseDialogTitle": "Purchase Confirmation",
+    "confirmPurchaseDialogDescription": "Are you sure you want to complete this purchase? By confirming, {costPoints} points will be deducted from your account.",
+    "@confirmPurchaseDialogDescription": {
+    "description": "The cost of the purchase",
+    "placeholders": {
+        "costPoints": {
+        "type": "int",
+        "example": "50"
+        }
+    }
+    },
+    "confirmPurchaseDialogCancelButton": "Cancel",
+    "confirmPurchaseDialogConfirmButton": "Confirm",
+    "purchaseSnackbarTitle": "Purchase Completed",
+    "purchaseFreezeSnackbarMessage": "You’ve unlocked Freeze! You can now use it in the game.",
+    "rewardNotificationTitle": "Reward Unlocked!",
+    "rewardPointsNotificationMessage": "You’ve earned {points} bonus points!",
+    "@rewardPointsNotificationMessage": {
+        "description": "Rewarded points from ad",
+        "placeholders": {
+            "points": {
+            "type": "int",
+            "example": "20"
+            }
+        }
+    },
+    "rewardDiscountNotificationMessage": "You’ve unlocked a {percentage}% discount in the store!",
+    "@rewardDiscountNotificationMessage": {
+        "description": "Store percentage offer after rewarded ad",
+        "placeholders": {
+            "percentage": {
+            "type": "int",
+            "example": "50"
+            }
+        }
+    },
+    "rewardFreezeNotificationMessage": "You’ve received a Freeze power-up for free!",
+    "notEnoughPointsErrorMessage": "You don't have enough points for this help...",
+    "resetStageNotificationTitle": "successful reset",
+    "resetStageNotificationMessage": "The stage was successfully deleted. A brand new stage is waiting!"
 }

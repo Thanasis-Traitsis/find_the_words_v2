@@ -60,7 +60,7 @@ class HomeScreen extends StatelessWidget {
                       ),
                       child: CustomPrimaryButton.large(
                         text: context.translate.nextStageBtnText,
-                        onTap: () {
+                        onTap: () async {
                           getIt<StageBloc>().add(
                             NextStageButtonPressed(progress),
                           );

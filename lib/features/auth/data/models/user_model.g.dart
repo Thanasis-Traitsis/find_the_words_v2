@@ -19,27 +19,36 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
     return UserModel(
       id: fields[0] as String,
       username: fields[1] as String?,
-      points: fields[2] as int,
+      email: fields[2] as String?,
+      points: fields[3] as int,
       progressByLanguage:
-          (fields[3] as Map).cast<AppLanguage, ProfileStatusModel>(),
-      currentStage: fields[4] as CurrentStage?,
+          (fields[4] as Map).cast<AppLanguage, ProfileStatusModel>(),
+      currentStage: fields[5] as CurrentStage?,
+      lastSyncedAt: fields[6] as DateTime?,
+      isGuest: fields[7] as bool?,
     );
   }
 
   @override
   void write(BinaryWriter writer, UserModel obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
       ..write(obj.username)
       ..writeByte(2)
-      ..write(obj.points)
+      ..write(obj.email)
       ..writeByte(3)
-      ..write(obj.progressByLanguage)
+      ..write(obj.points)
       ..writeByte(4)
-      ..write(obj.currentStage);
+      ..write(obj.progressByLanguage)
+      ..writeByte(5)
+      ..write(obj.currentStage)
+      ..writeByte(6)
+      ..write(obj.lastSyncedAt)
+      ..writeByte(7)
+      ..write(obj.isGuest);
   }
 
   @override

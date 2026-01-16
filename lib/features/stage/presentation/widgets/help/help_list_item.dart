@@ -1,3 +1,4 @@
+import 'package:find_the_words/config/theme/app_theme.dart';
 import 'package:find_the_words/config/theme/custom_text_type.dart';
 import 'package:find_the_words/core/constants/constants.dart';
 import 'package:find_the_words/core/constants/custom_icons.dart';
@@ -57,6 +58,7 @@ class HelpListItem extends StatelessWidget {
                       CustomText(
                         '- $points',
                         textStyle: TextStyle(
+                          fontFamily: AppTheme.highlighFont,
                           fontSize: CustomTextType.regularBody.fontSize,
                           fontWeight: CustomTextType.smallHeading.fontWeight,
                           color: context.colors.darkPink,
@@ -72,6 +74,7 @@ class HelpListItem extends StatelessWidget {
                 : CustomText(
                     context.translate.free,
                     textStyle: TextStyle(
+                      fontFamily: AppTheme.highlighFont,
                       fontSize: CustomTextType.regularBody.fontSize,
                       fontWeight: CustomTextType.smallHeading.fontWeight,
                       color: context.colors.darkPink,

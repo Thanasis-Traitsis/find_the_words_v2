@@ -1,10 +1,13 @@
 import 'package:find_the_words/config/language/presentation/bottomsheet/widgets/lang_bottomsheet.dart';
 import 'package:find_the_words/config/routes/app_pages.dart';
 import 'package:find_the_words/core/constants/constants.dart';
+import 'package:find_the_words/core/constants/custom_icons.dart';
 import 'package:find_the_words/core/screens/custom_screen.dart';
+import 'package:find_the_words/core/services/service_locator.dart';
+import 'package:find_the_words/core/utils/snackbar_helper.dart';
 import 'package:find_the_words/core/utils/text_extensions.dart';
 import 'package:find_the_words/core/widgets/big_heading.dart';
-import 'package:find_the_words/core/widgets/custom_snackbar.dart';
+import 'package:find_the_words/core/widgets/custom_social_button.dart';
 import 'package:find_the_words/features/auth/auth_cubit/auth_cubit.dart';
 import 'package:find_the_words/features/settings/presentation/settings_cubit/settings_cubit.dart';
 import 'package:find_the_words/features/settings/presentation/widgets/bad_word_bottomsheet/bad_word_bottomsheet.dart';
@@ -25,9 +28,6 @@ class SettingsScreen extends StatelessWidget {
         child: SingleChildScrollView(
           child: BlocConsumer<SettingsCubit, SettingsState>(
             listener: (context, state) {
-              if (state is SettingsEmailFailed) {
-                // TODO: add snackbar here when you have no internet connection or something else happened
-              }
               if (state is SettingsReportBadWord) {
                 showModalBottomSheet(
                   context: context,
@@ -45,17 +45,12 @@ class SettingsScreen extends StatelessWidget {
                   }
                 });
               }
-              if (state is SettingsEmailOpened) {
-                // TODO: implement snackbar here
-                ScaffoldMessenger.of(context).showSnackBar(
-                  CustomSnackbar.success(
-                    context: context,
-                    contentText: "Thank you for helping us improve!",
-                  ),
-                );
-              }
               if (state is SettingsStageReset) {
-                // TODO: implement snackbar here
+                SnackbarHelper.showSuccessSnackbar(
+                  context,
+                  title: context.translate.resetStageNotificationTitle,
+                  message: context.translate.resetStageNotificationMessage,
+                );
               }
             },
             builder: (context, state) {
@@ -140,6 +135,18 @@ class SettingsScreen extends StatelessWidget {
                   SettingsRowItem.navigateToWeb(
                     name: context.translate.settingsItemReportTermsConditions,
                     link: "https://github.com/Thanasis-Traitsis",
+                  ),
+                  Container(
+                    margin: const EdgeInsets.symmetric(
+                      vertical: AppSpacing.spacingL,
+                    ),
+                    child: CustomSocialButton(
+                      social: CustomIcons.google,
+                      text: "Google Sign in",
+                      onPressed: () {
+                        getIt<AuthCubit>().googleSignIn();
+                      },
+                    ),
                   ),
                 ],
               );

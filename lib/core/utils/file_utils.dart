@@ -3,9 +3,9 @@ import 'package:flutter/services.dart';
 import 'dart:convert';
 
 class FileUtils {
-  static String stageFile(letterNum) =>
-      'stages/${letterNum}_letter_words.min.json';
-  static String dictionaryFile(fileName) => 'dictionary/$fileName.min.json';
+  static String stageFile(letterNum,langCode) =>
+      'stages/${letterNum}_letter_words_$langCode.min.json';
+  static String dictionaryFile(fileName,langCode) => 'dictionary/${fileName}_$langCode.min.json';
 
   static Future<Map<String, dynamic>> loadCompressedJson(String path) async {
     final ByteData data = await rootBundle.load('assets/$path.gz');

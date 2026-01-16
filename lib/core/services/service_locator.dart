@@ -1,11 +1,14 @@
+import 'package:find_the_words/config/ads/rewarded_cubit/rewarded_ad_cubit.dart';
 import 'package:find_the_words/config/language/cubit/language_cubit.dart';
 import 'package:find_the_words/core/services/connectivity_service.dart';
 import 'package:find_the_words/core/services/previous_stage_words_service.dart';
 import 'package:find_the_words/core/services/storage_service.dart';
+import 'package:find_the_words/core/services/store_discount_service.dart';
 import 'package:find_the_words/features/auth/account_boost_cubit/account_boost_cubit.dart';
 import 'package:find_the_words/features/auth/auth_cubit/auth_cubit.dart';
 import 'package:find_the_words/features/auth/data/repositories/user_repository_impl.dart';
 import 'package:find_the_words/features/auth/domain/repositories/user_repository.dart';
+import 'package:find_the_words/features/freeze/freeze_cubit/freeze_cubit.dart';
 import 'package:find_the_words/features/points/cubit/points_cubit.dart';
 import 'package:find_the_words/features/settings/domain/usecases/open_email_usecase.dart';
 import 'package:find_the_words/features/settings/presentation/settings_cubit/settings_cubit.dart';
@@ -47,15 +50,13 @@ Future<void> _registerCoreServices() async {
     return storage;
   });
 
-  getIt.registerSingletonAsync<DictionaryService>(() async {
-    final service = DictionaryService();
-    await service.loadDictionaryJson();
-    return service;
-  });
-
   getIt.registerLazySingleton<ConnectivityService>(() => ConnectivityService());
   getIt.registerLazySingleton<PreviousStageWordsService>(
     () => PreviousStageWordsService(),
+  );
+
+  getIt.registerSingletonAsync<StoreDiscountService>(
+    () async => StoreDiscountService.create(),
   );
 }
 
@@ -123,6 +124,14 @@ Future<void> _registerBlocs() async {
     dependsOn: [AuthCubit, StorageService],
   );
 
+  getIt.registerSingletonAsync<RewardedAdCubit>(
+    () async => RewardedAdCubit()..initialize(),
+  );
+
+  getIt.registerSingletonAsync<FreezeCubit>(
+    () async => FreezeCubit()..initializeFreeze(),
+  );
+
   getIt.registerSingletonAsync<AccountBoostCubit>(
     () async => AccountBoostCubit(
       authCubit: getIt<AuthCubit>(),
@@ -151,4 +160,9 @@ Future<void> _registerBlocs() async {
       stageRepo: getIt<StageRepository>(),
     ),
   );
+
+  getIt.registerSingletonAsync<DictionaryService>(() async {
+    final service = DictionaryService();
+    return service;
+  });
 }

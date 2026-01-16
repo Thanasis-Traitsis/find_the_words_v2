@@ -13,11 +13,15 @@ class StorageService {
   static const String _userBoxKey = "user_box";
   static const String _userKey = "current_user";
   static const String _stageBoxKey = "stage_box";
-  static const String _stageKey = "current_stage";
+  static const String _stageKeyPrefix = "current_stage";
 
   late Box<UserModel> _userBox;
   late Box<CurrentStage> _stageBox;
   bool _isInitialized = false;
+
+  String _getStageKey(AppLanguage language) {
+    return "${_stageKeyPrefix}_${language.code}";
+  }
 
   Future<void> init() async {
     if (_isInitialized) return;
@@ -78,24 +82,34 @@ class StorageService {
   }
 
   /// Save or update the current stage
-  Future<void> saveCurrentStage(CurrentStage stage) async {
+  Future<void> saveCurrentStage(
+    CurrentStage stage,
+    AppLanguage language,
+  ) async {
     if (!_isInitialized) await init();
-    await _stageBox.put(_stageKey, stage);
+    await _stageBox.put(_getStageKey(language), stage);
   }
 
   /// Load the current stage (if any)
-  CurrentStage? getCurrentStage() {
-    return _stageBox.get(_stageKey);
+  CurrentStage? getCurrentStage(AppLanguage language) {
+    return _stageBox.get(_getStageKey(language));
   }
 
   /// Delete current stage data (call when stage is completed)
-  Future<void> deleteCurrentStage() async {
+  Future<void> deleteCurrentStage(AppLanguage language) async {
     if (!_isInitialized) await init();
-    await _stageBox.delete(_stageKey);
+    await _stageBox.delete(_getStageKey(language));
   }
 
   /// Check if there's a saved stage
-  bool hasSavedStage() {
-    return _stageBox.containsKey(_stageKey);
+  bool hasSavedStage(AppLanguage language) {
+    return _stageBox.containsKey(_getStageKey(language));
+  }
+
+  /// Delete all saved stages (both languages)
+  Future<void> deleteAllStages() async {
+    if (!_isInitialized) await init();
+    await _stageBox.delete(_getStageKey(AppLanguage.greek));
+    await _stageBox.delete(_getStageKey(AppLanguage.english));
   }
 }

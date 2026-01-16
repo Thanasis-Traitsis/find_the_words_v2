@@ -99,7 +99,7 @@ class _CrosswordLetterBoxState extends State<CrosswordLetterBox>
                 borderRadius: AppBorders.smallBorderRadius,
                 color: widget.isVisible
                     ? context.colors.primary
-                    : context.colors.stageBlue.withValues(alpha: 0.6),
+                    : context.colors.stageBlue,
                 border: Border.all(
                   width: AppBorders.smallBorderWidth,
                   color: widget.isVisible

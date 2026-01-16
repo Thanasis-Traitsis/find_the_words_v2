@@ -16,6 +16,8 @@ class AppColors extends ThemeExtension<AppColors> {
   final Color stageBlue;
   final Color text;
   final Color error;
+  final Color orange;
+  final Color lightOrange;
 
   AppColors({
     required this.white,
@@ -33,6 +35,8 @@ class AppColors extends ThemeExtension<AppColors> {
     required this.stageBlue,
     required this.text,
     required this.error,
+    required this.orange,
+    required this.lightOrange,
   });
 
   static final mainColors = AppColors(
@@ -48,9 +52,11 @@ class AppColors extends ThemeExtension<AppColors> {
     darkBlue: const Color(0xff1C2541),
     lightPink: const Color(0xffFADDDC),
     darkPink: const Color(0xff9F4645),
-    stageBlue: const Color(0xff8CA4C4),
+    stageBlue: const Color.fromARGB(255, 180, 194, 212),
     text: const Color(0xff000000),
     error: const Color(0xff9c1a1a),
+    orange: const Color.fromARGB(255, 231, 115, 32),
+    lightOrange: const Color(0xffFFF8EC),
   );
 
   static final darkColors = AppColors(
@@ -69,6 +75,8 @@ class AppColors extends ThemeExtension<AppColors> {
     stageBlue: const Color(0xffA8C4E4),
     text: const Color(0xffE0E0E0),
     error: const Color(0xffFF5252),
+    orange: const Color(0xffFFB84D),
+    lightOrange: const Color(0xff3A3020),
   );
 
   @override
@@ -88,13 +96,13 @@ class AppColors extends ThemeExtension<AppColors> {
     Color? stageBlue,
     Color? text,
     Color? error,
+    Color? orange,
+    Color? lightOrange,
   }) {
     return AppColors(
       white: white ?? this.white,
       black: black ?? this.black,
       background: background ?? this.background,
-      text: text ?? this.text,
-      error: error ?? this.error,
       darkBackground: darkBackground ?? this.darkBackground,
       primary: primary ?? this.primary,
       secondary: secondary ?? this.secondary,
@@ -105,6 +113,10 @@ class AppColors extends ThemeExtension<AppColors> {
       lightPink: lightPink ?? this.lightPink,
       darkPink: darkPink ?? this.darkPink,
       stageBlue: stageBlue ?? this.stageBlue,
+      text: text ?? this.text,
+      error: error ?? this.error,
+      orange: orange ?? this.orange,
+      lightOrange: lightOrange ?? this.lightOrange,
     );
   }
 
@@ -121,8 +133,6 @@ class AppColors extends ThemeExtension<AppColors> {
       white: Color.lerp(white, other.white, t)!,
       black: Color.lerp(black, other.black, t)!,
       background: Color.lerp(background, other.background, t)!,
-      text: Color.lerp(text, other.text, t)!,
-      error: Color.lerp(error, other.error, t)!,
       darkBackground: Color.lerp(darkBackground, other.darkBackground, t)!,
       primary: Color.lerp(primary, other.primary, t)!,
       secondary: Color.lerp(secondary, other.secondary, t)!,
@@ -133,6 +143,10 @@ class AppColors extends ThemeExtension<AppColors> {
       lightPink: Color.lerp(lightPink, other.lightPink, t)!,
       darkPink: Color.lerp(darkPink, other.darkPink, t)!,
       stageBlue: Color.lerp(stageBlue, other.stageBlue, t)!,
+      text: Color.lerp(text, other.text, t)!,
+      error: Color.lerp(error, other.error, t)!,
+      orange: Color.lerp(orange, other.orange, t)!,
+      lightOrange: Color.lerp(lightOrange, other.lightOrange, t)!,
     );
   }
 }

@@ -563,4 +563,65 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String get stageCompletionXpBoostDescription => 'Κέρδισες έξτρα πόντους εμπειρίας σε αυτό το στάδιο';
+
+  @override
+  String get notAvailableTag => 'ΜΗ ΔΙΑΘΕΣΙΜΟ';
+
+  @override
+  String priceBeforeDiscount(int totalAmount) {
+    return 'από $totalAmount';
+  }
+
+  @override
+  String get currentDiscountHeader => 'Ενεργή έκπτωση';
+
+  @override
+  String currentDiscountDescription(int discountPercentage) {
+    return 'Αγόρασε ότι θελεις $discountPercentage% φθηνότερα, πριν τελειώσει ο χρόνος!';
+  }
+
+  @override
+  String get confirmPurchaseDialogTitle => 'Επιβεβαίωση αγοράς';
+
+  @override
+  String confirmPurchaseDialogDescription(int costPoints) {
+    return 'Είσαι σίγουρος ότι θέλεις να ολοκληρώσεις αυτή την αγορά; Με την επιβεβαίωση θα αφαιρεθούν $costPoints πόντοι από τον λογαριασμό σου.';
+  }
+
+  @override
+  String get confirmPurchaseDialogCancelButton => 'Άκυρο';
+
+  @override
+  String get confirmPurchaseDialogConfirmButton => 'Επιβεβαίωση';
+
+  @override
+  String get purchaseSnackbarTitle => 'aγορα ολοκληρωθηκε';
+
+  @override
+  String get purchaseFreezeSnackbarMessage => 'Απέκτησες το Πάγωμα! Μπορείς να το χρησιμοποιήσεις στο παιχνίδι.';
+
+  @override
+  String get rewardNotificationTitle => 'Ανταμοιβη ξεκλειδωθηκε!';
+
+  @override
+  String rewardPointsNotificationMessage(int points) {
+    return 'Κέρδισες $points μπόνους πόντους!';
+  }
+
+  @override
+  String rewardDiscountNotificationMessage(int percentage) {
+    return 'Ξεκλείδωσες έκπτωση $percentage% σε όλο κατάστημα!';
+  }
+
+  @override
+  String get rewardFreezeNotificationMessage => 'Μόλις ελαβες ένα Πάγωμα εντελώς δωρεάν!';
+
+  @override
+  String get notEnoughPointsErrorMessage => 'Δε διαθέτεις αρκετούς πόντους για αυτή τη βοήθεια...';
+
+  @override
+  String get resetStageNotificationTitle => 'επιτυχης επανεκκινηση!';
+
+  @override
+  String get resetStageNotificationMessage => 'Το στάδιο διαγράφτηκε με επιτυχία. Ένα καινούριο στάδιο σε περιμένει!';
 }

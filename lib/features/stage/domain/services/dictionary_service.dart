@@ -1,10 +1,16 @@
+import 'package:find_the_words/config/language/cubit/language_cubit.dart';
+import 'package:find_the_words/core/services/service_locator.dart';
 import 'package:find_the_words/core/utils/file_utils.dart';
 
 class DictionaryService {
   Map<String, dynamic> cachedDictionary = {};
 
-  Future<void> loadDictionaryJson() async {
-    final dictionaryPath = FileUtils.dictionaryFile('dictionary');
+  Future<void> loadDictionaryJson({String? langCode}) async {
+    final currentLang = langCode ?? getIt<LanguageCubit>().state.appLanguage.code;
+
+    print(currentLang);
+
+    final dictionaryPath = FileUtils.dictionaryFile('dictionary', currentLang);
     cachedDictionary = await FileUtils.loadCompressedJson(dictionaryPath);
   }
 }

@@ -1,4 +1,5 @@
 import 'package:find_the_words/config/theme/app_colors.dart';
+import 'package:find_the_words/config/theme/app_theme.dart';
 import 'package:find_the_words/core/constants/constants.dart';
 import 'package:flutter/material.dart';
 
@@ -36,11 +37,24 @@ extension CustomFontWeight on CustomTextType {
   };
 }
 
+extension CustomFontFamily on CustomTextType {
+  String get fontFamily => switch (this) {
+    CustomTextType.bigHeading ||
+    CustomTextType.regularHeading ||
+    CustomTextType.smallHeading ||
+    CustomTextType.smallTag => AppTheme.highlighFont,
+    CustomTextType.bigBody ||
+    CustomTextType.regularBody ||
+    CustomTextType.smallBody => AppTheme.appFont,
+  };
+}
+
 extension CustomTextStyle on CustomTextType {
   TextStyle getTextStyle(BuildContext context, bool isWhite, bool isItalic) {
     final appColors = Theme.of(context).extension<AppColors>()!;
 
     return TextStyle(
+      fontFamily: fontFamily,
       fontSize: fontSize,
       fontWeight: fontWeight,
       fontStyle: isItalic ? FontStyle.italic : null,

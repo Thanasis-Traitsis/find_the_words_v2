@@ -10,9 +10,9 @@ extension SnackbarThemeColors on SnackbarTheme {
       case SnackbarTheme.success:
         return context.colors.lightGreen;
       case SnackbarTheme.warning:
-        return context.colors.lightBlue;
+        return context.colors.lightOrange;
       case SnackbarTheme.error:
-        return context.colors.error;
+        return context.colors.lightPink;
     }
   }
 
@@ -21,9 +21,9 @@ extension SnackbarThemeColors on SnackbarTheme {
       case SnackbarTheme.success:
         return context.colors.darkGreen;
       case SnackbarTheme.warning:
-        return context.colors.darkBlue;
+        return context.colors.orange;
       case SnackbarTheme.error:
-        return context.colors.white;
+        return context.colors.error;
     }
   }
 

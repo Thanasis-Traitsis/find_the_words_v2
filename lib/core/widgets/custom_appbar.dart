@@ -73,7 +73,7 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
           ],
         ),
       ),
-      titleTextStyle: TextStyle(fontFamily: AppTheme.appFont),
+      titleTextStyle: TextStyle(fontFamily: AppTheme.highlighFont),
       actions: [
         IntrinsicHeight(
           child: Row(

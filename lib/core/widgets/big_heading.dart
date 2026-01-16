@@ -32,7 +32,7 @@ class BigHeading extends StatelessWidget {
                 },
             icon: CustomIcons.arrowLeft,
           ),
-          CustomText(pageTitle, textType: CustomTextType.bigHeading),
+          Expanded(child: CustomText(pageTitle, textType: CustomTextType.bigHeading)),
         ],
       ),
     );

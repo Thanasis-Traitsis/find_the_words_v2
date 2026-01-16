@@ -58,7 +58,7 @@ class SectionWithOfferCards extends StatelessWidget {
                   offerCardModel: OfferCardModel(
                     key: offerCardsList[index].key,
                     boostType: offerCardsList[index].boostType,
-                    costPoints: offerCardsList[index].costPoints,
+                    originalCostPoints: offerCardsList[index].originalCostPoints,
                     amount: offerCardsList[index].amount,
                   ),
                 );

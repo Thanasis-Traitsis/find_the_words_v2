@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 class AppTheme {
   static const String appFont = 'Roboto Condensed';
+  static const String highlighFont = ' Advent Pro';
   final AppColors chosenColor;
 
   AppTheme(this.chosenColor);

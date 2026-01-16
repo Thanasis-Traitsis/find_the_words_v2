@@ -31,12 +31,12 @@ dependencies:
   archive: ^4.0.7
   audioplayers: ^6.5.1
   bloc_concurrency: ^0.3.0
-  cloud_firestore: ^6.0.0
+  cloud_firestore: ^6.1.1
   connectivity_plus: ^6.1.5
   cupertino_icons: ^1.0.8
   equatable: ^2.0.7
-  firebase_auth: ^6.0.1
-  firebase_core: ^4.0.0
+  firebase_auth: ^6.1.3
+  firebase_core: ^4.3.0
   flutter:
     sdk: flutter
   flutter_bloc: ^9.1.1
@@ -45,6 +45,8 @@ dependencies:
   flutter_svg: ^2.2.0
   get_it: ^8.2.0
   go_router: ^16.1.0
+  google_mobile_ads: ^6.0.0
+  google_sign_in: ^7.2.0
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   hive_generator: ^2.0.1
@@ -77,6 +79,11 @@ flutter:
       fonts:
         - asset: assets/fonts/RobotoCondensed-Regular.ttf
         - asset: assets/fonts/RobotoCondensed-Bold.ttf
+          weight: 700
+    - family: Advent Pro
+      fonts:
+        - asset: assets/fonts/AdventPro-Regular.ttf
+        - asset: assets/fonts/AdventPro-Bold.ttf
           weight: 700
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package

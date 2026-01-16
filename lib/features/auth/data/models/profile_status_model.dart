@@ -51,6 +51,34 @@ class ProfileStatusModel {
     );
   }
 
+  // ✅ Add this factory constructor
+  factory ProfileStatusModel.fromMap(Map<String, dynamic> map) {
+    return ProfileStatusModel(
+      language: AppLanguage.fromCode(map['language'] as String),
+      level: map['level'] as int? ?? 1,
+      progress: (map['progress'] as num?)?.toDouble() ?? 0,
+      stage: map['stage'] as int? ?? 1,
+      wordsModel: WordsModel(
+        words: Map<String, dynamic>.from(map['words'] as Map? ?? {}),
+      ),
+      activeBoost: map['activeBoost'] != null
+          ? AccountBoostModel.fromMap(map['activeBoost'])
+          : null,
+    );
+  }
+
+  // ✅ Add toMap as a regular method
+  Map<String, dynamic> toMap() {
+    return {
+      'language': language.code,
+      'level': level,
+      'progress': progress,
+      'stage': stage,
+      'words': wordsModel.words,
+      'activeBoost': activeBoost?.toMap(),
+    };
+  }
+
   bool get hasActiveBoost =>
       activeBoost != null && activeBoost!.isActive && !activeBoost!.isExpired;
 

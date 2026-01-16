@@ -1,3 +1,4 @@
+import 'package:find_the_words/config/theme/app_theme.dart';
 import 'package:find_the_words/config/theme/custom_text_type.dart';
 import 'package:find_the_words/core/constants/constants.dart';
 import 'package:find_the_words/core/constants/custom_icons.dart';
@@ -10,22 +11,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PointsContainer extends StatelessWidget {
-  const PointsContainer({super.key});
+  final bool withVoidCallback;
+
+  const PointsContainer({super.key, this.withVoidCallback = true});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        showModalBottomSheet(
-          context: context,
-          useRootNavigator: true,
-          isScrollControlled: true,
-          backgroundColor: Colors.transparent,
-          builder: (context) {
-            return const StoreBottomsheet();
-          },
-        );
-      },
+      onTap: withVoidCallback
+          ? () {
+              showModalBottomSheet(
+                context: context,
+                useRootNavigator: true,
+                isScrollControlled: true,
+                backgroundColor: Colors.transparent,
+                builder: (BuildContext context) {
+                  return const StoreBottomsheet();
+                },
+              );
+            }
+          : null,
       child: Container(
         padding: const EdgeInsets.all(AppSpacing.spacingM),
         decoration: BoxDecoration(
@@ -38,6 +43,7 @@ class PointsContainer extends StatelessWidget {
         ),
         child: Row(
           spacing: AppSpacing.spacingM,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             CustomSvgIcon(
               icon: CustomIcons.star,
@@ -49,6 +55,7 @@ class PointsContainer extends StatelessWidget {
                 return CustomText(
                   points.toString(),
                   textStyle: TextStyle(
+                    fontFamily: AppTheme.highlighFont,
                     fontSize: CustomTextType.regularBody.fontSize,
                     fontWeight: FontWeight.bold,
                     color: context.colors.darkPink,

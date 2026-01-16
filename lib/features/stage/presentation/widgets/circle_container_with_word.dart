@@ -157,7 +157,7 @@ class _CircleContainerWithWordState extends State<CircleContainerWithWord> {
               padding: const EdgeInsets.all(containerPadding),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: context.colors.stageBlue.withValues(alpha: 0.6),
+                color: context.colors.stageBlue,
                 border: Border.all(
                   width: AppBorders.smallBorderWidth,
                   color: context.colors.stageBlue,

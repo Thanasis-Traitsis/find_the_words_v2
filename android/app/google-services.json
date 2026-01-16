@@ -12,7 +12,12 @@
           "package_name": "com.example.create_stage"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "1076835651206-chgu7madpdlbrg7ieafu5qlapoiqflf1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyB2WpKLKMubMC-Y05tic05-Ud4vfBM52hw"
@@ -20,7 +25,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1076835651206-chgu7madpdlbrg7ieafu5qlapoiqflf1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1076835651206-9icp8q842tabbka4822edckd9ecgb4j7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.vresTisLekseis"
+              }
+            }
+          ]
         }
       }
     },
@@ -31,7 +48,12 @@
           "package_name": "com.example.find_the_word"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "1076835651206-chgu7madpdlbrg7ieafu5qlapoiqflf1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyB2WpKLKMubMC-Y05tic05-Ud4vfBM52hw"
@@ -39,7 +61,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1076835651206-chgu7madpdlbrg7ieafu5qlapoiqflf1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1076835651206-9icp8q842tabbka4822edckd9ecgb4j7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.vresTisLekseis"
+              }
+            }
+          ]
         }
       }
     },
@@ -50,7 +84,28 @@
           "package_name": "com.example.find_the_words"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "1076835651206-52mf5h9rtsra879fb5f3493iq9dug5it.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.find_the_words",
+            "certificate_hash": "977ef7f184081eee0a21a78011684070182c1f51"
+          }
+        },
+        {
+          "client_id": "1076835651206-gre4bmmev304u9ndc6bkba16kagjcd2l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.find_the_words",
+            "certificate_hash": "1bea2895a596657fc0379841cf9afe7b5739ad55"
+          }
+        },
+        {
+          "client_id": "1076835651206-chgu7madpdlbrg7ieafu5qlapoiqflf1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyB2WpKLKMubMC-Y05tic05-Ud4vfBM52hw"
@@ -58,7 +113,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1076835651206-chgu7madpdlbrg7ieafu5qlapoiqflf1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1076835651206-9icp8q842tabbka4822edckd9ecgb4j7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.vresTisLekseis"
+              }
+            }
+          ]
         }
       }
     },
@@ -69,7 +136,12 @@
           "package_name": "com.example.first_complete_try"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "1076835651206-chgu7madpdlbrg7ieafu5qlapoiqflf1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyB2WpKLKMubMC-Y05tic05-Ud4vfBM52hw"
@@ -77,7 +149,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1076835651206-chgu7madpdlbrg7ieafu5qlapoiqflf1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1076835651206-9icp8q842tabbka4822edckd9ecgb4j7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.vresTisLekseis"
+              }
+            }
+          ]
         }
       }
     },
@@ -88,7 +172,12 @@
           "package_name": "com.example.vres_tis_lekseis"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "1076835651206-chgu7madpdlbrg7ieafu5qlapoiqflf1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyB2WpKLKMubMC-Y05tic05-Ud4vfBM52hw"
@@ -96,7 +185,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1076835651206-chgu7madpdlbrg7ieafu5qlapoiqflf1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1076835651206-9icp8q842tabbka4822edckd9ecgb4j7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.vresTisLekseis"
+              }
+            }
+          ]
         }
       }
     }

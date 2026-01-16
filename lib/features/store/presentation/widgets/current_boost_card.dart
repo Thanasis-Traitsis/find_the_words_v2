@@ -44,6 +44,7 @@ class CurrentBoostCard extends StatelessWidget {
     return Stack(
       children: [
         Container(
+          margin: const EdgeInsets.only(top: AppSpacing.spacingXL),
           padding: const EdgeInsets.symmetric(
             vertical: AppSpacing.spacingM,
             horizontal: AppSpacing.spacingL,

@@ -9,6 +9,8 @@ class NavigationService {
   static final GlobalKey<NavigatorState> rootNavigatorKey =
       GlobalKey<NavigatorState>();
 
+  BuildContext? get context => rootNavigatorKey.currentContext;
+
   GoRouter get router => GoRouter.of(rootNavigatorKey.currentContext!);
 
   void go(String path, {Object? extra}) {

@@ -1,5 +1,7 @@
 import 'package:find_the_words/core/constants/constants.dart';
 import 'package:find_the_words/core/constants/custom_icons.dart';
+import 'package:find_the_words/core/services/service_locator.dart';
+import 'package:find_the_words/core/services/store_discount_service.dart';
 import 'package:find_the_words/core/utils/text_extensions.dart';
 import 'package:find_the_words/features/auth/data/models/account_boost_model.dart';
 import 'package:find_the_words/features/store/data/models/offer_card_model.dart';
@@ -13,68 +15,75 @@ class OfferSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StoreSection(
-      sectionHeader: const OfferSectionHeader(),
-      sectionContent: Column(
-        spacing: AppSpacing.spacingXL,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SectionWithOfferCards(
-            icon: CustomIcons.time,
-            header: context.translate.xpMultiplierFirstOfferHeader,
-            description: context.translate.xpMultiplierFirstOfferDescription,
-            offerCardsList: [
-              OfferCardModel(
-                boostType: AccountBoostType.minutes,
-                costPoints: 20,
-                amount: 1,
+    final discountService = getIt<StoreDiscountService>();
+
+    return ListenableBuilder(
+      listenable: discountService,
+      builder: (context, asyncSnapshot) {
+        return StoreSection(
+          sectionHeader: const OfferSectionHeader(),
+          sectionContent: Column(
+            spacing: AppSpacing.spacingXL,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SectionWithOfferCards(
+                icon: CustomIcons.time,
+                header: context.translate.xpMultiplierFirstOfferHeader,
+                description: context.translate.xpMultiplierFirstOfferDescription,
+                offerCardsList: [
+                  OfferCardModel(
+                    boostType: AccountBoostType.minutes,
+                    originalCostPoints: 20,
+                    amount: 2,
+                  ),
+                  OfferCardModel(
+                    boostType: AccountBoostType.minutes,
+                    originalCostPoints: 40,
+                    amount: 5,
+                  ),
+                  OfferCardModel(
+                    boostType: AccountBoostType.minutes,
+                    originalCostPoints: 70,
+                    amount: 10,
+                  ),
+                  OfferCardModel(
+                    boostType: AccountBoostType.minutes,
+                    originalCostPoints: 100,
+                    amount: 15,
+                  ),
+                ],
               ),
-              OfferCardModel(
-                boostType: AccountBoostType.minutes,
-                costPoints: 40,
-                amount: 5,
-              ),
-              OfferCardModel(
-                boostType: AccountBoostType.minutes,
-                costPoints: 70,
-                amount: 10,
-              ),
-              OfferCardModel(
-                boostType: AccountBoostType.minutes,
-                costPoints: 100,
-                amount: 15,
+              SectionWithOfferCards(
+                icon: CustomIcons.stage,
+                header: context.translate.xpMultiplierSecondOfferHeader,
+                description: context.translate.xpMultiplierSecondOfferDescription,
+                offerCardsList: [
+                  OfferCardModel(
+                    boostType: AccountBoostType.stages,
+                    originalCostPoints: 20,
+                    amount: 1,
+                  ),
+                  OfferCardModel(
+                    boostType: AccountBoostType.stages,
+                    originalCostPoints: 50,
+                    amount: 3,
+                  ),
+                  OfferCardModel(
+                    boostType: AccountBoostType.stages,
+                    originalCostPoints: 80,
+                    amount: 5,
+                  ),
+                  OfferCardModel(
+                    boostType: AccountBoostType.stages,
+                    originalCostPoints: 140,
+                    amount: 10,
+                  ),
+                ],
               ),
             ],
           ),
-          SectionWithOfferCards(
-            icon: CustomIcons.stage,
-            header: context.translate.xpMultiplierSecondOfferHeader,
-            description: context.translate.xpMultiplierSecondOfferDescription,
-            offerCardsList: [
-              OfferCardModel(
-                boostType: AccountBoostType.stages,
-                costPoints: 20,
-                amount: 1,
-              ),
-              OfferCardModel(
-                boostType: AccountBoostType.stages,
-                costPoints: 50,
-                amount: 3,
-              ),
-              OfferCardModel(
-                boostType: AccountBoostType.stages,
-                costPoints: 80,
-                amount: 5,
-              ),
-              OfferCardModel(
-                boostType: AccountBoostType.stages,
-                costPoints: 140,
-                amount: 10,
-              ),
-            ],
-          ),
-        ],
-      ),
+        );
+      }
     );
   }
 }

@@ -309,5 +309,67 @@
     },
     "rewardActiveCard": "ΕΝΕΡΓΗ",
     "stageCompletionXpBoostHeader": "Πολλαπλασιαστής XP",
-    "stageCompletionXpBoostDescription": "Κέρδισες έξτρα πόντους εμπειρίας σε αυτό το στάδιο"
+    "stageCompletionXpBoostDescription": "Κέρδισες έξτρα πόντους εμπειρίας σε αυτό το στάδιο",
+    "notAvailableTag": "ΜΗ ΔΙΑΘΕΣΙΜΟ",
+    "priceBeforeDiscount": "από {totalAmount}",
+    "@priceBeforeDiscount": {
+        "description": "Points before discount",
+        "placeholders": {
+            "totalAmount": {
+                "type": "int",
+                "example": "50"
+            }
+        }
+    },
+    "currentDiscountHeader": "Ενεργή έκπτωση",
+    "currentDiscountDescription": "Αγόρασε ότι θελεις {discountPercentage}% φθηνότερα, πριν τελειώσει ο χρόνος!",
+    "@currentDiscountDescription": {
+        "description": "The percentage of the discount",
+        "placeholders": {
+            "discountPercentage": {
+                "type": "int",
+                "example": "50"
+            }
+        }
+    },
+    "confirmPurchaseDialogTitle": "Επιβεβαίωση αγοράς",
+    "confirmPurchaseDialogDescription": "Είσαι σίγουρος ότι θέλεις να ολοκληρώσεις αυτή την αγορά; Με την επιβεβαίωση θα αφαιρεθούν {costPoints} πόντοι από τον λογαριασμό σου.",
+    "@confirmPurchaseDialogDescription": {
+        "description": "The cost of the purchase",
+        "placeholders": {
+            "costPoints": {
+                "type": "int",
+                "example": "50"
+            }
+        } 
+    },
+    "confirmPurchaseDialogCancelButton": "Άκυρο",
+    "confirmPurchaseDialogConfirmButton": "Επιβεβαίωση",
+    "purchaseSnackbarTitle": "aγορα ολοκληρωθηκε",
+    "purchaseFreezeSnackbarMessage": "Απέκτησες το Πάγωμα! Μπορείς να το χρησιμοποιήσεις στο παιχνίδι.",
+    "rewardNotificationTitle": "Ανταμοιβη ξεκλειδωθηκε!",
+    "rewardPointsNotificationMessage": "Κέρδισες {points} μπόνους πόντους!",
+    "@rewardPointsNotificationMessage": {
+        "description": "Rewarded points from ad",
+        "placeholders": {
+            "points": {
+                "type": "int",
+                "example": "20"
+            }
+        }
+    },
+    "rewardDiscountNotificationMessage": "Ξεκλείδωσες έκπτωση {percentage}% σε όλο κατάστημα!",
+    "@rewardDiscountNotificationMessage": {
+        "description": "Store percentage offer after rewarded ad",
+        "placeholders": {
+            "percentage": {
+                "type": "int",
+                "example": "50"
+            }
+        }
+    },
+    "rewardFreezeNotificationMessage": "Μόλις ελαβες ένα Πάγωμα εντελώς δωρεάν!",
+    "notEnoughPointsErrorMessage": "Δε διαθέτεις αρκετούς πόντους για αυτή τη βοήθεια...",
+    "resetStageNotificationTitle": "επιτυχης επανεκκινηση!",
+    "resetStageNotificationMessage": "Το στάδιο διαγράφτηκε με επιτυχία. Ένα καινούριο στάδιο σε περιμένει!"
 }

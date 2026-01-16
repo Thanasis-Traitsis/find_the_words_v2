@@ -5,7 +5,7 @@ abstract class StageRepository {
 
   Future<void> saveStageProgress({
     required CurrentStage stage,
-    required String foundWord,
+    String? foundWord,
   });
 
   Future<CurrentStage> generateStage({

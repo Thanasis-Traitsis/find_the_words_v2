@@ -44,8 +44,17 @@ class CustomBottomsheet extends StatelessWidget {
             child: SingleChildScrollView(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  Container(
+                    width: 64,
+                    height: 8,
+                    margin: const EdgeInsets.only(bottom: AppSpacing.spacingS),
+                    decoration: BoxDecoration(
+                      color: context.colors.text.withValues(alpha: 0.2),
+                      borderRadius: AppBorders.bigBorderRadius,
+                    ),
+                  ),
                   Container(
                     margin: const EdgeInsets.only(bottom: AppSpacing.spacingL),
                     child: Row(

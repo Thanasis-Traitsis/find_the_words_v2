@@ -57,10 +57,10 @@ final class StageCompleted extends StageActive {
 }
 
 final class StageInGameError extends StageActive {
-  final String errorMessage;
+  final ErrorScenarios error;
 
-  StageInGameError(super.stage, {required this.errorMessage});
+  StageInGameError(super.stage, {required this.error});
 
   @override
-  List<Object> get props => [stage, errorMessage, timestamp];
+  List<Object> get props => [stage, error, timestamp];
 }

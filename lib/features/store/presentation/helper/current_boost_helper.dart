@@ -19,6 +19,14 @@ class CurrentBoostHelper {
     return "$minutes:${seconds.toString().padLeft(2, '0')}";
   }
 
+  static String formatDurationWithHours(Duration? duration) {
+    if (duration == null) return "0:00";
+    final hours = duration.inHours;
+    final minutes = duration.inMinutes % 60;
+    final seconds = duration.inSeconds % 60;
+    return "$hours:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}";
+  }
+
   static String getFormattedSubtitle(
     AccountBoostEntity boost,
     BuildContext context,

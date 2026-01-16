@@ -9,6 +9,7 @@ class SettingsCubit extends Cubit<SettingsState> {
   final OpenEmailUseCase _openEmailUseCase;
   final PreviousStageWordsService _previousStageWordsService;
   final StageRepository _stageRepo;
+  bool _emailWasOpened = false;
 
   SettingsCubit({
     required OpenEmailUseCase openEmailUseCase,
@@ -40,13 +41,28 @@ class SettingsCubit extends Cubit<SettingsState> {
     final success = await _openEmailUseCase(subject: subject, body: body);
 
     if (success) {
-      emit(SettingsEmailOpened());
+      _emailWasOpened = true;
+      emit(SettingsInitial());
     } else {
       emit(SettingsEmailFailed("thanasiswd@gmail.com"));
     }
   }
 
+  void onAppResumed() {
+    if (_emailWasOpened) {
+      emit(SettingsEmailReturned());
+      _emailWasOpened = false;
+    }
+  }
+
   void resetSettingsState() {
     emit(SettingsInitial());
+  }
+
+  @override
+  Future<void> close() {
+    print("object yea yea yea");
+    _emailWasOpened = false;
+    return super.close();
   }
 }

@@ -12,12 +12,15 @@ import 'package:find_the_words/core/widgets/active_boost_tag.dart';
 import 'package:find_the_words/core/widgets/custom_svg_icon.dart';
 import 'package:find_the_words/features/auth/account_boost_cubit/account_boost_cubit.dart';
 import 'package:find_the_words/features/auth/auth_cubit/auth_cubit.dart';
+import 'package:find_the_words/features/freeze/freeze_cubit/freeze_cubit.dart';
 import 'package:find_the_words/features/points/cubit/points_cubit.dart';
 import 'package:find_the_words/features/stage/domain/services/stage_xp_service.dart';
+import 'package:find_the_words/features/stage/presentation/helpers/error_utils.dart';
 import 'package:find_the_words/features/stage/presentation/stage_bloc/stage_bloc.dart';
 import 'package:find_the_words/features/stage/presentation/widgets/circle_container_with_word.dart';
 import 'package:find_the_words/features/stage/presentation/widgets/crossword/crossword_letter_box.dart';
 import 'package:find_the_words/features/stage/presentation/widgets/extra_words/extra_word_box.dart';
+import 'package:find_the_words/features/stage/presentation/widgets/freeze_stage_button.dart';
 import 'package:find_the_words/features/stage/presentation/widgets/help/help_dialog.dart';
 import 'package:find_the_words/features/stage/presentation/widgets/help/help_target_button.dart';
 import 'package:find_the_words/features/stage/presentation/widgets/stage_icon_button.dart';
@@ -104,7 +107,7 @@ class _StageScreenState extends State<StageScreen> {
     }
 
     if (state is StageInGameError) {
-      SnackbarHelper.showError(context, state.errorMessage);
+      SnackbarHelper.showErrorSnackbar(context, message: ErrorUtils.getErrorMessage(context, state.error));
     }
 
     if (state is StageActive) {
@@ -123,6 +126,7 @@ class _StageScreenState extends State<StageScreen> {
     final authCubit = getIt<AuthCubit>();
     final pointsCubit = getIt<PointsCubit>();
     final accountBoost = getIt<AccountBoostCubit>();
+    final freezeCubit = getIt<FreezeCubit>();
     final authState = authCubit.state;
 
     if (authState is! AuthAuthenticated) return;
@@ -149,6 +153,10 @@ class _StageScreenState extends State<StageScreen> {
     );
 
     accountBoost.decrementStage();
+
+    if (freezeCubit.state.activeFreeze) {
+      freezeCubit.deactivateFreeze();
+    }
 
     if (!context.mounted) return;
 
@@ -203,61 +211,103 @@ class _StageScreenState extends State<StageScreen> {
               child: Column(
                 children: [
                   Expanded(
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(
-                        vertical: AppSpacing.spacingM,
-                      ),
-                      child: Center(
-                        child: GridView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: sqrt(
-                                  state.stage.board.length,
-                                ).ceil(),
+                    child: BlocBuilder<FreezeCubit, FreezeState>(
+                      builder: (context, freezeState) {
+                        return Stack(
+                          children: [
+                            Positioned(
+                              left: 0,
+                              right: 0,
+                              top: AppSpacing.spacingM,
+                              bottom: AppSpacing.spacingM,
+                              child: AnimatedOpacity(
+                                duration: const Duration(seconds: 2),
+                                opacity: freezeState.activeFreeze ? 1 : 0,
+                                child: Container(
+                                  padding: EdgeInsets.all(80),
+                                  decoration: BoxDecoration(
+                                    color: context.colors.white.withValues(
+                                      alpha: 0.7,
+                                    ),
+                                    border: Border.all(
+                                      width: AppBorders.smallBorderWidth,
+                                      color: context.colors.primary,
+                                    ),
+                                    borderRadius:
+                                        AppBorders.regularBorderRadius,
+                                  ),
+                                  child: CustomSvgIcon(
+                                    icon: CustomIcons.freeze,
+                                    color: context.colors.primary.withValues(
+                                      alpha: 0.05,
+                                    ),
+                                  ),
+                                ),
                               ),
-                          itemCount: state.stage.board.length,
-                          itemBuilder: (context, index) {
-                            final isRevealed = revealedPositions.contains(
-                              index,
-                            );
-                            final shouldAnimate = newPositions.contains(index);
-
-                            if (remainingPositions.contains(index) &&
-                                !_gridKeys.containsKey(index)) {
-                              _gridKeys[index] = GlobalKey();
-                            }
-
-                            return Container(
-                              margin: state.stage.board.length < 10
-                                  ? EdgeInsets.all(AppSpacing.spacingM)
-                                  : state.stage.board.length < 80
-                                  ? EdgeInsets.all(AppSpacing.spacingS)
-                                  : EdgeInsets.all(AppSpacing.spacingXS),
-                              child: CrosswordLetterBox(
-                                key: _gridKeys[index],
-                                boardSize: state.stage.board.length,
-                                crosswordBoxItem: state.stage.board[index],
-                                isVisible: isRevealed,
-                                shouldAnimate: shouldAnimate,
-                                animationDelay:
-                                    newPositions.indexOf(index) * 100,
-                                onTap: () {
-                                  if (_showOverlay) {
-                                    setState(() {
-                                      _showOverlay = false;
-                                    });
-                                    getIt<StageBloc>().add(
-                                      CrosswordLetterReveal(index),
+                            ),
+                            Container(
+                              margin: const EdgeInsets.symmetric(
+                                vertical: AppSpacing.spacingM,
+                              ),
+                              child: Center(
+                                child: GridView.builder(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: sqrt(
+                                          state.stage.board.length,
+                                        ).ceil(),
+                                      ),
+                                  itemCount: state.stage.board.length,
+                                  itemBuilder: (context, index) {
+                                    final isRevealed = revealedPositions
+                                        .contains(index);
+                                    final shouldAnimate = newPositions.contains(
+                                      index,
                                     );
-                                  }
-                                },
+
+                                    if (remainingPositions.contains(index) &&
+                                        !_gridKeys.containsKey(index)) {
+                                      _gridKeys[index] = GlobalKey();
+                                    }
+
+                                    return Container(
+                                      margin: state.stage.board.length < 10
+                                          ? EdgeInsets.all(AppSpacing.spacingM)
+                                          : state.stage.board.length < 80
+                                          ? EdgeInsets.all(AppSpacing.spacingS)
+                                          : EdgeInsets.all(
+                                              AppSpacing.spacingXS,
+                                            ),
+                                      child: CrosswordLetterBox(
+                                        key: _gridKeys[index],
+                                        boardSize: state.stage.board.length,
+                                        crosswordBoxItem:
+                                            state.stage.board[index],
+                                        isVisible: isRevealed,
+                                        shouldAnimate: shouldAnimate,
+                                        animationDelay:
+                                            newPositions.indexOf(index) * 100,
+                                        onTap: () {
+                                          if (_showOverlay) {
+                                            setState(() {
+                                              _showOverlay = false;
+                                            });
+                                            getIt<StageBloc>().add(
+                                              CrosswordLetterReveal(index),
+                                            );
+                                          }
+                                        },
+                                      ),
+                                    );
+                                  },
+                                ),
                               ),
-                            );
-                          },
-                        ),
-                      ),
+                            ),
+                          ],
+                        );
+                      },
                     ),
                   ),
                   Stack(
@@ -302,6 +352,12 @@ class _StageScreenState extends State<StageScreen> {
                           spacing: AppSpacing.spacingM,
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
+                            FreezeStageButton(
+                              onTap: () {
+                                _timer?.cancel();
+                                context.read<FreezeCubit>().activateFreeze();
+                              },
+                            ),
                             StageIconButton(
                               icon: CustomIcons.shuffle,
                               onTap: () {
