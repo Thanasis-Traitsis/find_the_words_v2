@@ -200,6 +200,58 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1076835651206:android:ce54bdd45d8554aa3e4b07",
+        "android_client_info": {
+          "package_name": "com.thanasistraitsis.find_the_words"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1076835651206-1ok1m6nhuuler8h34nqd8ikmriqc1ns9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.thanasistraitsis.find_the_words",
+            "certificate_hash": "977ef7f184081eee0a21a78011684070182c1f51"
+          }
+        },
+        {
+          "client_id": "1076835651206-1t18sq6ao53i4sf1cnhajh1jejojaklo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.thanasistraitsis.find_the_words",
+            "certificate_hash": "1bea2895a596657fc0379841cf9afe7b5739ad55"
+          }
+        },
+        {
+          "client_id": "1076835651206-chgu7madpdlbrg7ieafu5qlapoiqflf1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2WpKLKMubMC-Y05tic05-Ud4vfBM52hw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1076835651206-chgu7madpdlbrg7ieafu5qlapoiqflf1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1076835651206-9icp8q842tabbka4822edckd9ecgb4j7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.vresTisLekseis"
+              }
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"

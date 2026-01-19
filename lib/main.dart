@@ -1,6 +1,8 @@
 import 'package:find_the_words/config/ads/rewarded_cubit/rewarded_ad_cubit.dart';
+import 'package:find_the_words/config/connectivity/connectivity_cubit/connectivity_cubit.dart';
 import 'package:find_the_words/config/sound/cubit/sound_cubit.dart';
 import 'package:find_the_words/core/services/auth_service.dart';
+import 'package:find_the_words/core/services/connectivity_service.dart';
 import 'package:find_the_words/core/services/service_locator.dart';
 import 'package:find_the_words/features/auth/account_boost_cubit/account_boost_cubit.dart';
 import 'package:find_the_words/features/auth/auth_cubit/auth_cubit.dart';
@@ -39,6 +41,7 @@ void main() async {
 
 Future<void> runMyApp() async {
   final themeCubit = ThemeCubit();
+  final connectivityCubit = ConnectivityCubit(getIt<ConnectivityService>());
   final langCubit = getIt<LanguageCubit>();
   final rewardedAdCubit = getIt<RewardedAdCubit>();
   final freezeCubit = getIt<FreezeCubit>();
@@ -54,6 +57,7 @@ Future<void> runMyApp() async {
     MultiBlocProvider(
       providers: [
         BlocProvider.value(value: themeCubit),
+        BlocProvider.value(value: connectivityCubit),
         BlocProvider.value(value: langCubit),
         BlocProvider.value(value: rewardedAdCubit),
         BlocProvider.value(value: freezeCubit),

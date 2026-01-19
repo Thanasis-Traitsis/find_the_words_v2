@@ -371,5 +371,30 @@
     "rewardFreezeNotificationMessage": "Μόλις ελαβες ένα Πάγωμα εντελώς δωρεάν!",
     "notEnoughPointsErrorMessage": "Δε διαθέτεις αρκετούς πόντους για αυτή τη βοήθεια...",
     "resetStageNotificationTitle": "επιτυχης επανεκκινηση!",
-    "resetStageNotificationMessage": "Το στάδιο διαγράφτηκε με επιτυχία. Ένα καινούριο στάδιο σε περιμένει!"
+    "resetStageNotificationMessage": "Το στάδιο διαγράφτηκε με επιτυχία. Ένα καινούριο στάδιο σε περιμένει!",
+    "joinedOn": "Εγγράφηκε στις {date}",
+    "@joinedOn": {
+        "description": "Date that the user signed in",
+        "placeholders": {
+            "date": {
+                "type": "String",
+                "example": "Jan"
+            }
+        }
+    },
+    "logoutBtnText": "Αποσύνδεση",
+    "logoutDialogHeader": "Αποσύνδεση", 
+    "logoutDialogDescription": "Είσαι σίγουρος ότι θέλεις να αποσυνδεθείς; Μετά την αποσύνδεση, η πρόοδός σου θα αποθηκεύεται μόνο τοπικά στη συσκευή σου και δεν θα ενημερώνεται στον online λογαριασμό σου μέχρι να συνδεθείς ξανά.",
+    "logoutDialogButtonCancel": "Ακύρωση",
+    "logoutDialogButtonSubmit": "Αποσύνδεση",
+    "googleSignInSuccessTitle": "Καλώς ήρθες!",
+    "googleSignInSuccessMessage": "Συνδέθηκες με επιτυχία στον λογαριασμό σου.",
+    "googleSignInFailureTitle": "Αποτυχία σύνδεσης",
+    "googleSignInFailureMessage": "Κάτι πήγε στραβά κατά τη σύνδεση. Δοκίμασε ξανά.",
+    "googleSignOutSuccessTitle": "Αποσυνδέθηκες",
+    "googleSignOutSuccessMessage": "Αποσυνδέθηκες επιτυχώς. Η πρόοδός σου θα συνεχίσει να αποθηκεύεται τοπικά.",
+    "googleSignOutFailureTitle": "Αποτυχία αποσύνδεσης",
+    "googleSignOutFailureMessage": "Δεν ήταν δυνατή η αποσύνδεση. Δοκίμασε ξανά.",
+    "noWifiNotificationTitle": "εκτός σύνδεσης",
+    "noWifiNotificationMessage": "Η πρόοδος θα συγχρονιστεί όταν συνδεθείς."
 }

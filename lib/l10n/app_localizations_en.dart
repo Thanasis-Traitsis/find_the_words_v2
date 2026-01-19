@@ -612,4 +612,54 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get resetStageNotificationMessage => 'The stage was successfully deleted. A brand new stage is waiting!';
+
+  @override
+  String joinedOn(String date) {
+    return 'Joined on $date';
+  }
+
+  @override
+  String get logoutBtnText => 'Logout';
+
+  @override
+  String get logoutDialogHeader => 'Sign out';
+
+  @override
+  String get logoutDialogDescription => 'Are you sure you want to sign out? After signing out, your progress will be saved only locally on your device and will not be synced to your online account until you sign in again.';
+
+  @override
+  String get logoutDialogButtonCancel => 'Cancel';
+
+  @override
+  String get logoutDialogButtonSubmit => 'Sign out';
+
+  @override
+  String get googleSignInSuccessTitle => 'Welcome in!';
+
+  @override
+  String get googleSignInSuccessMessage => 'You have successfully signed in.';
+
+  @override
+  String get googleSignInFailureTitle => 'Sign-in failed';
+
+  @override
+  String get googleSignInFailureMessage => 'Something went wrong while signing you in. Please try again.';
+
+  @override
+  String get googleSignOutSuccessTitle => 'Signed out';
+
+  @override
+  String get googleSignOutSuccessMessage => 'You are now signed out. Your progress will continue to be saved locally.';
+
+  @override
+  String get googleSignOutFailureTitle => 'Sign-out failed';
+
+  @override
+  String get googleSignOutFailureMessage => 'We couldn’t sign you out. Please try again.';
+
+  @override
+  String get noWifiNotificationTitle => 'offline mode';
+
+  @override
+  String get noWifiNotificationMessage => 'Progress will sync when you’re online.';
 }

@@ -1120,6 +1120,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The stage was successfully deleted. A brand new stage is waiting!'**
   String get resetStageNotificationMessage;
+
+  /// Date that the user signed in
+  ///
+  /// In en, this message translates to:
+  /// **'Joined on {date}'**
+  String joinedOn(String date);
+
+  /// No description provided for @logoutBtnText.
+  ///
+  /// In en, this message translates to:
+  /// **'Logout'**
+  String get logoutBtnText;
+
+  /// No description provided for @logoutDialogHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign out'**
+  String get logoutDialogHeader;
+
+  /// No description provided for @logoutDialogDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to sign out? After signing out, your progress will be saved only locally on your device and will not be synced to your online account until you sign in again.'**
+  String get logoutDialogDescription;
+
+  /// No description provided for @logoutDialogButtonCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get logoutDialogButtonCancel;
+
+  /// No description provided for @logoutDialogButtonSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign out'**
+  String get logoutDialogButtonSubmit;
+
+  /// No description provided for @googleSignInSuccessTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome in!'**
+  String get googleSignInSuccessTitle;
+
+  /// No description provided for @googleSignInSuccessMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You have successfully signed in.'**
+  String get googleSignInSuccessMessage;
+
+  /// No description provided for @googleSignInFailureTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign-in failed'**
+  String get googleSignInFailureTitle;
+
+  /// No description provided for @googleSignInFailureMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong while signing you in. Please try again.'**
+  String get googleSignInFailureMessage;
+
+  /// No description provided for @googleSignOutSuccessTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Signed out'**
+  String get googleSignOutSuccessTitle;
+
+  /// No description provided for @googleSignOutSuccessMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You are now signed out. Your progress will continue to be saved locally.'**
+  String get googleSignOutSuccessMessage;
+
+  /// No description provided for @googleSignOutFailureTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign-out failed'**
+  String get googleSignOutFailureTitle;
+
+  /// No description provided for @googleSignOutFailureMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn’t sign you out. Please try again.'**
+  String get googleSignOutFailureMessage;
+
+  /// No description provided for @noWifiNotificationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'offline mode'**
+  String get noWifiNotificationTitle;
+
+  /// No description provided for @noWifiNotificationMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Progress will sync when you’re online.'**
+  String get noWifiNotificationMessage;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

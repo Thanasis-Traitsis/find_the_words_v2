@@ -10,12 +10,14 @@ class CustomScreen extends StatelessWidget {
   final bool showOverlay;
   final List<GlobalKey>? overlayWidgetKeys;
   final VoidCallback? onOverlayTap;
+  final bool loadingScreen;
 
   const CustomScreen({
     super.key,
     this.appBar,
     required this.child,
     this.withPadding = true,
+    this.loadingScreen = false,
   }) : showOverlay = false,
        overlayWidgetKeys = null,
        onOverlayTap = null;
@@ -28,6 +30,7 @@ class CustomScreen extends StatelessWidget {
     required this.showOverlay,
     required List<GlobalKey> this.overlayWidgetKeys,
     this.onOverlayTap,
+    this.loadingScreen = false,
   });
 
   @override
@@ -46,6 +49,16 @@ class CustomScreen extends StatelessWidget {
             ),
           ),
         ),
+
+        if (loadingScreen)
+          Positioned.fill(
+            child: Container(
+              width: double.infinity,
+              height: double.infinity,
+              color: context.colors.black.withValues(alpha: 0.5),
+              child: Center(child: CircularProgressIndicator(color: context.colors.white,)),
+            ),
+          ),
 
         if (showOverlay &&
             overlayWidgetKeys != null &&

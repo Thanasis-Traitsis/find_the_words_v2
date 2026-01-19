@@ -14,6 +14,7 @@ class SettingsRowItem extends StatelessWidget {
   final VoidCallback onTap;
   final Widget? iconWidget;
   final String? link;
+  final bool isLogout;
 
   const SettingsRowItem({
     super.key,
@@ -22,6 +23,7 @@ class SettingsRowItem extends StatelessWidget {
     this.page,
     this.iconWidget,
     this.link,
+    this.isLogout = false,
   });
 
   SettingsRowItem.navigateToPage({
@@ -30,6 +32,7 @@ class SettingsRowItem extends StatelessWidget {
     required this.page,
   }) : iconWidget = null,
        link = null,
+       isLogout = false,
        onTap = (() => page!.push());
 
   SettingsRowItem.navigateToWeb({
@@ -38,6 +41,7 @@ class SettingsRowItem extends StatelessWidget {
     required this.link,
   }) : iconWidget = null,
        page = null,
+       isLogout = false,
        onTap = (() async {
          final Uri url = Uri.parse(link!);
 
@@ -48,6 +52,12 @@ class SettingsRowItem extends StatelessWidget {
            debugPrint('Could not launch $link');
          }
        });
+
+  SettingsRowItem.logout({super.key, required this.name, required this.onTap})
+    : iconWidget = null,
+      page = null,
+      link = null,
+      isLogout = true;
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +72,7 @@ class SettingsRowItem extends StatelessWidget {
             border: Border(
               bottom: BorderSide(
                 width: AppBorders.smallBorderWidth,
-                color: context.colors.black,
+                color: isLogout ? context.colors.error : context.colors.black,
               ),
             ),
           ),
@@ -72,12 +82,34 @@ class SettingsRowItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
-                child: CustomText(name, textType: CustomTextType.bigBody),
+                child: CustomText(
+                  name,
+                  textStyle: TextStyle(
+                    fontSize: CustomTextType.bigBody.fontSize,
+                    fontWeight: CustomTextType.bigBody.fontWeight,
+                    height: 1,
+                    leadingDistribution: TextLeadingDistribution.even,
+                    color: isLogout
+                        ? context.colors.error
+                        : context.colors.text,
+                  ),
+                ),
               ),
               if (link != null)
-                CustomSvgIcon(icon: CustomIcons.webLink, color: context.colors.black),
+                CustomSvgIcon(
+                  icon: CustomIcons.webLink,
+                  color: context.colors.black,
+                ),
               if (page != null)
-                CustomSvgIcon(icon: CustomIcons.arrowRight, color: context.colors.black),
+                CustomSvgIcon(
+                  icon: CustomIcons.arrowRight,
+                  color: context.colors.black,
+                ),
+              if (isLogout)
+                CustomSvgIcon(
+                  icon: CustomIcons.logout,
+                  color: context.colors.error,
+                ),
               if (iconWidget != null) iconWidget!,
             ],
           ),

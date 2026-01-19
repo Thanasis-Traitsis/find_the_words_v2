@@ -40,6 +40,10 @@ class UserModel extends UserEntity {
   @override
   final bool isGuest;
 
+  @HiveField(8)
+  @override
+  final DateTime joinedAt;
+
   UserModel({
     required this.id,
     this.username,
@@ -48,6 +52,7 @@ class UserModel extends UserEntity {
     required this.progressByLanguage,
     this.currentStage,
     this.lastSyncedAt,
+    required this.joinedAt,
     bool? isGuest,
   })  : isGuest = isGuest ?? (username == null && email == null),
         super.authenticated(
@@ -58,6 +63,7 @@ class UserModel extends UserEntity {
           progressByLanguage: progressByLanguage,
           currentStage: currentStage,
           lastSyncedAt: lastSyncedAt,
+          joinedAt: joinedAt
         );
 
 
@@ -67,6 +73,7 @@ class UserModel extends UserEntity {
     required this.progressByLanguage,
     this.currentStage,
     this.lastSyncedAt,
+    required this.joinedAt,
   })  : username = null,
         email = null,
         isGuest = true,
@@ -76,6 +83,7 @@ class UserModel extends UserEntity {
           progressByLanguage: progressByLanguage,
           currentStage: currentStage,
           lastSyncedAt: lastSyncedAt,
+          joinedAt: joinedAt
         );
 
   UserModel.authenticated({
@@ -86,6 +94,7 @@ class UserModel extends UserEntity {
     required this.progressByLanguage,
     this.currentStage,
     this.lastSyncedAt,
+    required this.joinedAt,
   })  : isGuest = false,
         super.authenticated(
           id: id,
@@ -95,6 +104,7 @@ class UserModel extends UserEntity {
           progressByLanguage: progressByLanguage,
           currentStage: currentStage,
           lastSyncedAt: lastSyncedAt,
+          joinedAt: joinedAt
         );
 
   factory UserModel.fromEntity(UserEntity entity) {
@@ -105,6 +115,7 @@ class UserModel extends UserEntity {
         progressByLanguage: entity.progressByLanguage,
         currentStage: entity.currentStage,
         lastSyncedAt: entity.lastSyncedAt,
+        joinedAt: entity.joinedAt
       );
     } else {
       return UserModel.authenticated(
@@ -115,6 +126,7 @@ class UserModel extends UserEntity {
         progressByLanguage: entity.progressByLanguage,
         currentStage: entity.currentStage,
         lastSyncedAt: entity.lastSyncedAt,
+        joinedAt: entity.joinedAt
       );
     }
   }
@@ -130,6 +142,7 @@ class UserModel extends UserEntity {
     CurrentStage? currentStage,
     DateTime? lastSyncedAt,
     bool? isGuest,
+    DateTime? joinedAt,
   }) {
     return UserModel(
       id: id ?? this.id,
@@ -140,6 +153,7 @@ class UserModel extends UserEntity {
       currentStage: currentStage ?? this.currentStage,
       lastSyncedAt: lastSyncedAt ?? this.lastSyncedAt,
       isGuest: isGuest ?? this.isGuest,
+      joinedAt: joinedAt ?? this.joinedAt,
     );
   }
 }

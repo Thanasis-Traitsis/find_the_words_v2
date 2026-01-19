@@ -25,6 +25,7 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
           (fields[4] as Map).cast<AppLanguage, ProfileStatusModel>(),
       currentStage: fields[5] as CurrentStage?,
       lastSyncedAt: fields[6] as DateTime?,
+      joinedAt: fields[8] as DateTime,
       isGuest: fields[7] as bool?,
     );
   }
@@ -32,7 +33,7 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
   @override
   void write(BinaryWriter writer, UserModel obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -48,7 +49,9 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       ..writeByte(6)
       ..write(obj.lastSyncedAt)
       ..writeByte(7)
-      ..write(obj.isGuest);
+      ..write(obj.isGuest)
+      ..writeByte(8)
+      ..write(obj.joinedAt);
   }
 
   @override

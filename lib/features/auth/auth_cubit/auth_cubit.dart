@@ -1,7 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:find_the_words/config/language/app_language.dart';
 import 'package:find_the_words/config/language/cubit/language_cubit.dart';
+import 'package:find_the_words/core/constants/constants.dart';
 import 'package:find_the_words/core/models/words_model.dart';
 import 'package:find_the_words/core/services/auth_service.dart';
 import 'package:find_the_words/core/services/connectivity_service.dart';
@@ -30,40 +30,201 @@ class AuthCubit extends Cubit<AuthState> {
 
   Future<void> _loadAuthState() async {
     await Future.delayed(Duration(seconds: 2));
+
+    // Step 1: Check Firebase authentication
+    final firebase_auth.User? firebaseUser =
+        AuthService.instance.currentFirebaseUser;
+
+    if (firebaseUser != null) {
+      await _handleAuthenticatedUser(firebaseUser);
+      return;
+    }
+
+    // Step 2: Check local storage for guest user
     final bool hasToken = await AuthService.instance.userHasToken();
 
     if (hasToken) {
       try {
         final UserEntity user = await getUser();
-
-        final bool hasInternet = await getIt<ConnectivityService>()
-            .hasInternet();
-        if (hasInternet) {
-          try {
-            final firebaseUser = await _checkFirebaseAuth(user.id);
-
-            if (firebaseUser != null) {
-              await _syncUserData(user);
-            }
-          } catch (e) {
-            debugPrint('Firebase sync failed: $e');
-          }
-        } else {
-          debugPrint('No internet - continuing in offline mode');
-        }
-
         emit(AuthAuthenticated(user: user));
       } catch (e) {
-        emit(AuthFailure(message: e.toString()));
+        await _createNewUser();
       }
-    } else {
-      final String newToken = TokenUtils.generateGuestToken();
-      await AuthService.instance.saveToken(newToken);
-
-      final UserEntity user = await _userRepo.createUser(newToken);
-
-      emit(AuthAuthenticated(user: user));
+      return;
     }
+
+    // Step 3: Create new guest user
+    await _createNewUser();
+  }
+
+  Future<void> signOut() async {
+    if (state is! AuthAuthenticated) return;
+    final currentState = state as AuthAuthenticated;
+    emit(currentState.copyWith(signInOutLoading: true));
+
+    try {
+      await AuthService.instance.signOut();
+
+      if (state is! AuthAuthenticated) return;
+
+      final currentUser = (state as AuthAuthenticated).user;
+      final guestUser = UserModel.guest(
+        id: currentUser.id,
+        points: currentUser.points,
+        progressByLanguage: currentUser.progressByLanguage,
+        currentStage: currentUser.currentStage,
+        lastSyncedAt: currentUser.lastSyncedAt,
+        joinedAt: currentUser.joinedAt,
+      );
+
+      await getIt<StorageService>().saveUser(guestUser);
+      emit(
+        AuthAuthenticated(user: guestUser, effect: AuthEffect.signOutSuccess),
+      );
+    } catch (e) {
+      emit(
+        currentState.copyWith(
+          signInOutLoading: false,
+          effect: AuthEffect.signOutFailure,
+        ),
+      );
+    }
+  }
+
+  Future<void> _handleAuthenticatedUser(firebase_auth.User firebaseUser) async {
+    try {
+      final bool hasInternet = await getIt<ConnectivityService>().hasInternet();
+
+      // If not WiFi - Just return local user
+      if (!hasInternet) {
+        try {
+          final localUser = await getUser();
+          emit(AuthAuthenticated(user: localUser));
+          return;
+        } catch (e) {
+          await _createUserFromFirebaseAuth(firebaseUser);
+          return;
+        }
+      }
+
+      UserEntity? localUser;
+      try {
+        localUser = await getUser();
+      } catch (e) {
+        debugPrint('No local user found');
+      }
+
+      final cloudUserDoc = await _userRepo.getFirebaseUser(firebaseUser.uid);
+
+      // Firebase user exists but without any data
+      if (cloudUserDoc == null || !cloudUserDoc.exists) {
+        final newUser = UserEntity.authenticated(
+          id: firebaseUser.uid,
+          username: firebaseUser.displayName,
+          email: firebaseUser.email,
+          points: localUser?.points ?? AppValues.startingPoints,
+          progressByLanguage:
+              localUser?.progressByLanguage ??
+              {
+                AppLanguage.english: ProfileStatusModel.initial(
+                  AppLanguage.english,
+                ),
+                AppLanguage.greek: ProfileStatusModel.initial(
+                  AppLanguage.greek,
+                ),
+              },
+          currentStage: localUser?.currentStage,
+          lastSyncedAt: DateTime.now(),
+          joinedAt: localUser?.joinedAt ?? DateTime.now(),
+        );
+
+        await _userRepo.createFirebaseUser(newUser);
+        await _saveCloudUserAndToken(newUser, firebaseUser.uid);
+
+        emit(AuthAuthenticated(user: newUser));
+        return;
+      }
+
+      // Firebase user exists - sync local/cloud data
+      UserEntity? syncedUser;
+      final cloudData = cloudUserDoc.data() as Map<String, dynamic>;
+      final firebaseModel = FirebaseUserModel.fromFirestore(cloudData);
+      final cloudUser = firebaseModel.toEntity();
+      if (localUser != null) {
+        syncedUser = await _mergeUserData(localUser, cloudUser, firebaseUser);
+      }
+
+      // Save to local storage
+      await _saveCloudUserAndToken(syncedUser ?? cloudUser, firebaseUser.uid);
+
+      emit(AuthAuthenticated(user: cloudUser));
+    } catch (e) {
+      await _handleAuthenticatedUserFallback(firebaseUser);
+    }
+  }
+
+  Future<void> _handleAuthenticatedUserFallback(
+    firebase_auth.User firebaseUser,
+  ) async {
+    try {
+      final localUser = await getUser();
+
+      if (localUser.id == firebaseUser.uid) {
+        emit(AuthAuthenticated(user: localUser));
+        return;
+      } else {
+        await _createUserFromFirebaseAuth(firebaseUser);
+        return;
+      }
+    } catch (e) {
+      await _createUserFromFirebaseAuth(firebaseUser);
+    }
+  }
+
+  Future<void> _createUserFromFirebaseAuth(
+    firebase_auth.User firebaseUser,
+  ) async {
+    try {
+      final newUser = UserEntity.authenticated(
+        id: firebaseUser.uid,
+        username: firebaseUser.displayName,
+        email: firebaseUser.email,
+        points: AppValues.startingPoints,
+        progressByLanguage: {
+          AppLanguage.english: ProfileStatusModel.initial(AppLanguage.english),
+          AppLanguage.greek: ProfileStatusModel.initial(AppLanguage.greek),
+        },
+        lastSyncedAt: DateTime.now(),
+        joinedAt: DateTime.now(),
+      );
+
+      await _saveCloudUserAndToken(newUser, firebaseUser.uid);
+      await _userRepo.updateFirebaseUser(newUser);
+
+      emit(AuthAuthenticated(user: newUser));
+    } catch (e) {
+      emit(
+        AuthFailure(
+          message:
+              'Failed to initialize user. Please try again or contact support.',
+        ),
+      );
+    }
+  }
+
+  Future<void> _saveCloudUserAndToken(UserEntity user, String id) async {
+    final userModel = UserModel.fromEntity(user);
+    await getIt<StorageService>().saveUser(userModel);
+    await AuthService.instance.saveToken(id);
+  }
+
+  Future<void> _createNewUser() async {
+    final String newToken = TokenUtils.generateGuestToken();
+    await AuthService.instance.saveToken(newToken);
+
+    final UserEntity user = await _userRepo.createUser(newToken);
+
+    emit(AuthAuthenticated(user: user));
   }
 
   Future<UserEntity> getUser() async {
@@ -71,18 +232,11 @@ class AuthCubit extends Cubit<AuthState> {
     return user;
   }
 
-  Future<DocumentSnapshot?> _checkFirebaseAuth(String userId) async {
-    final userFirebaseDoc = await _userRepo.getFirebaseUser(userId);
-    print(userFirebaseDoc);
-    return userFirebaseDoc;
-  }
-
-  Future<void> _syncUserData(UserEntity localUser) async {
-    // Sync local data with Firebase
-    // This should only run when online
-  }
-
   Future<void> googleSignIn() async {
+    if (state is! AuthAuthenticated) return;
+    final currentState = state as AuthAuthenticated;
+    emit(currentState.copyWith(signInOutLoading: true));
+
     try {
       // Attempt Google Sign-In
       final firebase_auth.UserCredential? userCredential = await AuthService
@@ -92,17 +246,17 @@ class AuthCubit extends Cubit<AuthState> {
       if (userCredential == null) {
         // User canceled - return to previous state
         debugPrint('Google Sign-In canceled');
+        emit(
+          currentState.copyWith(
+            signInOutLoading: false,
+            effect: AuthEffect.signInFailure,
+          ),
+        );
         return;
       }
 
       final firebase_auth.User firebaseUser = userCredential.user!;
-
       final UserEntity localUser = await getUser();
-
-      debugPrint('🔄 Starting sync for ${firebaseUser.email}');
-      debugPrint('📱 Local guest user ID: ${localUser.id}');
-      debugPrint('☁️ Firebase user ID: ${firebaseUser.uid}');
-
       final cloudUserDoc = await _userRepo.getFirebaseUser(firebaseUser.uid);
 
       UserEntity syncedUser;
@@ -125,19 +279,27 @@ class AuthCubit extends Cubit<AuthState> {
 
       final UserModel updatedUser = UserModel.fromEntity(syncedUser);
       await getIt<StorageService>().saveUser(updatedUser);
-
       await AuthService.instance.saveToken(firebaseUser.uid);
 
-      emit(AuthAuthenticated(user: syncedUser));
+      emit(
+        AuthAuthenticated(user: syncedUser, effect: AuthEffect.signInSuccess),
+      );
     } on GoogleSignInException catch (e) {
       debugPrint('Google Sign-In exception: ${e.code} - ${e.description}');
       emit(
-        AuthFailure(
-          message: 'Google Sign-In failed: ${e.description ?? 'Unknown error'}',
+        currentState.copyWith(
+          signInOutLoading: false,
+          effect: AuthEffect.signInFailure,
         ),
       );
     } catch (e) {
       debugPrint('Error signing in with Google: $e');
+      emit(
+        currentState.copyWith(
+          signInOutLoading: false,
+          effect: AuthEffect.signInFailure,
+        ),
+      );
     }
   }
 
@@ -153,6 +315,7 @@ class AuthCubit extends Cubit<AuthState> {
       progressByLanguage: localUser.progressByLanguage,
       currentStage: localUser.currentStage,
       lastSyncedAt: DateTime.now(),
+      joinedAt: localUser.joinedAt,
     );
 
     // Upload to Firestore with Firebase UID as document ID
@@ -174,18 +337,23 @@ class AuthCubit extends Cubit<AuthState> {
 
     debugPrint('🔀 Merging: Local=$localScore vs Cloud=$cloudScore');
 
+    final earliestJoinedAt = localUser.joinedAt.isBefore(cloudUser.joinedAt)
+        ? localUser.joinedAt
+        : cloudUser.joinedAt;
+
     UserEntity mergedUser;
 
     if (localScore > cloudScore) {
       debugPrint('📱 Local data is ahead - using local progress');
       mergedUser = UserEntity.authenticated(
-        id: firebaseUser.uid, // ✅ Use Firebase UID
+        id: firebaseUser.uid,
         username: cloudUser.username ?? firebaseUser.displayName,
         email: cloudUser.email ?? firebaseUser.email,
         points: localUser.points,
         progressByLanguage: localUser.progressByLanguage,
         currentStage: localUser.currentStage,
         lastSyncedAt: DateTime.now(),
+        joinedAt: earliestJoinedAt,
       );
 
       await _userRepo.updateFirebaseUser(mergedUser);
@@ -195,11 +363,17 @@ class AuthCubit extends Cubit<AuthState> {
         username: cloudUser.username ?? firebaseUser.displayName,
         email: cloudUser.email ?? firebaseUser.email,
         lastSyncedAt: DateTime.now(),
+        joinedAt: earliestJoinedAt,
       );
     } else {
       // ✅ Same level - merge carefully
       debugPrint('⚖️ Same level - merging both');
-      mergedUser = _mergeProgressMaps(localUser, cloudUser, firebaseUser);
+      mergedUser = _mergeProgressMaps(
+        localUser,
+        cloudUser,
+        firebaseUser,
+        earliestJoinedAt,
+      );
       await _userRepo.updateFirebaseUser(mergedUser);
     }
 
@@ -210,6 +384,7 @@ class AuthCubit extends Cubit<AuthState> {
     UserEntity localUser,
     UserEntity cloudUser,
     firebase_auth.User firebaseUser,
+    DateTime joinedAt,
   ) {
     final mergedProgress = <AppLanguage, ProfileStatusModel>{};
 
@@ -259,39 +434,8 @@ class AuthCubit extends Cubit<AuthState> {
           : cloudUser.points,
       progressByLanguage: mergedProgress,
       lastSyncedAt: DateTime.now(),
+      joinedAt: joinedAt,
     );
-  }
-
-  Future<UserEntity> _migrateGuestToAuthenticatedUser(
-    UserEntity guestUser,
-    firebase_auth.User firebaseUser,
-  ) async {
-    debugPrint('Migrating guest user ${guestUser.id} to authenticated user');
-
-    // Save new token (Firebase UID)
-    final String newToken = firebaseUser.uid;
-    await AuthService.instance.saveToken(newToken);
-
-    // // Update local user with Google info
-    // final UserEntity updatedUser = await _userRepo.updateUserWithGoogleInfo(
-    //   guestUser.id,
-    //   firebaseUserId: firebaseUser.uid,
-    //   name: firebaseUser.displayName,
-    //   email: firebaseUser.email,
-    //   photoUrl: firebaseUser.photoURL,
-    // );
-
-    // // Migrate guest data to Firebase under the new authenticated user
-    // await _userRepo.migrateGuestDataToFirebase(
-    //   guestUserId: guestUser.id,
-    //   authenticatedUserId: firebaseUser.uid,
-    // );
-
-    // // Create/update user document in Firebase
-    // await _userRepo.createOrUpdateFirebaseUser(updatedUser);
-
-    // debugPrint('Migration complete: ${updatedUser.email}');
-    return guestUser;
   }
 
   Future<void> addFoundWord(String word) async {
@@ -360,21 +504,15 @@ class AuthCubit extends Cubit<AuthState> {
         currentUser.progressByLanguage,
       )..[newLanguage] = ProfileStatusModel.initial(newLanguage);
 
-      final updatedUser = UserModel(
-        id: currentUser.id,
-        username: currentUser.username,
-        points: currentUser.points,
+      final updatedUser = currentUser.copyWith(
         progressByLanguage: updatedProgressMap,
         currentStage: null,
       );
 
-      getIt<StorageService>().saveUser(updatedUser);
+      getIt<StorageService>().saveUser(updatedUser as UserModel);
       emit(AuthAuthenticated(user: updatedUser));
     } else {
-      final updatedUser = UserModel(
-        id: currentUser.id,
-        username: currentUser.username,
-        points: currentUser.points,
+      final updatedUser = currentUser.copyWith(
         progressByLanguage: Map<AppLanguage, ProfileStatusModel>.from(
           currentUser.progressByLanguage,
         ),

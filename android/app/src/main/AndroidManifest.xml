@@ -1,4 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.thanasistraitsis.find_the_words">
     <application
         android:label="find_the_words"
         android:name="${applicationName}"

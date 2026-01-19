@@ -27,9 +27,9 @@ class StorageService {
     if (_isInitialized) return;
     await Hive.initFlutter();
 
-    AuthService.instance.deleteToken();
-    await Hive.deleteBoxFromDisk(_userBoxKey);
-    await Hive.deleteBoxFromDisk(_stageBoxKey);
+    // AuthService.instance.deleteToken();
+    // await Hive.deleteBoxFromDisk(_userBoxKey);
+    // await Hive.deleteBoxFromDisk(_stageBoxKey);
 
     // Register all adapters once
     if (!Hive.isAdapterRegistered(0)) {

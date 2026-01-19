@@ -1,4 +1,5 @@
 import 'package:find_the_words/core/constants/custom_icons.dart';
+import 'package:find_the_words/core/utils/string_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:find_the_words/config/theme/custom_text_type.dart';
 import 'package:find_the_words/config/theme/snackbar_theme.dart';
@@ -122,7 +123,7 @@ class CustomSnackbarState extends State<CustomSnackbar>
                       children: [
                         if (widget.title != null)
                           CustomText(
-                            widget.title!.toUpperCase(),
+                            widget.title!.toUpperCaseGreek(),
                             textStyle: TextStyle(
                               fontSize: CustomTextType.regularBody.fontSize,
                               fontWeight: FontWeight.bold,

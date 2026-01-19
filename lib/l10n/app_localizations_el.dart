@@ -624,4 +624,54 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String get resetStageNotificationMessage => 'Το στάδιο διαγράφτηκε με επιτυχία. Ένα καινούριο στάδιο σε περιμένει!';
+
+  @override
+  String joinedOn(String date) {
+    return 'Εγγράφηκε στις $date';
+  }
+
+  @override
+  String get logoutBtnText => 'Αποσύνδεση';
+
+  @override
+  String get logoutDialogHeader => 'Αποσύνδεση';
+
+  @override
+  String get logoutDialogDescription => 'Είσαι σίγουρος ότι θέλεις να αποσυνδεθείς; Μετά την αποσύνδεση, η πρόοδός σου θα αποθηκεύεται μόνο τοπικά στη συσκευή σου και δεν θα ενημερώνεται στον online λογαριασμό σου μέχρι να συνδεθείς ξανά.';
+
+  @override
+  String get logoutDialogButtonCancel => 'Ακύρωση';
+
+  @override
+  String get logoutDialogButtonSubmit => 'Αποσύνδεση';
+
+  @override
+  String get googleSignInSuccessTitle => 'Καλώς ήρθες!';
+
+  @override
+  String get googleSignInSuccessMessage => 'Συνδέθηκες με επιτυχία στον λογαριασμό σου.';
+
+  @override
+  String get googleSignInFailureTitle => 'Αποτυχία σύνδεσης';
+
+  @override
+  String get googleSignInFailureMessage => 'Κάτι πήγε στραβά κατά τη σύνδεση. Δοκίμασε ξανά.';
+
+  @override
+  String get googleSignOutSuccessTitle => 'Αποσυνδέθηκες';
+
+  @override
+  String get googleSignOutSuccessMessage => 'Αποσυνδέθηκες επιτυχώς. Η πρόοδός σου θα συνεχίσει να αποθηκεύεται τοπικά.';
+
+  @override
+  String get googleSignOutFailureTitle => 'Αποτυχία αποσύνδεσης';
+
+  @override
+  String get googleSignOutFailureMessage => 'Δεν ήταν δυνατή η αποσύνδεση. Δοκίμασε ξανά.';
+
+  @override
+  String get noWifiNotificationTitle => 'εκτός σύνδεσης';
+
+  @override
+  String get noWifiNotificationMessage => 'Η πρόοδος θα συγχρονιστεί όταν συνδεθείς.';
 }

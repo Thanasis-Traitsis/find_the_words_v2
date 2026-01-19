@@ -38,6 +38,9 @@ enum CustomIcons {
   stage('stage'),
   freeze('freeze'),
   expand('expand'),
+  logout('logout'),
+  avatar('avatar'),
+  noWifi('no_wifi'),
 
   // Logos
   homeLogoEn('home_logo_en'),

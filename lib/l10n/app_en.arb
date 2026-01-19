@@ -371,5 +371,30 @@
     "rewardFreezeNotificationMessage": "You’ve received a Freeze power-up for free!",
     "notEnoughPointsErrorMessage": "You don't have enough points for this help...",
     "resetStageNotificationTitle": "successful reset",
-    "resetStageNotificationMessage": "The stage was successfully deleted. A brand new stage is waiting!"
+    "resetStageNotificationMessage": "The stage was successfully deleted. A brand new stage is waiting!",
+    "joinedOn": "Joined on {date}",
+    "@joinedOn": {
+        "description": "Date that the user signed in",
+        "placeholders": {
+            "date": {
+                "type": "String",
+                "example": "Jan"
+            }
+        }
+    },
+    "logoutBtnText": "Logout",
+    "logoutDialogHeader": "Sign out",
+    "logoutDialogDescription": "Are you sure you want to sign out? After signing out, your progress will be saved only locally on your device and will not be synced to your online account until you sign in again.",
+    "logoutDialogButtonCancel": "Cancel",
+    "logoutDialogButtonSubmit": "Sign out",
+    "googleSignInSuccessTitle": "Welcome in!",
+    "googleSignInSuccessMessage": "You have successfully signed in.",
+    "googleSignInFailureTitle": "Sign-in failed",
+    "googleSignInFailureMessage": "Something went wrong while signing you in. Please try again.",
+    "googleSignOutSuccessTitle": "Signed out",
+    "googleSignOutSuccessMessage": "You are now signed out. Your progress will continue to be saved locally.",
+    "googleSignOutFailureTitle": "Sign-out failed",
+    "googleSignOutFailureMessage": "We couldn’t sign you out. Please try again.",
+    "noWifiNotificationTitle": "offline mode",
+    "noWifiNotificationMessage": "Progress will sync when you’re online."
 }

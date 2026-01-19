@@ -11,6 +11,7 @@ class FirebaseUserModel {
   final int points;
   final Map<AppLanguage, ProfileStatusModel> progressByLanguage;
   final DateTime? lastSyncedAt;
+  final DateTime joinedAt;
   final bool isGuest;
 
   FirebaseUserModel({
@@ -20,6 +21,7 @@ class FirebaseUserModel {
     required this.points,
     required this.progressByLanguage,
     this.lastSyncedAt,
+    required this.joinedAt,
     this.isGuest = false,
   });
 
@@ -31,6 +33,7 @@ class FirebaseUserModel {
       points: entity.points,
       progressByLanguage: entity.progressByLanguage,
       lastSyncedAt: entity.lastSyncedAt,
+      joinedAt: entity.joinedAt,
       isGuest: entity.isGuest,
     );
   }
@@ -43,6 +46,7 @@ class FirebaseUserModel {
       'points': points,
       'isGuest': isGuest,
       'lastSyncedAt': FieldValue.serverTimestamp(),
+      'joinedAt': Timestamp.fromDate(joinedAt),
       'progressByLanguage': progressByLanguage.map(
         (language, progress) => MapEntry(
           language.code,
@@ -68,6 +72,7 @@ class FirebaseUserModel {
       points: data['points'] as int? ?? 0,
       progressByLanguage: progressMap,
       lastSyncedAt: (data['lastSyncedAt'] as Timestamp?)?.toDate(),
+      joinedAt: (data['joinedAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
       isGuest: data['isGuest'] as bool? ?? false,
     );
   }
@@ -80,6 +85,7 @@ class FirebaseUserModel {
         progressByLanguage: progressByLanguage,
         currentStage: currentStage,
         lastSyncedAt: lastSyncedAt,
+        joinedAt: joinedAt,
       );
     } else {
       return UserEntity.authenticated(
@@ -90,6 +96,7 @@ class FirebaseUserModel {
         progressByLanguage: progressByLanguage,
         currentStage: currentStage,
         lastSyncedAt: lastSyncedAt,
+        joinedAt: joinedAt,
       );
     }
   }

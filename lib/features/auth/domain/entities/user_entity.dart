@@ -12,12 +12,14 @@ class UserEntity {
   final Map<AppLanguage, ProfileStatusModel> progressByLanguage;
   final CurrentStage? currentStage;
   final DateTime? lastSyncedAt;
+  final DateTime joinedAt;
   final bool isGuest;
 
   UserEntity.guest({
     required this.id,
     required this.points,
     required this.progressByLanguage,
+    required this.joinedAt,
     this.currentStage,
     this.lastSyncedAt,
   }) : username = null,
@@ -30,6 +32,7 @@ class UserEntity {
     this.email,
     required this.points,
     required this.progressByLanguage,
+    required this.joinedAt,
     this.currentStage,
     this.lastSyncedAt,
   }) : isGuest = false;
@@ -70,6 +73,7 @@ class UserEntity {
     Map<AppLanguage, ProfileStatusModel>? progressByLanguage,
     CurrentStage? currentStage,
     DateTime? lastSyncedAt,
+    DateTime? joinedAt,
   }) {
     if (isGuest) {
       return UserEntity.guest(
@@ -78,6 +82,7 @@ class UserEntity {
         progressByLanguage: progressByLanguage ?? this.progressByLanguage,
         currentStage: currentStage ?? this.currentStage,
         lastSyncedAt: lastSyncedAt ?? this.lastSyncedAt,
+        joinedAt: joinedAt ?? this.joinedAt,
       );
     } else {
       return UserEntity.authenticated(
@@ -88,6 +93,7 @@ class UserEntity {
         progressByLanguage: progressByLanguage ?? this.progressByLanguage,
         currentStage: currentStage ?? this.currentStage,
         lastSyncedAt: lastSyncedAt ?? this.lastSyncedAt,
+        joinedAt: joinedAt ?? this.joinedAt,
       );
     }
   }

@@ -22,6 +22,8 @@ class UserRepositoryImpl extends UserRepository {
       progressByLanguage: {
         currentLang: ProfileStatusModel.initial(currentLang),
       },
+      lastSyncedAt: DateTime.now(),
+      joinedAt: DateTime.now(),
     );
 
     await storageService.saveUser(user);

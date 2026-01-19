@@ -14,4 +14,44 @@ extension StringMixer on String {
 
     return chars;
   }
+
+  String toUpperCaseGreek() {
+    String result = toUpperCase();
+
+    const Map<String, String> greekAccentMap = {
+      
+      // Uppercase vowels with tonos (΄)
+      'Ά': 'Α', // Alpha with tonos
+      'Έ': 'Ε', // Epsilon with tonos
+      'Ή': 'Η', // Eta with tonos
+      'Ί': 'Ι', // Iota with tonos
+      'Ό': 'Ο', // Omicron with tonos
+      'Ύ': 'Υ', // Upsilon with tonos
+      'Ώ': 'Ω', // Omega with tonos
+      // Lowercase vowels with tonos (will be uppercase already, but just in case)
+      'ά': 'Α',
+      'έ': 'Ε',
+      'ή': 'Η',
+      'ί': 'Ι',
+      'ό': 'Ο',
+      'ύ': 'Υ',
+      'ώ': 'Ω',
+
+      // Iota with dialytika
+      'Ϊ': 'Ι',
+      'ϊ': 'Ι',
+      'ΐ': 'Ι', // Iota with dialytika and tonos
+
+      // Upsilon with dialytika
+      'Ϋ': 'Υ',
+      'ϋ': 'Υ',
+      'ΰ': 'Υ', // Upsilon with dialytika and tonos
+    };
+
+    greekAccentMap.forEach((accented, plain) {
+      result = result.replaceAll(accented, plain);
+    });
+
+    return result;
+  }
 }
