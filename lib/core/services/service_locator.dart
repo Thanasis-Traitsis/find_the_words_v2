@@ -1,9 +1,11 @@
 import 'package:find_the_words/config/ads/rewarded_cubit/rewarded_ad_cubit.dart';
 import 'package:find_the_words/config/language/cubit/language_cubit.dart';
+import 'package:find_the_words/core/services/cloud_sync_service.dart';
 import 'package:find_the_words/core/services/connectivity_service.dart';
 import 'package:find_the_words/core/services/previous_stage_words_service.dart';
 import 'package:find_the_words/core/services/storage_service.dart';
 import 'package:find_the_words/core/services/store_discount_service.dart';
+import 'package:find_the_words/core/services/user_profile_service.dart';
 import 'package:find_the_words/features/auth/account_boost_cubit/account_boost_cubit.dart';
 import 'package:find_the_words/features/auth/auth_cubit/auth_cubit.dart';
 import 'package:find_the_words/features/auth/data/repositories/user_repository_impl.dart';
@@ -58,10 +60,17 @@ Future<void> _registerCoreServices() async {
   getIt.registerSingletonAsync<StoreDiscountService>(
     () async => StoreDiscountService.create(),
   );
+
+  getIt.registerSingletonAsync<DictionaryService>(() async {
+    final service = DictionaryService();
+    return service;
+  });
 }
 
 Future<void> _registerRepositories() async {
-  getIt.registerLazySingleton<UserRepository>(() => UserRepositoryImpl());
+  getIt.registerLazySingleton<UserRepository>(
+    () => UserRepositoryImpl(getIt<StorageService>()),
+  );
 
   getIt.registerLazySingleton<StageRepository>(() {
     final wordService = WordSelectionService(getIt<SharedPreferences>());
@@ -161,8 +170,16 @@ Future<void> _registerBlocs() async {
     ),
   );
 
-  getIt.registerSingletonAsync<DictionaryService>(() async {
-    final service = DictionaryService();
-    return service;
-  });
+  // User & Cloud Service
+  getIt.registerLazySingleton<UserProfileService>(
+    () => UserProfileService(
+      getIt<UserRepository>(),
+      getIt<AuthCubit>(),
+      getIt<CloudSyncService>(),
+    ),
+  );
+
+  getIt.registerLazySingleton<CloudSyncService>(
+    () => CloudSyncService(getIt<UserRepository>()),
+  );
 }

@@ -2,8 +2,8 @@ import 'package:find_the_words/config/language/cubit/language_cubit.dart';
 import 'package:find_the_words/core/constants/constants.dart';
 import 'package:find_the_words/core/services/previous_stage_words_service.dart';
 import 'package:find_the_words/core/services/service_locator.dart';
+import 'package:find_the_words/core/services/user_profile_service.dart';
 import 'package:find_the_words/core/utils/file_utils.dart';
-import 'package:find_the_words/features/auth/auth_cubit/auth_cubit.dart';
 import 'package:find_the_words/features/stage/data/datasources/stage_local_datasource.dart';
 import 'package:find_the_words/features/stage/data/models/current_stage.dart';
 import 'package:find_the_words/features/stage/domain/repositories/stage_repository.dart';
@@ -36,11 +36,12 @@ class StageRepositoryImpl implements StageRepository {
     String? foundWord,
   }) async {
     final currentLang = getIt<LanguageCubit>().state.appLanguage;
+    final userProfileService = getIt<UserProfileService>();
 
     await _localDataSource.saveStage(stage, currentLang);
 
     if (foundWord != null) {
-      await getIt<AuthCubit>().addFoundWord(foundWord);
+      await userProfileService.addFoundWord(foundWord);
     }
   }
 

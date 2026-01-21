@@ -23,13 +23,14 @@ class ProfileStatusModelAdapter extends TypeAdapter<ProfileStatusModel> {
       stage: fields[3] as int,
       wordsModel: fields[4] as WordsModel,
       activeBoost: fields[5] as AccountBoostModel?,
+      currentStage: fields[6] as CurrentStage?,
     );
   }
 
   @override
   void write(BinaryWriter writer, ProfileStatusModel obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.language)
       ..writeByte(1)
@@ -41,7 +42,9 @@ class ProfileStatusModelAdapter extends TypeAdapter<ProfileStatusModel> {
       ..writeByte(4)
       ..write(obj.wordsModel)
       ..writeByte(5)
-      ..write(obj.activeBoost);
+      ..write(obj.activeBoost)
+      ..writeByte(6)
+      ..write(obj.currentStage);
   }
 
   @override

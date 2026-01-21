@@ -8,8 +8,6 @@ class DictionaryService {
   Future<void> loadDictionaryJson({String? langCode}) async {
     final currentLang = langCode ?? getIt<LanguageCubit>().state.appLanguage.code;
 
-    print(currentLang);
-
     final dictionaryPath = FileUtils.dictionaryFile('dictionary', currentLang);
     cachedDictionary = await FileUtils.loadCompressedJson(dictionaryPath);
   }

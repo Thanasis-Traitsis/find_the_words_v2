@@ -19,4 +19,22 @@ class WordPlacement extends HiveObject {
     required this.isHorizontal,
     this.isUsed = false,
   });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'word': word,
+      'positions': positions,
+      'isHorizontal': isHorizontal,
+      'isUsed': isUsed,
+    };
+  }
+
+  factory WordPlacement.fromMap(Map<String, dynamic> map) {
+    return WordPlacement(
+      word: map['word'] as String,
+      positions: List<int>.from(map['positions'] as List),
+      isHorizontal: map['isHorizontal'] as bool? ?? false,
+      isUsed: map['isUsed'] as bool? ?? false,
+    );
+  }
 }

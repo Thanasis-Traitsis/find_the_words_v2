@@ -6,6 +6,10 @@ abstract class UserRepository {
 
   Future<UserEntity> getCurrentUser();
 
+  Future<void> updateUser(UserEntity user);
+
+  Future<UserEntity> refreshUserFromStorage();
+
   Future<DocumentSnapshot?> getFirebaseUser(String id);
 
   Future<void> createFirebaseUser(UserEntity user);

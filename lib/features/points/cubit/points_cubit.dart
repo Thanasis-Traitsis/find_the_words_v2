@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:find_the_words/core/services/storage_service.dart';
 import 'package:find_the_words/features/auth/auth_cubit/auth_cubit.dart';
 import 'package:find_the_words/features/auth/data/models/user_model.dart';
+import 'package:find_the_words/features/auth/domain/entities/user_entity.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PointsCubit extends Cubit<int> {
@@ -40,7 +41,7 @@ class PointsCubit extends Cubit<int> {
     if (authState is! AuthAuthenticated) return;
 
     final currentUser = authState.user;
-    await _updatePoints(currentUser.points + amount, currentUser as UserModel);
+    await _updatePoints(currentUser.points + amount, currentUser);
   }
 
   Future<bool> deductPoints(int amount, {String? reason}) async {
@@ -52,13 +53,14 @@ class PointsCubit extends Cubit<int> {
       return false;
     }
 
-    await _updatePoints(currentUser.points - amount, currentUser as UserModel);
+    await _updatePoints(currentUser.points - amount, currentUser);
     return true;
   }
 
-  Future<void> _updatePoints(int newPoints, UserModel currentUser) async {
+  Future<void> _updatePoints(int newPoints, UserEntity currentUser) async {
     final updatedUser = currentUser.copyWith(points: newPoints);
-    await _storageService.saveUser(updatedUser);
+    final userModel = UserModel.fromEntity(updatedUser);
+    await _storageService.saveUser(userModel);
     
     _authCubit.emit(AuthAuthenticated(user: updatedUser));
   }

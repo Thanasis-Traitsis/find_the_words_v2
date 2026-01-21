@@ -1,6 +1,7 @@
 import 'package:find_the_words/config/language/app_language.dart';
 import 'package:find_the_words/core/models/words_model.dart';
 import 'package:find_the_words/features/auth/data/models/account_boost_model.dart';
+import 'package:find_the_words/features/stage/data/models/current_stage.dart';
 import 'package:hive/hive.dart';
 
 part 'profile_status_model.g.dart';
@@ -31,6 +32,9 @@ class ProfileStatusModel {
   @override
   final AccountBoostModel? activeBoost;
 
+  @HiveField(6)
+  final CurrentStage? currentStage;
+
   ProfileStatusModel({
     required this.language,
     required this.level,
@@ -38,6 +42,7 @@ class ProfileStatusModel {
     required this.stage,
     required this.wordsModel,
     this.activeBoost,
+    this.currentStage,
   }) : progress = progress.clamp(0, 100);
 
   factory ProfileStatusModel.initial(AppLanguage language) {
@@ -48,10 +53,10 @@ class ProfileStatusModel {
       stage: 1,
       wordsModel: WordsModel(words: {}),
       activeBoost: null,
+      currentStage: null,
     );
   }
 
-  // ✅ Add this factory constructor
   factory ProfileStatusModel.fromMap(Map<String, dynamic> map) {
     return ProfileStatusModel(
       language: AppLanguage.fromCode(map['language'] as String),
@@ -64,10 +69,12 @@ class ProfileStatusModel {
       activeBoost: map['activeBoost'] != null
           ? AccountBoostModel.fromMap(map['activeBoost'])
           : null,
+      currentStage: map['currentStage'] != null
+          ? CurrentStage.fromMap(map['currentStage'])
+          : null,
     );
   }
 
-  // ✅ Add toMap as a regular method
   Map<String, dynamic> toMap() {
     return {
       'language': language.code,
@@ -76,6 +83,7 @@ class ProfileStatusModel {
       'stage': stage,
       'words': wordsModel.words,
       'activeBoost': activeBoost?.toMap(),
+      'currentStage': currentStage?.toMap(),
     };
   }
 
@@ -91,7 +99,9 @@ class ProfileStatusModel {
     int? stage,
     WordsModel? words,
     AccountBoostModel? activeBoost,
+    CurrentStage? currentStage,
     bool clearBoost = false,
+    bool clearCurrentStage = false, 
   }) {
     return ProfileStatusModel(
       language: language ?? this.language,
@@ -100,6 +110,7 @@ class ProfileStatusModel {
       stage: stage ?? this.stage,
       wordsModel: words ?? wordsModel,
       activeBoost: clearBoost ? null : (activeBoost ?? this.activeBoost),
+      currentStage: clearCurrentStage ? null : (currentStage ?? this.currentStage),
     );
   }
 }

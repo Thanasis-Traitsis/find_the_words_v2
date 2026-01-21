@@ -6,7 +6,6 @@ import 'package:find_the_words/core/services/service_locator.dart';
 import 'package:find_the_words/core/services/storage_service.dart';
 import 'package:find_the_words/core/utils/text_extensions.dart';
 import 'package:find_the_words/core/widgets/custom_primary_button.dart';
-import 'package:find_the_words/features/auth/auth_cubit/auth_cubit.dart';
 import 'package:find_the_words/features/auth/data/models/profile_status_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,7 +21,6 @@ class _SelectLanguageListState extends State<SelectLanguageList> {
   late String appLanguage;
   late String selectedLangCode;
   final StorageService _storage = getIt<StorageService>();
-  final AuthCubit _authCubit = getIt<AuthCubit>();
 
   @override
   void initState() {
@@ -35,8 +33,6 @@ class _SelectLanguageListState extends State<SelectLanguageList> {
 
   void applyNewLanguage() {
     context.read<LanguageCubit>().setNewLanguage(selectedLangCode);
-    _authCubit.onLanguageChanged(AppLanguage.fromCode(selectedLangCode));
-
     updateBottomsheetState();
   }
 

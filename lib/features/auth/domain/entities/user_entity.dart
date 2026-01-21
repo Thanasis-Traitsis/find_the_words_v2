@@ -10,7 +10,6 @@ class UserEntity {
   final String? email;
   final int points;
   final Map<AppLanguage, ProfileStatusModel> progressByLanguage;
-  final CurrentStage? currentStage;
   final DateTime? lastSyncedAt;
   final DateTime joinedAt;
   final bool isGuest;
@@ -20,7 +19,6 @@ class UserEntity {
     required this.points,
     required this.progressByLanguage,
     required this.joinedAt,
-    this.currentStage,
     this.lastSyncedAt,
   }) : username = null,
        email = null,
@@ -33,7 +31,6 @@ class UserEntity {
     required this.points,
     required this.progressByLanguage,
     required this.joinedAt,
-    this.currentStage,
     this.lastSyncedAt,
   }) : isGuest = false;
 
@@ -42,6 +39,10 @@ class UserEntity {
     final currentLanguage = getIt<LanguageCubit>().state.appLanguage;
     return progressByLanguage[currentLanguage] ??
         _createDefaultProgress(currentLanguage);
+  }
+
+  CurrentStage? get currentStage {
+    return currentProgress.currentStage;
   }
 
   ProfileStatusModel _createDefaultProgress(AppLanguage language) {
@@ -71,7 +72,6 @@ class UserEntity {
     String? email,
     int? points,
     Map<AppLanguage, ProfileStatusModel>? progressByLanguage,
-    CurrentStage? currentStage,
     DateTime? lastSyncedAt,
     DateTime? joinedAt,
   }) {
@@ -80,7 +80,6 @@ class UserEntity {
         id: id ?? this.id,
         points: points ?? this.points,
         progressByLanguage: progressByLanguage ?? this.progressByLanguage,
-        currentStage: currentStage ?? this.currentStage,
         lastSyncedAt: lastSyncedAt ?? this.lastSyncedAt,
         joinedAt: joinedAt ?? this.joinedAt,
       );
@@ -91,7 +90,6 @@ class UserEntity {
         email: email ?? this.email,
         points: points ?? this.points,
         progressByLanguage: progressByLanguage ?? this.progressByLanguage,
-        currentStage: currentStage ?? this.currentStage,
         lastSyncedAt: lastSyncedAt ?? this.lastSyncedAt,
         joinedAt: joinedAt ?? this.joinedAt,
       );

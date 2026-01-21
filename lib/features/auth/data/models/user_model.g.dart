@@ -23,7 +23,6 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       points: fields[3] as int,
       progressByLanguage:
           (fields[4] as Map).cast<AppLanguage, ProfileStatusModel>(),
-      currentStage: fields[5] as CurrentStage?,
       lastSyncedAt: fields[6] as DateTime?,
       joinedAt: fields[8] as DateTime,
       isGuest: fields[7] as bool?,
@@ -33,7 +32,7 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
   @override
   void write(BinaryWriter writer, UserModel obj) {
     writer
-      ..writeByte(9)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -44,8 +43,6 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       ..write(obj.points)
       ..writeByte(4)
       ..write(obj.progressByLanguage)
-      ..writeByte(5)
-      ..write(obj.currentStage)
       ..writeByte(6)
       ..write(obj.lastSyncedAt)
       ..writeByte(7)

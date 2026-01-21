@@ -45,6 +45,30 @@ class WordPlacementTracker extends HiveObject {
     );
   }
 
+  Map<String, dynamic> toMap() {
+    return {
+      'placements': placements.map((p) => p.toMap()).toList(),
+      'foundWords': foundWords,
+      'revealedPositions': revealedPositions,
+      'commonPositions': commonPositions,
+      'extraWords': extraWords,
+    };
+  }
+
+  factory WordPlacementTracker.fromMap(Map<String, dynamic> map) {
+    return WordPlacementTracker(
+      placements: (map['placements'] as List?)
+          ?.map((p) => WordPlacement.fromMap(p as Map<String, dynamic>))
+          .toList(),
+      foundWords: List<String>.from(map['foundWords'] as List? ?? []),
+      revealedPositions: List<int>.from(
+        map['revealedPositions'] as List? ?? [],
+      ),
+      commonPositions: List<int>.from(map['commonPositions'] as List? ?? []),
+      extraWords: List<String>.from(map['extraWords'] as List? ?? []),
+    );
+  }
+
   bool get isEmpty => placements.isEmpty;
   int get wordCount => placements.length;
   bool get allWordsFound => foundWords.length == placements.length;

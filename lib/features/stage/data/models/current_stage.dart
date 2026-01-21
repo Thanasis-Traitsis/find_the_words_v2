@@ -23,4 +23,24 @@ class CurrentStage extends HiveObject {
     required this.board,
     required this.placementTracker,
   });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'allWords': allWords,
+      'letters': letters,
+      'board': board,
+      'placementTracker': placementTracker.toMap(),
+    };
+  }
+
+  factory CurrentStage.fromMap(Map<String, dynamic> map) {
+    return CurrentStage(
+      allWords: List<String>.from(map['allWords'] as List? ?? []),
+      letters: List<String>.from(map['letters'] as List? ?? []),
+      board: List<String>.from(map['board'] as List? ?? []),
+      placementTracker: WordPlacementTracker.fromMap(
+        map['placementTracker'] as Map<String, dynamic>? ?? {},
+      ),
+    );
+  }
 }

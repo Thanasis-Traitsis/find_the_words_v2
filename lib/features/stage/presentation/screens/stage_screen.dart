@@ -5,6 +5,7 @@ import 'package:find_the_words/config/routes/app_pages.dart';
 import 'package:find_the_words/core/constants/custom_icons.dart';
 import 'package:find_the_words/core/services/service_locator.dart';
 import 'package:find_the_words/core/services/sound_service.dart';
+import 'package:find_the_words/core/services/user_profile_service.dart';
 import 'package:find_the_words/core/utils/snackbar_helper.dart';
 import 'package:find_the_words/core/utils/text_extensions.dart';
 import 'package:find_the_words/core/utils/theme_extensions.dart';
@@ -127,6 +128,7 @@ class _StageScreenState extends State<StageScreen> {
     final pointsCubit = getIt<PointsCubit>();
     final accountBoost = getIt<AccountBoostCubit>();
     final freezeCubit = getIt<FreezeCubit>();
+    final userProfileService = getIt<UserProfileService>();
     final authState = authCubit.state;
 
     if (authState is! AuthAuthenticated) return;
@@ -142,7 +144,7 @@ class _StageScreenState extends State<StageScreen> {
       xpMultiplier: accountBoost.currentMultiplier,
     );
 
-    await authCubit.updateAfterStage(
+    await userProfileService.updateAfterStage(
       stageResults.xpEarned,
       stageResults.newProgress,
     );

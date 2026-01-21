@@ -28,9 +28,6 @@ class UserModel extends UserEntity {
   @override
   final Map<AppLanguage, ProfileStatusModel> progressByLanguage;
 
-  @HiveField(5)
-  @override
-  final CurrentStage? currentStage;
 
   @HiveField(6)
   @override
@@ -50,7 +47,6 @@ class UserModel extends UserEntity {
     this.email,
     required this.points,
     required this.progressByLanguage,
-    this.currentStage,
     this.lastSyncedAt,
     required this.joinedAt,
     bool? isGuest,
@@ -61,7 +57,6 @@ class UserModel extends UserEntity {
           email: email,
           points: points,
           progressByLanguage: progressByLanguage,
-          currentStage: currentStage,
           lastSyncedAt: lastSyncedAt,
           joinedAt: joinedAt
         );
@@ -71,7 +66,6 @@ class UserModel extends UserEntity {
     required this.id,
     required this.points,
     required this.progressByLanguage,
-    this.currentStage,
     this.lastSyncedAt,
     required this.joinedAt,
   })  : username = null,
@@ -81,7 +75,6 @@ class UserModel extends UserEntity {
           id: id,
           points: points,
           progressByLanguage: progressByLanguage,
-          currentStage: currentStage,
           lastSyncedAt: lastSyncedAt,
           joinedAt: joinedAt
         );
@@ -92,7 +85,6 @@ class UserModel extends UserEntity {
     this.email,
     required this.points,
     required this.progressByLanguage,
-    this.currentStage,
     this.lastSyncedAt,
     required this.joinedAt,
   })  : isGuest = false,
@@ -102,7 +94,6 @@ class UserModel extends UserEntity {
           email: email,
           points: points,
           progressByLanguage: progressByLanguage,
-          currentStage: currentStage,
           lastSyncedAt: lastSyncedAt,
           joinedAt: joinedAt
         );
@@ -113,7 +104,6 @@ class UserModel extends UserEntity {
         id: entity.id,
         points: entity.points,
         progressByLanguage: entity.progressByLanguage,
-        currentStage: entity.currentStage,
         lastSyncedAt: entity.lastSyncedAt,
         joinedAt: entity.joinedAt
       );
@@ -124,7 +114,6 @@ class UserModel extends UserEntity {
         email: entity.email,
         points: entity.points,
         progressByLanguage: entity.progressByLanguage,
-        currentStage: entity.currentStage,
         lastSyncedAt: entity.lastSyncedAt,
         joinedAt: entity.joinedAt
       );
@@ -139,7 +128,6 @@ class UserModel extends UserEntity {
     String? email,
     int? points,
     Map<AppLanguage, ProfileStatusModel>? progressByLanguage,
-    CurrentStage? currentStage,
     DateTime? lastSyncedAt,
     bool? isGuest,
     DateTime? joinedAt,
@@ -150,7 +138,6 @@ class UserModel extends UserEntity {
       email: email ?? this.email,
       points: points ?? this.points,
       progressByLanguage: progressByLanguage ?? this.progressByLanguage,
-      currentStage: currentStage ?? this.currentStage,
       lastSyncedAt: lastSyncedAt ?? this.lastSyncedAt,
       isGuest: isGuest ?? this.isGuest,
       joinedAt: joinedAt ?? this.joinedAt,

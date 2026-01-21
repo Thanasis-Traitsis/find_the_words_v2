@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_the_words/config/language/app_language.dart';
 import 'package:find_the_words/features/auth/data/models/profile_status_model.dart';
 import 'package:find_the_words/features/auth/domain/entities/user_entity.dart';
-import 'package:find_the_words/features/stage/data/models/current_stage.dart';
 
 class FirebaseUserModel {
   final String id;
@@ -48,18 +47,16 @@ class FirebaseUserModel {
       'lastSyncedAt': FieldValue.serverTimestamp(),
       'joinedAt': Timestamp.fromDate(joinedAt),
       'progressByLanguage': progressByLanguage.map(
-        (language, progress) => MapEntry(
-          language.code,
-          progress.toMap(),
-        ),
+        (language, progress) => MapEntry(language.code, progress.toMap()),
       ),
     };
   }
 
   factory FirebaseUserModel.fromFirestore(Map<String, dynamic> data) {
     final progressMap = <AppLanguage, ProfileStatusModel>{};
-    final progressData = data['progressByLanguage'] as Map<String, dynamic>? ?? {};
-    
+    final progressData =
+        data['progressByLanguage'] as Map<String, dynamic>? ?? {};
+
     for (final entry in progressData.entries) {
       final language = AppLanguage.fromCode(entry.key);
       progressMap[language] = ProfileStatusModel.fromMap(entry.value);
@@ -77,13 +74,12 @@ class FirebaseUserModel {
     );
   }
 
-  UserEntity toEntity({CurrentStage? currentStage}) {
+  UserEntity toEntity() {
     if (isGuest) {
       return UserEntity.guest(
         id: id,
         points: points,
         progressByLanguage: progressByLanguage,
-        currentStage: currentStage,
         lastSyncedAt: lastSyncedAt,
         joinedAt: joinedAt,
       );
@@ -94,7 +90,6 @@ class FirebaseUserModel {
         email: email,
         points: points,
         progressByLanguage: progressByLanguage,
-        currentStage: currentStage,
         lastSyncedAt: lastSyncedAt,
         joinedAt: joinedAt,
       );
