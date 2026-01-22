@@ -15,4 +15,6 @@ abstract class UserRepository {
   Future<void> createFirebaseUser(UserEntity user);
 
   Future<void> updateFirebaseUser(UserEntity user);
+
+  Future<void> updateBannedWords();
 }

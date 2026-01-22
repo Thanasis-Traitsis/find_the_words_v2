@@ -10,6 +10,7 @@ import 'package:find_the_words/features/auth/data/models/user_model.dart';
 import 'package:find_the_words/features/auth/domain/entities/user_entity.dart';
 import 'package:find_the_words/features/auth/domain/repositories/user_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserRepositoryImpl extends UserRepository {
   final StorageService _storageService;
@@ -116,5 +117,32 @@ class UserRepositoryImpl extends UserRepository {
         .collection(AppKeys.usersFirebaseCollectionKey)
         .doc(user.id)
         .update(firebaseModel.toFirestore());
+  }
+
+  @override
+  Future<void> updateBannedWords() async {
+    final firestore = FirebaseFirestore.instance;
+    final prefs = getIt<SharedPreferences>();
+
+    final bannedCollection = firestore.collection(AppKeys.bannedWords);
+
+    // Fetch both documents
+    final greekDoc = await bannedCollection.doc(AppKeys.greekBannedWordsId).get();
+    final englishDoc = await bannedCollection.doc(AppKeys.englishBannedWordsId).get();
+
+    final List<String> greekWords = List<String>.from(
+      greekDoc.data()?['words'] ?? [],
+    );
+
+    final List<String> englishWords = List<String>.from(
+      englishDoc.data()?['words'] ?? [],
+    );
+
+    // Merge + deduplicate
+    final allBannedWords = <String>{...greekWords, ...englishWords}.toList();
+
+    // Persist to SharedPreferences
+    print(allBannedWords);
+    await prefs.setStringList(AppKeys.bannedWords, allBannedWords);
   }
 }

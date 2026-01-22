@@ -1,12 +1,13 @@
 import 'package:find_the_words/core/constants/backup_stages_el.dart';
+import 'package:find_the_words/core/constants/constants.dart';
 import 'package:find_the_words/core/utils/file_utils.dart';
 import 'package:find_the_words/features/stage/data/models/current_stage.dart';
 import 'package:find_the_words/features/stage/data/models/stage_criteria.dart';
-import 'package:find_the_words/features/stage/domain/helpers/word_placement_tracker.dart';
 import 'package:find_the_words/features/stage/domain/services/board_setup_service.dart';
 import 'package:find_the_words/features/stage/domain/services/stage_validation_service.dart';
 import 'package:find_the_words/features/stage/domain/services/word_selection_service.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class StageGeneratorService {
   static const int maxRowLength = 12;
@@ -14,12 +15,15 @@ class StageGeneratorService {
 
   final WordSelectionService _wordSelectionService;
   final BoardSetupService _boardSetupService;
+  final SharedPreferences _prefs;
 
   StageGeneratorService({
     required WordSelectionService wordSelectionService,
     required BoardSetupService boardSetupService,
+    required SharedPreferences prefs,
   }) : _wordSelectionService = wordSelectionService,
-       _boardSetupService = boardSetupService;
+       _boardSetupService = boardSetupService,
+       _prefs = prefs;
 
   Future<CurrentStage> generateStage({
     required String filePath,
@@ -75,7 +79,8 @@ class StageGeneratorService {
     required MapEntry<String, dynamic> selectedWord,
     required StageCriteria criteria,
   }) async {
-    final sortedWords = _prepareSortedWords(selectedWord.value);
+    final bannedWords = await _getBannedWords();
+    final sortedWords = _prepareSortedWords(selectedWord.value, bannedWords);
     final board = _initializeEmptyBoard();
     StageValidationService.instance.clearFailedWords();
 
@@ -91,18 +96,26 @@ class StageGeneratorService {
     return List.generate(maxBoardSize, (_) => '');
   }
 
-  List<String> _prepareSortedWords(List<dynamic> words) {
-    return List<String>.from(words)
+  List<String> _prepareSortedWords(
+    List<dynamic> words,
+    List<String> bannedWords,
+  ) {
+    return words
+        .whereType<String>()
+        .where((word) => !bannedWords.contains(word))
+        .toList()
       ..sort((a, b) => b.length.compareTo(a.length));
+  }
+
+  Future<List<String>> _getBannedWords() async {
+    return _prefs.getStringList(AppKeys.bannedWords) ?? [];
   }
 
   bool _isValidStage(CurrentStage stage) {
     return !stage.placementTracker.isEmpty;
   }
 
-  Future<CurrentStage> _loadBackupStage(
-    int level,
-  ) async {
+  Future<CurrentStage> _loadBackupStage(int level) async {
     // TODO: Add the EN language as well
     final backupEL = BackupStagesEL(_wordSelectionService);
     final currentBackup = await backupEL.getBackupStage(level);

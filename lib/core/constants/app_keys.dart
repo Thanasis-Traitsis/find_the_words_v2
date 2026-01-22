@@ -16,6 +16,10 @@ class AppKeys {
   static const String bannedStageKey = 'banned_stage';
   static const String failedWords = 'failed_words';
 
+  static const String bannedWords = 'banned_words';
+  static const String greekBannedWordsId = 'greek_words';
+  static const String englishBannedWordsId = 'english_words';
+
   static const String boardPlaceholder = '/';
   static const String boardBannedPlace = '//';
 

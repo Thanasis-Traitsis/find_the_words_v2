@@ -78,6 +78,7 @@ Future<void> _registerRepositories() async {
     final generatorService = StageGeneratorService(
       wordSelectionService: wordService,
       boardSetupService: boardService,
+      prefs: getIt<SharedPreferences>(),
     );
 
     return StageRepositoryImpl(
