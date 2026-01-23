@@ -662,4 +662,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noWifiNotificationMessage => 'Progress will sync when you’re online.';
+
+  @override
+  String get profileBannerStatsDescription => 'Profile stats for every available language';
+
+  @override
+  String get profileBannerStatsCardWords => 'Words';
+
+  @override
+  String get profileBannerStatsCardStages => 'Stages';
+
+  @override
+  String get profileBannerStatsCardPoints => 'Points';
 }

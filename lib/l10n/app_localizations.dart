@@ -1216,6 +1216,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Progress will sync when you’re online.'**
   String get noWifiNotificationMessage;
+
+  /// No description provided for @profileBannerStatsDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile stats for every available language'**
+  String get profileBannerStatsDescription;
+
+  /// No description provided for @profileBannerStatsCardWords.
+  ///
+  /// In en, this message translates to:
+  /// **'Words'**
+  String get profileBannerStatsCardWords;
+
+  /// No description provided for @profileBannerStatsCardStages.
+  ///
+  /// In en, this message translates to:
+  /// **'Stages'**
+  String get profileBannerStatsCardStages;
+
+  /// No description provided for @profileBannerStatsCardPoints.
+  ///
+  /// In en, this message translates to:
+  /// **'Points'**
+  String get profileBannerStatsCardPoints;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

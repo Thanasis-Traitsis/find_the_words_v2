@@ -12,7 +12,7 @@ import 'package:find_the_words/features/auth/auth_cubit/auth_cubit.dart';
 import 'package:find_the_words/features/settings/presentation/settings_cubit/settings_cubit.dart';
 import 'package:find_the_words/features/settings/presentation/widgets/bad_word_bottomsheet/bad_word_bottomsheet.dart';
 import 'package:find_the_words/features/settings/presentation/widgets/logout_confirmation_dialog.dart';
-import 'package:find_the_words/features/settings/presentation/widgets/profile_banner.dart';
+import 'package:find_the_words/features/settings/presentation/widgets/profile_banner/profile_banner.dart';
 import 'package:find_the_words/features/settings/presentation/widgets/reset_stage_bottomsheet/reset_stage_bottomsheet.dart';
 import 'package:find_the_words/features/settings/presentation/widgets/settings_row_item.dart';
 import 'package:find_the_words/features/settings/presentation/widgets/sound_settings_item.dart';

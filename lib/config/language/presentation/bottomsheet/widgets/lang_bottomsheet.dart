@@ -13,7 +13,7 @@ class LangBottomsheet extends StatelessWidget {
       headerTitle: context.translate.languageBottomsheetTitle,
       bottomsheetContent: Column(
         children: [
-          InfoContainer.regular(
+          InfoContainer.small(
             infoText: context.translate.languageBottomsheetDescription,
           ),
           const SelectLanguageList(),

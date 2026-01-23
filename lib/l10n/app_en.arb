@@ -396,5 +396,9 @@
     "googleSignOutFailureTitle": "Sign-out failed",
     "googleSignOutFailureMessage": "We couldn’t sign you out. Please try again.",
     "noWifiNotificationTitle": "offline mode",
-    "noWifiNotificationMessage": "Progress will sync when you’re online."
+    "noWifiNotificationMessage": "Progress will sync when you’re online.",
+    "profileBannerStatsDescription": "Profile stats for every available language",
+    "profileBannerStatsCardWords": "Words", 
+    "profileBannerStatsCardStages": "Stages", 
+    "profileBannerStatsCardPoints": "Points" 
 }

@@ -396,5 +396,9 @@
     "googleSignOutFailureTitle": "Αποτυχία αποσύνδεσης",
     "googleSignOutFailureMessage": "Δεν ήταν δυνατή η αποσύνδεση. Δοκίμασε ξανά.",
     "noWifiNotificationTitle": "εκτός σύνδεσης",
-    "noWifiNotificationMessage": "Η πρόοδος θα συγχρονιστεί όταν συνδεθείς."
+    "noWifiNotificationMessage": "Η πρόοδος θα συγχρονιστεί όταν συνδεθείς.",
+    "profileBannerStatsDescription": "Στατιστικά λογαριασμού σε όλες τις διαθέσιμες γλώσσες",
+    "profileBannerStatsCardWords": "Λέξεις", 
+    "profileBannerStatsCardStages": "Στάδια", 
+    "profileBannerStatsCardPoints": "Πόντοι" 
 }

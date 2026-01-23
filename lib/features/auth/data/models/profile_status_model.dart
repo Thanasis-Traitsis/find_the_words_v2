@@ -92,6 +92,10 @@ class ProfileStatusModel {
 
   int get xpMultiplier => hasActiveBoost ? activeBoost!.multiplier : 1;
 
+  int get totalStagesCompleted => stage - 1;
+
+  int get totalWordsFound => wordsModel.words.length;
+
   ProfileStatusModel copyWith({
     AppLanguage? language,
     int? level,
@@ -101,7 +105,7 @@ class ProfileStatusModel {
     AccountBoostModel? activeBoost,
     CurrentStage? currentStage,
     bool clearBoost = false,
-    bool clearCurrentStage = false, 
+    bool clearCurrentStage = false,
   }) {
     return ProfileStatusModel(
       language: language ?? this.language,
@@ -110,7 +114,9 @@ class ProfileStatusModel {
       stage: stage ?? this.stage,
       wordsModel: words ?? wordsModel,
       activeBoost: clearBoost ? null : (activeBoost ?? this.activeBoost),
-      currentStage: clearCurrentStage ? null : (currentStage ?? this.currentStage),
+      currentStage: clearCurrentStage
+          ? null
+          : (currentStage ?? this.currentStage),
     );
   }
 }

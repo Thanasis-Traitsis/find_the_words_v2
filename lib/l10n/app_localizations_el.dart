@@ -674,4 +674,16 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String get noWifiNotificationMessage => 'Η πρόοδος θα συγχρονιστεί όταν συνδεθείς.';
+
+  @override
+  String get profileBannerStatsDescription => 'Στατιστικά λογαριασμού σε όλες τις διαθέσιμες γλώσσες';
+
+  @override
+  String get profileBannerStatsCardWords => 'Λέξεις';
+
+  @override
+  String get profileBannerStatsCardStages => 'Στάδια';
+
+  @override
+  String get profileBannerStatsCardPoints => 'Πόντοι';
 }

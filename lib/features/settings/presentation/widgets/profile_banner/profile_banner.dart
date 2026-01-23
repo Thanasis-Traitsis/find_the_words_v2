@@ -11,6 +11,7 @@ import 'package:find_the_words/core/utils/theme_extensions.dart';
 import 'package:find_the_words/core/widgets/custom_svg_icon.dart';
 import 'package:find_the_words/core/widgets/custom_text.dart';
 import 'package:find_the_words/features/auth/auth_cubit/auth_cubit.dart';
+import 'package:find_the_words/features/settings/presentation/widgets/profile_banner/profile_stats_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -21,8 +22,18 @@ class ProfileBanner extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AuthCubit, AuthState>(
       builder: (context, state) {
-        if (state is! AuthAuthenticated) return Container();
-        if (state.user.isGuest) return Container();
+        if (state is! AuthAuthenticated) return SizedBox.shrink();
+        if (state.user.isGuest) return SizedBox.shrink();
+
+        int totalStagesAllLanguages = state.user.progressByLanguage.values.fold(
+          0,
+          (sum, progress) => sum + progress.totalStagesCompleted,
+        );
+
+        int totalWordsAllLanguages = state.user.progressByLanguage.values.fold(
+          0,
+          (sum, progress) => sum + progress.totalWordsFound,
+        );
 
         return BlocBuilder<ConnectivityCubit, ConnectivityState>(
           builder: (context, connectivityState) {
@@ -131,45 +142,99 @@ class ProfileBanner extends StatelessWidget {
                           color: context.colors.text,
                         ),
                       ),
-                      child: Row(
-                        spacing: AppSpacing.spacingM,
+                      child: Column(
+                        spacing: AppSpacing.spacingL,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(
-                            padding: const EdgeInsets.all(AppSpacing.spacingM),
-                            decoration: BoxDecoration(
-                              color: context.colors.background,
-                              borderRadius: AppBorders.smallBorderRadius,
-                              border: Border.all(
-                                width: AppBorders.smallBorderWidth,
-                                color: context.colors.text,
-                              ),
-                            ),
-                            child: CustomSvgIcon(
-                              icon: CustomIcons.avatar,
-                              color: context.colors.text,
-                              height: AppSizes.iconM,
-                            ),
-                          ),
-                          Expanded(
-                            child: Column(
-                              spacing: AppSpacing.spacingS,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                CustomText(
-                                  state.user.username ??
-                                      state.user.email ??
-                                      "Guest_${state.user.id}",
-                                  textType: CustomTextType.smallHeading,
+                          Row(
+                            spacing: AppSpacing.spacingM,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.all(
+                                  AppSpacing.spacingM,
                                 ),
-                                CustomText(
-                                  context.translate.joinedOn(
-                                    state.user.joinedAt.toShortDate(),
+                                decoration: BoxDecoration(
+                                  color: context.colors.background,
+                                  borderRadius: AppBorders.smallBorderRadius,
+                                  border: Border.all(
+                                    width: AppBorders.smallBorderWidth,
+                                    color: context.colors.text,
                                   ),
-                                  textType: CustomTextType.regularBody,
                                 ),
-                              ],
-                            ),
+                                child: CustomSvgIcon(
+                                  icon: CustomIcons.avatar,
+                                  color: context.colors.text,
+                                  height: AppSizes.iconM,
+                                ),
+                              ),
+                              Expanded(
+                                child: Column(
+                                  spacing: AppSpacing.spacingS,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    CustomText(
+                                      state.user.username ??
+                                          state.user.email ??
+                                          "Guest_${state.user.id}",
+                                      textType: CustomTextType.smallHeading,
+                                    ),
+                                    CustomText(
+                                      context.translate.joinedOn(
+                                        state.user.joinedAt.toShortDate(),
+                                      ),
+                                      textType: CustomTextType.regularBody,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          Column(
+                            spacing: AppSpacing.spacingM,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CustomText(
+                                context.translate.profileBannerStatsDescription,
+                                textType: CustomTextType.smallBody,
+                              ),
+                              IntrinsicHeight(
+                                child: Row(
+                                  spacing: AppSpacing.spacingM,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    ProfileStatsCard(
+                                      stat: totalWordsAllLanguages,
+                                      label: context
+                                          .translate
+                                          .profileBannerStatsCardWords,
+                                      icon: CustomIcons.list,
+                                      backgroundColor: context.colors.lightBlue,
+                                      iconColor: context.colors.primary,
+                                    ),
+                                    ProfileStatsCard(
+                                      stat: totalStagesAllLanguages,
+                                      label: context
+                                          .translate
+                                          .profileBannerStatsCardStages,
+                                      icon: CustomIcons.stage,
+                                      backgroundColor: context.colors.lightBlue,
+                                      iconColor: context.colors.primary,
+                                    ),
+                                    ProfileStatsCard(
+                                      stat: state.user.points,
+                                      label: context
+                                          .translate
+                                          .profileBannerStatsCardPoints,
+                                      icon: CustomIcons.stars,
+                                      backgroundColor: context.colors.lightPink,
+                                      iconColor: context.colors.secondary,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),

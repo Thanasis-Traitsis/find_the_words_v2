@@ -13,7 +13,7 @@ class StorageService {
   static const String _userBoxKey = "user_box";
   static const String _userKey = "current_user";
   static const String _stageBoxKey = "stage_box";
-  static const String _stageKeyPrefix = "current_stage";
+  static const String _stageKeyPrefix = "current_stage"; 
 
   late Box<UserModel> _userBox;
   late Box<CurrentStage> _stageBox;
