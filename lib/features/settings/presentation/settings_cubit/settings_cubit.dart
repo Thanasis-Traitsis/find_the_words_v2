@@ -61,7 +61,6 @@ class SettingsCubit extends Cubit<SettingsState> {
 
   @override
   Future<void> close() {
-    print("object yea yea yea");
     _emailWasOpened = false;
     return super.close();
   }

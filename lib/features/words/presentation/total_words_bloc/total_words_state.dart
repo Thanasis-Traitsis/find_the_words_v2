@@ -8,6 +8,7 @@ class TotalWordsState extends Equatable {
   final List<MapEntry<String, dynamic>> displayedWords;
   final bool isLoadingMore;
   final bool hasMoreData;
+  final bool isLoading;
 
   const TotalWordsState({
     required this.wordsModel,
@@ -17,6 +18,7 @@ class TotalWordsState extends Equatable {
     required this.displayedWords,
     required this.isLoadingMore,
     required this.hasMoreData,
+    required this.isLoading,
   });
 
   TotalWordsState.empty()
@@ -26,7 +28,8 @@ class TotalWordsState extends Equatable {
       searchQuery = '',
       displayedWords = const [],
       isLoadingMore = false,
-      hasMoreData = false;
+      hasMoreData = false,
+      isLoading = false;
 
   factory TotalWordsState.initial(WordsModel wordsModel) {
     final allWords = wordsModel.words.entries.toList();
@@ -42,6 +45,7 @@ class TotalWordsState extends Equatable {
       displayedWords: initialWords,
       isLoadingMore: false,
       hasMoreData: allWords.length > 15,
+      isLoading: false,
     );
   }
 
@@ -53,6 +57,7 @@ class TotalWordsState extends Equatable {
     List<MapEntry<String, dynamic>>? displayedWords,
     bool? isLoadingMore,
     bool? hasMoreData,
+    bool? isLoading,
   }) {
     return TotalWordsState(
       wordsModel: wordsModel ?? this.wordsModel,
@@ -62,6 +67,7 @@ class TotalWordsState extends Equatable {
       displayedWords: displayedWords ?? this.displayedWords,
       isLoadingMore: isLoadingMore ?? this.isLoadingMore,
       hasMoreData: hasMoreData ?? this.hasMoreData,
+      isLoading: isLoading ?? this.isLoading,
     );
   }
 
@@ -74,5 +80,6 @@ class TotalWordsState extends Equatable {
     displayedWords,
     isLoadingMore,
     hasMoreData,
+    isLoading
   ];
 }

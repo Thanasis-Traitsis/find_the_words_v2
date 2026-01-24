@@ -85,6 +85,8 @@
     "helpDialogSubtitle": "Χρησιμοποίησε τις διαθέσιμες βοήθειες για να αποκαλύψεις λέξεις ή γράμματα.",
     "gameDialogCloseBtn": "Κλείσιμο",
     "free": "Δωρεάν",
+    "helpDialogFreezeTitle": "Πάγωμα",
+    "helpDialogFreezeDescription": "Με το Πάγωμα μπορείς να σταματήσεις προσωρινά το χρονόμετρο του σταδίου. Έτσι έχεις περισσότερο χρόνο για να ολοκληρώσεις τις δοκιμασίες και να κερδίσεις αυξημένες απολαβές.",
     "helpDialogShuffleTitle": "Ανακάτεμα",
     "helpDialogShuffleDescription": "Χρησιμοποιώντας αυτή τη βοήθεια, τα γράμματα ανακατεύονται, δίνοντάς σου έναν νέο τρόπο σκέψης.",
     "helpDialogRandomLetterTitle": "Τυχαία αποκάλυψη",
@@ -142,6 +144,7 @@
     "filtersSectionHeaderAllLetters": "Όλα τα γράμματα",
     "filtersSectionContentShowAllLetters": "Εμφάνισε τις λέξεις από όλα τα γράμματα",
     "filtersSectionHeaderSelectedLetters": "Επιλογή γραμμάτων",
+    "filtersSectionDescriptionSelectedLetters": "Επίλεξε μια λέξη από το προηγούμενο στάδιο και βρες άμεσα τη σημασία της με ένα πάτημα.",
     "filtersSectionButtonClearLetters": "Καθαρισμός γραμμάτων",
     "filtersSectionHeaderWordLength": "Μέγεθος λέξεων",
     "filtersSectionContentWordLength": "Επιλεγμένο μέγεθος λέξεων: {minLength} - {maxLength}",
@@ -158,6 +161,9 @@
             }
         }
     },
+    "filtersSectionHeaderPreviousStageWords": "Λέξεις από το προηγούμενο στάδιο",
+    "filtersSectionDescriptionPreviousStageWords": "Επίλεξε ένα ή περισσότερα γράμματα για να εμφανιστούν μόνο λέξεις που ξεκινούν με αυτά.",
+    "filtersSectionButtonQuickSearch": "Γρήγορη αναζήτηση",
     "filtersButtonApply": "Εφαρμογή φίλτρων",
     "filtersButtonClean": "Καθαρισμός",
     "chipAllLetters": "Όλα τα γράμματα",

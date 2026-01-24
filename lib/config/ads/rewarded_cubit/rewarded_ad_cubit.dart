@@ -14,7 +14,7 @@ class RewardedAdCubit extends Cubit<RewardedAdState> {
   RewardedAd? _rewardedAd;
   Timer? _retryTimer;
   Timer? _expirationTimer;
-  
+
   // Store the reward config and context when reward is earned
   RewardConfig? _pendingReward;
   BuildContext? _pendingContext;
@@ -108,7 +108,7 @@ class RewardedAdCubit extends Cubit<RewardedAdState> {
       onAdDismissedFullScreenContent: (ad) {
         ad.dispose();
         _rewardedAd = null;
-        
+
         if (_pendingReward != null && _pendingContext != null) {
           if (_pendingContext!.mounted) {
             SnackbarHelper.showSuccessSnackbar(
@@ -117,11 +117,11 @@ class RewardedAdCubit extends Cubit<RewardedAdState> {
               message: _pendingReward!.notificationMessage,
             );
           }
-          
+
           _pendingReward = null;
           _pendingContext = null;
         }
-        
+
         emit(RewardedAdInitial());
         loadAd();
       },

@@ -6,34 +6,47 @@ import 'package:flutter/material.dart';
 
 class FiltersSection extends StatelessWidget {
   final String sectionTitle;
+  final String? sectionDescription;
   final Widget sectionContent;
 
   const FiltersSection({
     super.key,
     required this.sectionTitle,
     required this.sectionContent,
+    this.sectionDescription,
   });
 
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       spacing: AppSpacing.spacingL,
       children: [
-        Container(
-          width: double.infinity,
-          padding: const EdgeInsets.symmetric(vertical: AppSpacing.spacingM),
-          decoration: BoxDecoration(
-            border: Border(
-              bottom: BorderSide(
-                width: AppBorders.smallBorderWidth,
-                color: context.colors.text,
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          spacing: AppSpacing.spacingM,
+          children: [
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(
+                vertical: AppSpacing.spacingM,
+              ),
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
+                    width: AppBorders.smallBorderWidth,
+                    color: context.colors.text,
+                  ),
+                ),
+              ),
+              child: CustomText(
+                sectionTitle,
+                textType: CustomTextType.smallHeading,
               ),
             ),
-          ),
-          child: CustomText(
-            sectionTitle,
-            textType: CustomTextType.smallHeading,
-          ),
+            if (sectionDescription case String description?)
+              CustomText(description, textType: CustomTextType.regularBody),
+          ],
         ),
         sectionContent,
       ],

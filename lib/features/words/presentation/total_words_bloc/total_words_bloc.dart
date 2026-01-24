@@ -62,6 +62,7 @@ class TotalWordsBloc extends Bloc<TotalWordsEvent, TotalWordsState> {
       state.copyWith(
         displayedWords: updatedDisplayedWords,
         isLoadingMore: false,
+        isLoading: false,
         hasMoreData: endIndex < filteredWords.length,
       ),
     );
@@ -81,7 +82,7 @@ class TotalWordsBloc extends Bloc<TotalWordsEvent, TotalWordsState> {
   }
 
   void _onSearchWords(SearchWordsEvent event, Emitter<TotalWordsState> emit) {
-    emit(state.copyWith(searchQuery: event.query, displayedWords: []));
+    emit(state.copyWith(searchQuery: event.query, displayedWords: [], isLoading: true));
     add(LoadMoreWordsEvent(resetListing: true));
   }
 

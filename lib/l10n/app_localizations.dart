@@ -503,6 +503,18 @@ abstract class AppLocalizations {
   /// **'Free'**
   String get free;
 
+  /// No description provided for @helpDialogFreezeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Freeze'**
+  String get helpDialogFreezeTitle;
+
+  /// No description provided for @helpDialogFreezeDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Freeze allows you to temporarily stop the stage timer. This gives you more time to complete challenges and earn increased rewards when finishing the stage.'**
+  String get helpDialogFreezeDescription;
+
   /// No description provided for @helpDialogShuffleTitle.
   ///
   /// In en, this message translates to:
@@ -803,11 +815,35 @@ abstract class AppLocalizations {
   /// **'Word length'**
   String get filtersSectionHeaderWordLength;
 
+  /// No description provided for @filtersSectionDescriptionSelectedLetters.
+  ///
+  /// In en, this message translates to:
+  /// **'Select one or more letters to display only words that start with them.'**
+  String get filtersSectionDescriptionSelectedLetters;
+
   /// Show min and max word length
   ///
   /// In en, this message translates to:
   /// **'Selected word length from: {minLength} - {maxLength}'**
   String filtersSectionContentWordLength(int minLength, int maxLength);
+
+  /// No description provided for @filtersSectionHeaderPreviousStageWords.
+  ///
+  /// In en, this message translates to:
+  /// **'Words from the previous stage'**
+  String get filtersSectionHeaderPreviousStageWords;
+
+  /// No description provided for @filtersSectionDescriptionPreviousStageWords.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a word from the previous stage and instantly see its meaning with a single tap.'**
+  String get filtersSectionDescriptionPreviousStageWords;
+
+  /// No description provided for @filtersSectionButtonQuickSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick search'**
+  String get filtersSectionButtonQuickSearch;
 
   /// No description provided for @filtersButtonApply.
   ///

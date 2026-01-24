@@ -85,6 +85,8 @@
     "helpDialogSubtitle": "Use available hints to reveal words or letters.",
     "gameDialogCloseBtn": "Close",
     "free": "Free",
+    "helpDialogFreezeTitle": "Freeze",
+    "helpDialogFreezeDescription": "Freeze allows you to temporarily stop the stage timer. This gives you more time to complete challenges and earn increased rewards when finishing the stage.",
     "helpDialogShuffleTitle": "Shuffle",
     "helpDialogShuffleDescription": "Using this help, the letters are shuffled, giving you a fresh way to think.",
     "helpDialogRandomLetterTitle": "Random Reveal",
@@ -144,6 +146,7 @@
     "filtersSectionHeaderSelectedLetters": "Select letters",
     "filtersSectionButtonClearLetters": "Clear letters",
     "filtersSectionHeaderWordLength": "Word length",
+    "filtersSectionDescriptionSelectedLetters": "Select one or more letters to display only words that start with them.",
     "filtersSectionContentWordLength": "Selected word length from: {minLength} - {maxLength}",
     "@filtersSectionContentWordLength": {
         "description": "Show min and max word length",
@@ -158,6 +161,9 @@
             }
         }
     },
+    "filtersSectionHeaderPreviousStageWords": "Words from the previous stage",
+    "filtersSectionDescriptionPreviousStageWords": "Select a word from the previous stage and instantly see its meaning with a single tap.",
+    "filtersSectionButtonQuickSearch": "Quick search",
     "filtersButtonApply": "Apply filters",
     "filtersButtonClean": "Clear",
     "chipAllLetters": "All letters",

@@ -22,14 +22,20 @@ class _SearchTextfieldState extends State<SearchTextfield> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomTextfield(
-      hintText: '${context.translate.searchPlaceholder} ...',
-      textEditingController: _searchController,
-      onChanged: (query) {
-        context.read<TotalWordsBloc>().add(SearchWordsEvent(query));
-      },
-      onClearPressed: () {
-        context.read<TotalWordsBloc>().add(SearchWordsEvent(''));
+    return BlocBuilder<TotalWordsBloc, TotalWordsState>(
+      builder: (context, state) {
+        _searchController.text = state.searchQuery;
+
+        return CustomTextfield(
+          hintText: '${context.translate.searchPlaceholder} ...',
+          textEditingController: _searchController,
+          onChanged: (query) {
+            context.read<TotalWordsBloc>().add(SearchWordsEvent(query));
+          },
+          onClearPressed: () {
+            context.read<TotalWordsBloc>().add(SearchWordsEvent(''));
+          },
+        );
       },
     );
   }

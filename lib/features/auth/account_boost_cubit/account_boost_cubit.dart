@@ -9,6 +9,7 @@ import 'package:find_the_words/features/auth/data/models/profile_status_model.da
 import 'package:find_the_words/features/auth/data/models/user_model.dart';
 import 'package:find_the_words/features/auth/data/models/account_boost_model.dart';
 import 'package:find_the_words/features/auth/domain/entities/account_boost_entity.dart';
+import 'package:find_the_words/features/auth/domain/entities/user_entity.dart';
 import 'package:find_the_words/features/points/cubit/points_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -80,7 +81,7 @@ class AccountBoostCubit extends Cubit<AccountBoostEntity?> {
       amount: amount,
     );
 
-    await _updateBoost(boost, authState.user as UserModel);
+    await _updateBoost(boost, authState.user);
     await pointsCubit.deductPoints(points);
 
     if (type == AccountBoostType.minutes) {
@@ -101,7 +102,7 @@ class AccountBoostCubit extends Cubit<AccountBoostEntity?> {
     if (updated.isActive) {
       await _updateBoost(
         AccountBoostModel.fromEntity(updated),
-        authState.user as UserModel,
+        authState.user,
       );
     } else {
       await clear();
@@ -114,13 +115,13 @@ class AccountBoostCubit extends Cubit<AccountBoostEntity?> {
     if (authState is! AuthAuthenticated) return;
 
     _cancelTimer();
-    await _updateBoost(null, authState.user as UserModel);
+    await _updateBoost(null, authState.user);
   }
 
   // Update boost in storage and auth state
   Future<void> _updateBoost(
     AccountBoostModel? boost,
-    UserModel currentUser,
+    UserEntity currentUser,
   ) async {
     final currentLanguage = _getCurrentLanguage();
     final currentProfile = currentUser.progressByLanguage[currentLanguage];
@@ -140,8 +141,10 @@ class AccountBoostCubit extends Cubit<AccountBoostEntity?> {
       progressByLanguage: updatedProgressByLanguage,
     );
 
-    await _storageService.saveUser(updatedUser);
-    _authCubit.emit(AuthAuthenticated(user: updatedUser));
+
+    final userModel = UserModel.fromEntity(updatedUser);
+    await _storageService.saveUser(userModel);
+    _authCubit.emit(AuthAuthenticated(user: userModel));
   }
 
   void _startTimer() {

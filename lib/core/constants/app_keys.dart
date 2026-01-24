@@ -9,7 +9,7 @@ class AppKeys {
   static const String totalFreezesKey = 'total_freezes_key';
   static const String activeFreezeKey = 'active_freeze_key';
   static const String lastFreeAdTimestampKey = 'last_free_ad_timestamp_key';
-  static const String previousStageWordsKey = 'prev_stage';
+  static String previousStageWordsKey(String langCode) => 'prev_stage_$langCode';
   static String timerKey(int stage) => 'timer_key_$stage';
 
   static const String usedStageKey = 'used_stage';

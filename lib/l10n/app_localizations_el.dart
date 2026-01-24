@@ -217,6 +217,12 @@ class AppLocalizationsEl extends AppLocalizations {
   String get free => 'Δωρεάν';
 
   @override
+  String get helpDialogFreezeTitle => 'Πάγωμα';
+
+  @override
+  String get helpDialogFreezeDescription => 'Με το Πάγωμα μπορείς να σταματήσεις προσωρινά το χρονόμετρο του σταδίου. Έτσι έχεις περισσότερο χρόνο για να ολοκληρώσεις τις δοκιμασίες και να κερδίσεις αυξημένες απολαβές.';
+
+  @override
   String get helpDialogShuffleTitle => 'Ανακάτεμα';
 
   @override
@@ -369,9 +375,21 @@ class AppLocalizationsEl extends AppLocalizations {
   String get filtersSectionHeaderWordLength => 'Μέγεθος λέξεων';
 
   @override
+  String get filtersSectionDescriptionSelectedLetters => 'Επίλεξε μια λέξη από το προηγούμενο στάδιο και βρες άμεσα τη σημασία της με ένα πάτημα.';
+
+  @override
   String filtersSectionContentWordLength(int minLength, int maxLength) {
     return 'Επιλεγμένο μέγεθος λέξεων: $minLength - $maxLength';
   }
+
+  @override
+  String get filtersSectionHeaderPreviousStageWords => 'Λέξεις από το προηγούμενο στάδιο';
+
+  @override
+  String get filtersSectionDescriptionPreviousStageWords => 'Επίλεξε ένα ή περισσότερα γράμματα για να εμφανιστούν μόνο λέξεις που ξεκινούν με αυτά.';
+
+  @override
+  String get filtersSectionButtonQuickSearch => 'Γρήγορη αναζήτηση';
 
   @override
   String get filtersButtonApply => 'Εφαρμογή φίλτρων';

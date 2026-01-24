@@ -13,13 +13,20 @@ import 'package:find_the_words/features/words/domain/models/word_filters.dart';
 import 'package:find_the_words/features/words/presentation/total_words_bloc/total_words_bloc.dart';
 import 'package:find_the_words/core/widgets/selected_option_button.dart';
 import 'package:find_the_words/features/words/presentation/widgets/filters_section.dart';
+import 'package:find_the_words/features/words/presentation/widgets/previous_words_filter_section.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class FiltersBottomsheet extends StatefulWidget {
   final WordFilters filters;
+  final List<String> prevWords;
 
-  const FiltersBottomsheet({super.key, required this.filters});
+  const FiltersBottomsheet({
+    super.key,
+    required this.filters,
+    required this.prevWords,
+  });
 
   @override
   State<FiltersBottomsheet> createState() => _FiltersBottomsheetState();
@@ -133,6 +140,7 @@ class _FiltersBottomsheetState extends State<FiltersBottomsheet> {
           ),
           FiltersSection(
             sectionTitle: context.translate.filtersSectionHeaderSelectedLetters,
+            sectionDescription: context.translate.filtersSectionDescriptionSelectedLetters,
             sectionContent: Column(
               spacing: AppSpacing.spacingM,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -199,6 +207,14 @@ class _FiltersBottomsheetState extends State<FiltersBottomsheet> {
                 ),
               ],
             ),
+          ),
+          PreviousWordsFilterSection(
+            prevWords: widget.prevWords,
+            onQuickSearch: (word) {
+              context.read<TotalWordsBloc>().add(SearchWordsEvent(word));
+              _clearAllFilters();
+              FocusScope.of(context).unfocus();
+            },
           ),
           Opacity(
             opacity: 0.0,

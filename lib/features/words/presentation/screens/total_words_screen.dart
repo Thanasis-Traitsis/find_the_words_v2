@@ -65,12 +65,15 @@ class _TotalWordsViewState extends State<_TotalWordsView> {
   @override
   Widget build(BuildContext context) {
     return DismissKeyboardScreen(
-      child: CustomScreen(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: AppSpacing.spacingL),
-          child: BlocBuilder<TotalWordsBloc, TotalWordsState>(
-            builder: (context, state) {
-              return PopScope(
+      child: BlocBuilder<TotalWordsBloc, TotalWordsState>(
+        builder: (context, state) {
+          return CustomScreen(
+            loadingScreen: state.isLoading,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: AppSpacing.spacingL,
+              ),
+              child: PopScope(
                 canPop: true,
                 onPopInvokedWithResult: (didPop, result) {
                   if (state.filters.hasActiveFilters) {
@@ -170,10 +173,10 @@ class _TotalWordsViewState extends State<_TotalWordsView> {
                     //   ),
                   ],
                 ),
-              );
-            },
-          ),
-        ),
+              ),
+            ),
+          );
+        },
       ),
     );
   }

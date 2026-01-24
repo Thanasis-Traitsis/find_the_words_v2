@@ -25,9 +25,9 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuthCubit, AuthState>(
-      listener: (context, state) {
-        if (state is AuthAuthenticated) {
-          switch (state.effect) {
+      listener: (context, authState) {
+        if (authState is AuthAuthenticated) {
+          switch (authState.effect) {
             case AuthEffect.signInSuccess:
               SnackbarHelper.showSuccessSnackbar(
                 context,
@@ -60,49 +60,51 @@ class SettingsScreen extends StatelessWidget {
               null;
           }
 
-          state.clearEffect();
+          authState.clearEffect();
         }
       },
-      builder: (context, state) {
-        if (state is! AuthAuthenticated) return Container();
+      builder: (context, authState) {
+        if (authState is! AuthAuthenticated) return Container();
 
-        final currentUser = state.user;
+        final currentUser = authState.user;
         final currentStage = currentUser.currentProgress.stage;
 
-        return CustomScreen(
-          loadingScreen: state.signInOutLoading,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: AppSpacing.spacingL),
-            child: SingleChildScrollView(
-              child: BlocConsumer<SettingsCubit, SettingsState>(
-                listener: (context, state) {
-                  if (state is SettingsReportBadWord) {
-                    showModalBottomSheet(
-                      context: context,
-                      useRootNavigator: true,
-                      isScrollControlled: true,
-                      backgroundColor: Colors.transparent,
-                      builder: (context) {
-                        return BadWordBottomsheet(
-                          previousStageWords: state.previousStageWords,
-                        );
-                      },
-                    ).then((value) {
-                      if (context.mounted) {
-                        context.read<SettingsCubit>().resetSettingsState();
-                      }
-                    });
-                  }
-                  if (state is SettingsStageReset) {
-                    SnackbarHelper.showSuccessSnackbar(
-                      context,
-                      title: context.translate.resetStageNotificationTitle,
-                      message: context.translate.resetStageNotificationMessage,
-                    );
-                  }
+        return BlocConsumer<SettingsCubit, SettingsState>(
+          listener: (context, settingsState) {
+            if (settingsState is SettingsReportBadWord) {
+              showModalBottomSheet(
+                context: context,
+                useRootNavigator: true,
+                isScrollControlled: true,
+                backgroundColor: Colors.transparent,
+                builder: (context) {
+                  return BadWordBottomsheet(
+                    previousStageWords: settingsState.previousStageWords,
+                  );
                 },
-                builder: (context, state) {
-                  return Column(
+              ).then((value) {
+                if (context.mounted) {
+                  context.read<SettingsCubit>().resetSettingsState();
+                }
+              });
+            }
+            if (settingsState is SettingsStageReset) {
+              SnackbarHelper.showSuccessSnackbar(
+                context,
+                title: context.translate.resetStageNotificationTitle,
+                message: context.translate.resetStageNotificationMessage,
+              );
+            }
+          },
+          builder: (context, settingsState) {
+            return CustomScreen(
+              loadingScreen: authState.signInOutLoading || settingsState is SettingsLoading,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: AppSpacing.spacingL,
+                ),
+                child: SingleChildScrollView(
+                  child: Column(
                     children: [
                       BigHeading(
                         pageTitle: context.translate.settingsScreenName,
@@ -207,11 +209,11 @@ class SettingsScreen extends StatelessWidget {
                               },
                             ),
                     ],
-                  );
-                },
+                  ),
+                ),
               ),
-            ),
-          ),
+            );
+          },
         );
       },
     );

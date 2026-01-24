@@ -1,6 +1,8 @@
 import 'package:find_the_words/config/theme/custom_text_type.dart';
 import 'package:find_the_words/core/constants/constants.dart';
 import 'package:find_the_words/core/constants/custom_icons.dart';
+import 'package:find_the_words/core/services/previous_stage_words_service.dart';
+import 'package:find_the_words/core/services/service_locator.dart';
 import 'package:find_the_words/core/utils/theme_extensions.dart';
 import 'package:find_the_words/core/widgets/custom_svg_icon.dart';
 import 'package:find_the_words/core/widgets/custom_text.dart';
@@ -19,16 +21,25 @@ class FilterButton extends StatelessWidget {
         return Flexible(
           child: InkWell(
             borderRadius: AppBorders.bigBorderRadius,
-            onTap: () {
-              showModalBottomSheet(
-                context: context,
-                useRootNavigator: true,
-                isScrollControlled: true,
-                backgroundColor: Colors.transparent,
-                builder: (context) {
-                  return FiltersBottomsheet(filters: state.filters,);
-                },
-              );
+            onTap: () async {
+              final prevStageService = getIt<PreviousStageWordsService>();
+              final List<String> prevWords = await prevStageService
+                  .getPrevStageWords();
+
+              if (context.mounted) {
+                showModalBottomSheet(
+                  context: context,
+                  useRootNavigator: true,
+                  isScrollControlled: true,
+                  backgroundColor: Colors.transparent,
+                  builder: (context) {
+                    return FiltersBottomsheet(
+                      filters: state.filters,
+                      prevWords: prevWords,
+                    );
+                  },
+                );
+              }
             },
             child: Container(
               padding: const EdgeInsets.all(AppSpacing.spacingM),
@@ -43,7 +54,10 @@ class FilterButton extends StatelessWidget {
                 spacing: AppSpacing.spacingM,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  CustomSvgIcon(icon: CustomIcons.filter, color: context.colors.black),
+                  CustomSvgIcon(
+                    icon: CustomIcons.filter,
+                    color: context.colors.black,
+                  ),
                   Container(
                     padding: const EdgeInsets.symmetric(
                       vertical: AppSpacing.spacingS,

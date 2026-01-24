@@ -1,16 +1,22 @@
+import 'package:find_the_words/config/language/cubit/language_cubit.dart';
 import 'package:find_the_words/core/constants/constants.dart';
 import 'package:find_the_words/core/services/service_locator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PreviousStageWordsService {
-  final String _prevWordsKey = AppKeys.previousStageWordsKey;
   final _prefs = getIt<SharedPreferences>();
 
   Future<void> savePrevStageWords(List<String> words) async {
-     await _prefs.setStringList(_prevWordsKey, words);
+    final selectedLang = getIt<LanguageCubit>().state.appLanguage;
+    final prevStageWordKey = AppKeys.previousStageWordsKey(selectedLang.code);
+
+    await _prefs.setStringList(prevStageWordKey, words);
   }
 
   Future<List<String>> getPrevStageWords() async {
-    return _prefs.getStringList(_prevWordsKey,) ?? [];
+    final selectedLang = getIt<LanguageCubit>().state.appLanguage;
+    final prevStageWordKey = AppKeys.previousStageWordsKey(selectedLang.code);
+    
+    return _prefs.getStringList(prevStageWordKey) ?? [];
   }
 }

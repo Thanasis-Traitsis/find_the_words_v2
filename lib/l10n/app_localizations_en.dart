@@ -217,6 +217,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get free => 'Free';
 
   @override
+  String get helpDialogFreezeTitle => 'Freeze';
+
+  @override
+  String get helpDialogFreezeDescription => 'Freeze allows you to temporarily stop the stage timer. This gives you more time to complete challenges and earn increased rewards when finishing the stage.';
+
+  @override
   String get helpDialogShuffleTitle => 'Shuffle';
 
   @override
@@ -369,9 +375,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get filtersSectionHeaderWordLength => 'Word length';
 
   @override
+  String get filtersSectionDescriptionSelectedLetters => 'Select one or more letters to display only words that start with them.';
+
+  @override
   String filtersSectionContentWordLength(int minLength, int maxLength) {
     return 'Selected word length from: $minLength - $maxLength';
   }
+
+  @override
+  String get filtersSectionHeaderPreviousStageWords => 'Words from the previous stage';
+
+  @override
+  String get filtersSectionDescriptionPreviousStageWords => 'Select a word from the previous stage and instantly see its meaning with a single tap.';
+
+  @override
+  String get filtersSectionButtonQuickSearch => 'Quick search';
 
   @override
   String get filtersButtonApply => 'Apply filters';

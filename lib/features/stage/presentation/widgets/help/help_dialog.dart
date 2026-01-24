@@ -16,6 +16,11 @@ class HelpDialog extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           HelpListItem.free(
+            icon: CustomIcons.freeze,
+            helpTitle: context.translate.helpDialogFreezeTitle,
+            helpDescription: context.translate.helpDialogFreezeDescription,
+          ),
+          HelpListItem.free(
             icon: CustomIcons.shuffle,
             helpTitle: context.translate.helpDialogShuffleTitle,
             helpDescription: context.translate.helpDialogShuffleDescription,
