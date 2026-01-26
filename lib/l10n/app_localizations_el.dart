@@ -330,25 +330,49 @@ class AppLocalizationsEl extends AppLocalizations {
   String get gameRulesSubcontent2c => 'Επίπεδο 3 → η μεγαλύτερη λέξη έχει 5 γράμματα, και ούτω καθεξής';
 
   @override
-  String get gameRulesTitle3 => 'Συμβουλές';
+  String get gameRulesTitle3 => 'Επίπεδα & Εμπειρία (XP)';
 
   @override
-  String get gameRulesContent3a => 'Δοκίμασε διαφορετικούς συνδυασμούς γραμμάτων, μπορεί να ανακαλύψεις bonus λέξεις!';
+  String get gameRulesContent3 => 'Κάθε στάδιο περιλαμβάνει ένα σταυρόλεξο με διαφορετικό βαθμό δυσκολίας. Η εμπειρία (XP) που κερδίζεις εξαρτάται από πολλούς παράγοντες:';
 
   @override
-  String get gameRulesContent3b => 'Κόλλησες; Χρησιμοποίησε τις διαθέσιμες βοήθειες για να αποκαλύψεις γράμματα ή λέξεις.';
+  String get gameRulesSubcontent3a => 'Τον αριθμό των γραμμάτων του παζλ';
 
   @override
-  String get gameRulesContent3c => 'Όσο περισσότερο παίζεις, τόσο βελτιώνεις το λεξιλόγιο και την ικανότητα εύρεσης λέξεων!';
+  String get gameRulesSubcontent3b => 'Το ποσοστό των συμφώνων';
 
   @override
-  String get gameRulesTitle4 => 'Ατελείωτη Διασκέδαση';
+  String get gameRulesSubcontent3c => 'Τη δυσκολία των γραμμάτων';
 
   @override
-  String get gameRulesContent4 => 'Δεν υπάρχει προκαθορισμένη πορεία. Κάθε παζλ είναι μοναδικό, προσφέροντας ατελείωτες προκλήσεις λέξεων και μια φρέσκια εμπειρία κάθε φορά που παίζεις.';
+  String get gameRulesSubcontent3d => 'Τον χρόνο ολοκλήρωσης του σταδίου';
 
   @override
-  String get gameRulesTitle5 => 'Απόλαυσε την περιπέτεια λέξεων στο Βρες τις Λέξεις!';
+  String get gameRulesFooterContent3a => 'Επιπλέον, αν ανακαλύψεις μια έγκυρη λέξη που δεν ανήκει στο σταυρόλεξο, κερδίζεις παραπάνω πόντους και περισσότερη εμπειρία (XP).';
+
+  @override
+  String get gameRulesFooterContent3b => 'Όσο πιο γρήγορα και αποτελεσματικά λύνεις το σταυρόλεξο, και όσο περισσότερες έξτρα λέξεις βρίσκεις, τόσο περισσότερο ανεβαίνεις επίπεδο!';
+
+  @override
+  String get gameRulesTitle4 => 'Συμβουλές';
+
+  @override
+  String get gameRulesContent4a => 'Δοκίμασε διαφορετικούς συνδυασμούς γραμμάτων, μπορεί να ανακαλύψεις bonus λέξεις!';
+
+  @override
+  String get gameRulesContent4b => 'Κόλλησες; Χρησιμοποίησε τις διαθέσιμες βοήθειες για να αποκαλύψεις γράμματα ή λέξεις.';
+
+  @override
+  String get gameRulesContent4c => 'Όσο περισσότερο παίζεις, τόσο βελτιώνεις το λεξιλόγιο και την ικανότητα εύρεσης λέξεων!';
+
+  @override
+  String get gameRulesTitle5 => 'Ατελείωτη Διασκέδαση';
+
+  @override
+  String get gameRulesContent5 => 'Δεν υπάρχει προκαθορισμένη πορεία. Κάθε παζλ είναι μοναδικό, προσφέροντας ατελείωτες προκλήσεις λέξεων και μια φρέσκια εμπειρία κάθε φορά που παίζεις.';
+
+  @override
+  String get gameRulesTitle6 => 'Απόλαυσε την περιπέτεια λέξεων στο Βρες τις Λέξεις!';
 
   @override
   String get filterInfoText => 'Η επιλογή όλων των γραμμάτων γίνεται αυτόματα, εφόσον δεν έχουν επιλεγεί συγκεκριμένα γράμματα.';
@@ -692,6 +716,9 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String get noWifiNotificationMessage => 'Η πρόοδος θα συγχρονιστεί όταν συνδεθείς.';
+
+  @override
+  String get noWifiRewardsSectionDescription => 'Αυτή η ενότητα απαιτεί σύνδεση στο διαδίκτυο. Συνδέσου για να δεις και να αποκτήσεις τις Επιβραβεύσεις σου.';
 
   @override
   String get profileBannerStatsDescription => 'Στατιστικά λογαριασμού σε όλες τις διαθέσιμες γλώσσες';

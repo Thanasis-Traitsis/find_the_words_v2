@@ -1,11 +1,12 @@
+import 'package:find_the_words/core/services/backup_stages_service.dart';
 import 'package:find_the_words/features/stage/data/models/current_stage.dart';
 import 'package:find_the_words/features/stage/domain/helpers/word_placement_tracker.dart';
 import 'package:find_the_words/features/stage/domain/services/word_selection_service.dart';
 
-class BackupStagesEL {
+class BackupStagesEN extends BackupStagesService{
   final WordSelectionService _wordService;
 
-  BackupStagesEL(this._wordService);
+  BackupStagesEN(this._wordService);
 
   final Map<int, List<CurrentStage Function()>> _backupsByLevel = {
     1: [
@@ -68,6 +69,7 @@ class BackupStagesEL {
     10: [_backupLevel10Option1, _backupLevel10Option2, _backupLevel10Option3],
   };
 
+  @override
   Future<CurrentStage> getBackupStage(int level) async {
     final stagesForLevel = _backupsByLevel[level];
 

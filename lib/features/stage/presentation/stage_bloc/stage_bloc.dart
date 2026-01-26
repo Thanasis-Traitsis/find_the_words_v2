@@ -36,6 +36,7 @@ class StageBloc extends Bloc<StageEvent, StageState> {
     on<NextStageButtonPressed>(_onNextStageButtonPressed);
     on<SubmitFormatedWord>(_onSubmitFormatedWord);
     on<CrosswordLetterReveal>(_onCrosswordLetterReveal);
+    on<StageRefreshRequested>(_onStageRefresh);
   }
 
   Future<void> _onNextStageButtonPressed(
@@ -137,6 +138,22 @@ class StageBloc extends Bloc<StageEvent, StageState> {
         Duration(milliseconds: (completedWord.word.length * 100) + 200),
       );
     }
+  }
+
+  Future<void> _onStageRefresh(
+    StageRefreshRequested event,
+    Emitter<StageState> emit,
+  ) async {
+    if (state is! StageActive) return;
+
+    final currentState = state as StageActive;
+    currentState.stage.letters.shuffle();
+
+    final updatedStage = currentState.stage.copyWith(
+      letters: currentState.stage.letters,
+    );
+
+    emit(ShuffleLetters(updatedStage));
   }
 
   Future<void> _clearStage() async {

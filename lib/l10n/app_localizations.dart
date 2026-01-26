@@ -728,44 +728,92 @@ abstract class AppLocalizations {
   /// No description provided for @gameRulesTitle3.
   ///
   /// In en, this message translates to:
-  /// **'Tips'**
+  /// **'Levels & Experience (XP)'**
   String get gameRulesTitle3;
 
-  /// No description provided for @gameRulesContent3a.
+  /// No description provided for @gameRulesContent3.
   ///
   /// In en, this message translates to:
-  /// **'Try forming different word combinations, you might discover bonus words!'**
-  String get gameRulesContent3a;
+  /// **'Each stage features a crossword with a different difficulty level. The experience (XP) you earn depends on several factors:'**
+  String get gameRulesContent3;
 
-  /// No description provided for @gameRulesContent3b.
+  /// No description provided for @gameRulesSubcontent3a.
   ///
   /// In en, this message translates to:
-  /// **'Stuck? Use available hints to reveal letters or words.'**
-  String get gameRulesContent3b;
+  /// **'The number of letters in the puzzle'**
+  String get gameRulesSubcontent3a;
 
-  /// No description provided for @gameRulesContent3c.
+  /// No description provided for @gameRulesSubcontent3b.
   ///
   /// In en, this message translates to:
-  /// **'The more you play, the more your vocabulary and word-finding skills will grow!'**
-  String get gameRulesContent3c;
+  /// **'The percentage of consonants'**
+  String get gameRulesSubcontent3b;
+
+  /// No description provided for @gameRulesSubcontent3c.
+  ///
+  /// In en, this message translates to:
+  /// **'The difficulty of the letters'**
+  String get gameRulesSubcontent3c;
+
+  /// No description provided for @gameRulesSubcontent3d.
+  ///
+  /// In en, this message translates to:
+  /// **'The time it takes to complete the stage'**
+  String get gameRulesSubcontent3d;
+
+  /// No description provided for @gameRulesFooterContent3a.
+  ///
+  /// In en, this message translates to:
+  /// **'Additionally, if you discover a valid word that is not part of the crossword, you earn extra points and additional experience (XP).'**
+  String get gameRulesFooterContent3a;
+
+  /// No description provided for @gameRulesFooterContent3b.
+  ///
+  /// In en, this message translates to:
+  /// **'The faster and more efficiently you solve the crossword, and the more extra words you find, the faster you level up!'**
+  String get gameRulesFooterContent3b;
 
   /// No description provided for @gameRulesTitle4.
   ///
   /// In en, this message translates to:
-  /// **'Endless Fun'**
+  /// **'Tips'**
   String get gameRulesTitle4;
 
-  /// No description provided for @gameRulesContent4.
+  /// No description provided for @gameRulesContent4a.
   ///
   /// In en, this message translates to:
-  /// **'There’s no fixed path. Every puzzle is unique, offering endless word challenges and a fresh experience each time you play.'**
-  String get gameRulesContent4;
+  /// **'Try forming different word combinations, you might discover bonus words!'**
+  String get gameRulesContent4a;
+
+  /// No description provided for @gameRulesContent4b.
+  ///
+  /// In en, this message translates to:
+  /// **'Stuck? Use available hints to reveal letters or words.'**
+  String get gameRulesContent4b;
+
+  /// No description provided for @gameRulesContent4c.
+  ///
+  /// In en, this message translates to:
+  /// **'The more you play, the more your vocabulary and word-finding skills will grow!'**
+  String get gameRulesContent4c;
 
   /// No description provided for @gameRulesTitle5.
   ///
   /// In en, this message translates to:
-  /// **'Enjoy your word adventure in Βρες τις Λέξεις!'**
+  /// **'Endless Fun'**
   String get gameRulesTitle5;
+
+  /// No description provided for @gameRulesContent5.
+  ///
+  /// In en, this message translates to:
+  /// **'There’s no fixed path. Every puzzle is unique, offering endless word challenges and a fresh experience each time you play.'**
+  String get gameRulesContent5;
+
+  /// No description provided for @gameRulesTitle6.
+  ///
+  /// In en, this message translates to:
+  /// **'Enjoy your word adventure in Βρες τις Λέξεις!'**
+  String get gameRulesTitle6;
 
   /// No description provided for @filterInfoText.
   ///
@@ -1252,6 +1300,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Progress will sync when you’re online.'**
   String get noWifiNotificationMessage;
+
+  /// No description provided for @noWifiRewardsSectionDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'This section requires an internet connection. Connect to the internet to view and claim your rewards.'**
+  String get noWifiRewardsSectionDescription;
 
   /// No description provided for @profileBannerStatsDescription.
   ///

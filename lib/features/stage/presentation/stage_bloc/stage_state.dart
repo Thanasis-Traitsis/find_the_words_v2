@@ -40,6 +40,10 @@ final class StageInProgress extends StageActive {
   List<Object> get props => [stage, timestamp, newPositions];
 }
 
+final class ShuffleLetters extends StageActive {
+  ShuffleLetters(super.stage);
+}
+
 final class WordInvalid extends StageActive {
   WordInvalid(super.stage);
 }

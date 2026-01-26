@@ -61,6 +61,9 @@ extension CustomTextStyle on CustomTextType {
       color: isWhite ? appColors.white : appColors.text,
       height: 1,
       leadingDistribution: TextLeadingDistribution.even,
+      fontFeatures: const [
+        FontFeature.tabularFigures(), 
+      ],
     );
   }
 }

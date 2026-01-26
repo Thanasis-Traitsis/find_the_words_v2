@@ -42,19 +42,25 @@ class LanguageCubit extends Cubit<LanguageState> {
     try {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString(_langKey, langCode);
+      emit(
+        state.copyWith(
+          appLanguage: AppLanguage.fromCode(langCode),
+          isLoading: false,
+        ),
+      );
     } catch (e) {
       debugPrint("${AppStrings.devLanguageSaveError}: $e");
+      emit(state.copyWith(isLoading: false));
     }
   }
 
   Future<void> setNewLanguage(String langCode) async {
+    emit(state.copyWith(isLoading: true));
     final dictionaryService = getIt<DictionaryService>();
     final userProfileService = getIt<UserProfileService>();
 
-    dictionaryService.loadDictionaryJson(langCode: langCode);
-    userProfileService.onLanguageChanged(AppLanguage.fromCode(langCode));
-    
-    emit(state.copyWith(appLanguage: AppLanguage.fromCode(langCode)));
+    await dictionaryService.loadDictionaryJson(langCode: langCode);
+    await userProfileService.onLanguageChanged(AppLanguage.fromCode(langCode));
     await _saveLanguage(langCode);
   }
 }

@@ -26,3 +26,5 @@ class CrosswordLetterReveal extends StageEvent {
 }
 
 class ClearCurrentStage extends StageEvent {}
+
+class StageRefreshRequested extends StageEvent {}

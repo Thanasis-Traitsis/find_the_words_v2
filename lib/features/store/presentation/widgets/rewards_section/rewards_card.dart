@@ -9,7 +9,7 @@ import 'package:find_the_words/core/utils/theme_extensions.dart';
 import 'package:find_the_words/core/widgets/custom_svg_icon.dart';
 import 'package:find_the_words/core/widgets/custom_text.dart';
 import 'package:find_the_words/features/store/data/models/reward_type.dart';
-import 'package:find_the_words/features/store/presentation/helper/current_boost_helper.dart';
+import 'package:find_the_words/features/store/presentation/widgets/rewards_section/countdown_timer_tag.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -184,12 +184,8 @@ class RewardsCard extends StatelessWidget {
                         isWhite: true,
                       ),
                       if (rewardConfig.notAvailableUntil != null)
-                        CustomText(
-                          CurrentBoostHelper.formatDurationWithHours(
-                            rewardConfig.notAvailableUntil,
-                          ),
-                          textType: CustomTextType.smallTag,
-                          isWhite: true,
+                        CountdownTimerTag(
+                          notAvailableUntil: rewardConfig.notAvailableUntil,
                         ),
                     ],
                   ),

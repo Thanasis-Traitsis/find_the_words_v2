@@ -83,36 +83,41 @@ class _ActiveBoostTagState extends State<ActiveBoostTag> {
             spacing: AppSpacing.spacingS,
             children: [
               const ActiveGreenDot(),
-              AnimatedSize(
-                duration: const Duration(milliseconds: 300),
-                curve: Curves.easeInOut,
-                alignment: Alignment.centerLeft,
-                child: _isExpanded
-                    ? Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: AppSpacing.spacingS,
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          spacing: AppSpacing.spacingM,
-                          children: [
-                            CustomText(
-                              context.translate.currentBoostTag,
-                              textType: CustomTextType.smallTag,
-                              isWhite: true,
-                            ),
-                            if (widget.withData) ...[
-                              Container(color: context.colors.white, width: 1),
-                              CustomText(
-                                CurrentBoostHelper.getFormattedBoost(boost),
-                                textType: CustomTextType.smallTag,
-                                isWhite: true,
+              Flexible(
+                child: AnimatedSize(
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeInOut,
+                  alignment: Alignment.centerLeft,
+                  child: _isExpanded
+                      ? Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: AppSpacing.spacingS,
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            spacing: AppSpacing.spacingM,
+                            children: [
+                              Flexible(
+                                child: CustomText(
+                                  context.translate.currentBoostTag,
+                                  textType: CustomTextType.smallTag,
+                                  isWhite: true,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
+                              if (widget.withData) ...[
+                                Container(color: context.colors.white, width: 1),
+                                CustomText(
+                                  CurrentBoostHelper.getFormattedBoost(boost),
+                                  textType: CustomTextType.smallTag,
+                                  isWhite: true,
+                                ),
+                              ],
                             ],
-                          ],
-                        ),
-                      )
-                    : const SizedBox.shrink(),
+                          ),
+                        )
+                      : const SizedBox.shrink(),
+                ),
               ),
               if (widget.isExpandable)
                 CustomSvgIcon(

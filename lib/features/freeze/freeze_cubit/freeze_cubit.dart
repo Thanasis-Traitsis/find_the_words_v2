@@ -1,6 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:find_the_words/core/constants/app_keys.dart';
-import 'package:find_the_words/core/constants/app_strings.dart';
 import 'package:find_the_words/core/constants/constants.dart';
 import 'package:find_the_words/core/services/service_locator.dart';
 import 'package:flutter/material.dart';

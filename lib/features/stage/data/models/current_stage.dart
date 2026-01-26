@@ -24,6 +24,20 @@ class CurrentStage extends HiveObject {
     required this.placementTracker,
   });
 
+  CurrentStage copyWith({
+    List<String>? allWords,
+    List<String>? letters,
+    List<String>? board,
+    WordPlacementTracker? placementTracker,
+  }) {
+    return CurrentStage(
+      allWords: allWords ?? this.allWords,
+      letters: letters ?? this.letters,
+      board: board ?? this.board,
+      placementTracker: placementTracker ?? this.placementTracker,
+    );
+  }
+
   Map<String, dynamic> toMap() {
     return {
       'allWords': allWords,

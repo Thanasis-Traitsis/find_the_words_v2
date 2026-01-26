@@ -13,6 +13,7 @@ class RulesSection extends StatelessWidget {
   final CustomIcons icon;
   final List<String> content;
   final List<String>? subContent;
+  final List<String>? footerContent;
 
   const RulesSection({
     super.key,
@@ -20,6 +21,7 @@ class RulesSection extends StatelessWidget {
     required this.icon,
     required this.content,
     this.subContent,
+    this.footerContent,
   });
 
   @override
@@ -48,13 +50,15 @@ class RulesSection extends StatelessWidget {
                 color: context.colors.primary,
                 height: AppSizes.iconS,
               ),
-              CustomText(
-                title,
-                textStyle: TextStyle(
-                  fontFamily: AppTheme.highlighFont,
-                  fontSize: CustomTextType.smallHeading.fontSize,
-                  fontWeight: CustomTextType.smallHeading.fontWeight,
-                  color: context.colors.darkBlue,
+              Expanded(
+                child: CustomText(
+                  title,
+                  textStyle: TextStyle(
+                    fontFamily: AppTheme.highlighFont,
+                    fontSize: CustomTextType.smallHeading.fontSize,
+                    fontWeight: CustomTextType.smallHeading.fontWeight,
+                    color: context.colors.darkBlue,
+                  ),
                 ),
               ),
             ],
@@ -92,6 +96,18 @@ class RulesSection extends StatelessWidget {
                 ),
               ],
             ),
+            if (footerContent != null) ...[
+              ...List.generate(
+                footerContent!.length,
+                (index) => Container(
+                  margin: const EdgeInsets.only(top: AppSpacing.spacingM),
+                  child: CustomText(
+                    footerContent![index],
+                    textType: CustomTextType.regularBody,
+                  ),
+                ),
+              ),
+            ],
           ],
         ],
       ),

@@ -41,6 +41,8 @@ enum CustomIcons {
   logout('logout'),
   avatar('avatar'),
   noWifi('no_wifi'),
+  levelUp('level_up'),
+  crossword('crossword'),
 
   // Logos
   homeLogoEn('home_logo_en'),

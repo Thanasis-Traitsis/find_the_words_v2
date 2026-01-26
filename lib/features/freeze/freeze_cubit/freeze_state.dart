@@ -38,5 +38,5 @@ class FreezeState extends Equatable {
   }
 
   @override
-  List<Object> get props => [totalFreezes, activeFreeze];
+  List<Object> get props => [totalFreezes, activeFreeze, ?lastFreeAdTimestamp];
 }

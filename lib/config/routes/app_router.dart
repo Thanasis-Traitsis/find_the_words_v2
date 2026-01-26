@@ -14,7 +14,7 @@ import 'package:find_the_words/features/home/presentation/screens/home_screen.da
 import 'package:find_the_words/config/language/presentation/screen/language_selection_screen.dart';
 import 'package:find_the_words/features/settings/presentation/screens/settings_screen.dart';
 import 'package:find_the_words/features/stage/data/models/stage_results.dart';
-import 'package:find_the_words/features/stage/presentation/screens/stage_screen.dart';
+import 'package:find_the_words/features/stage/presentation/screens/stage_screen_provider.dart';
 import 'package:find_the_words/features/words/presentation/screens/total_words_screen.dart';
 import 'package:find_the_words/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -84,7 +84,7 @@ class AppRouter {
           final stage = params?['stage'] as int? ?? 0;
           final level = params?['level'] as int? ?? 1;
           return _noAnimationPage(
-            StageScreen(stage: stage, level: level),
+            StageScreenProvider(stage: stage, level: level),
             state,
           );
         },

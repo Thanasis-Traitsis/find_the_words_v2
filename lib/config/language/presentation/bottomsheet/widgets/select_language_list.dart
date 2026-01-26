@@ -72,14 +72,21 @@ class _SelectLanguageListState extends State<SelectLanguageList> {
             },
           );
         }),
-        Container(
-          margin: const EdgeInsets.symmetric(vertical: AppSpacing.spacingXL),
-          alignment: Alignment.bottomRight,
-          child: CustomPrimaryButton.regular(
-            text: context.translate.languageBottomsheetUpdateBtn,
-            onTap: applyNewLanguage,
-            isDisabled: appLanguage == selectedLangCode,
-          ),
+        BlocBuilder<LanguageCubit, LanguageState>(
+          builder: (context, state) {            
+            return Container(
+              margin: const EdgeInsets.symmetric(
+                vertical: AppSpacing.spacingXL,
+              ),
+              alignment: Alignment.bottomRight,
+              child: CustomPrimaryButton.regular(
+                text: context.translate.languageBottomsheetUpdateBtn,
+                onTap: applyNewLanguage,
+                isDisabled: appLanguage == selectedLangCode,
+                isLoading: state.isLoading,
+              ),
+            );
+          },
         ),
       ],
     );

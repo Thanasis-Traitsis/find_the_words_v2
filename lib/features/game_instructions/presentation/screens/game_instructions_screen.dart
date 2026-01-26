@@ -44,23 +44,40 @@ class GameInstructionsScreen extends StatelessWidget {
                 ],
               ),
               RulesSection(
-                icon: CustomIcons.tips,
+                icon: CustomIcons.levelUp,
                 title: context.translate.gameRulesTitle3,
                 content: [
-                  context.translate.gameRulesContent3a,
-                  context.translate.gameRulesContent3b,
-                  context.translate.gameRulesContent3c,
+                  context.translate.gameRulesContent3
+                ],
+                subContent: [
+                  context.translate.gameRulesSubcontent3a,
+                  context.translate.gameRulesSubcontent3b,
+                  context.translate.gameRulesSubcontent3c,
+                  context.translate.gameRulesSubcontent3d,
+                ],
+                footerContent: [
+                  context.translate.gameRulesFooterContent3a,
+                  context.translate.gameRulesFooterContent3b,
                 ],
               ),
               RulesSection(
-                icon: CustomIcons.stars,
+                icon: CustomIcons.tips,
                 title: context.translate.gameRulesTitle4,
-                content: [context.translate.gameRulesContent4],
+                content: [
+                  context.translate.gameRulesContent4a,
+                  context.translate.gameRulesContent4b,
+                  context.translate.gameRulesContent4c,
+                ],
+              ),
+              RulesSection(
+                icon: CustomIcons.crossword,
+                title: context.translate.gameRulesTitle5,
+                content: [context.translate.gameRulesContent5],
               ),
               Container(
                 margin: const EdgeInsets.only(top: AppSpacing.spacingM),
                 child: CustomText(
-                  context.translate.gameRulesTitle5,
+                  context.translate.gameRulesTitle6,
                   textType: CustomTextType.regularHeading,
                 ),
               ),

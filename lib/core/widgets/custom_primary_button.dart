@@ -18,6 +18,7 @@ class CustomPrimaryButton extends StatelessWidget {
   final double spacing;
   final EdgeInsets padding;
   final BorderRadius borderRadius;
+  final bool isLoading;
 
   const CustomPrimaryButton.small({
     super.key,
@@ -35,6 +36,7 @@ class CustomPrimaryButton extends StatelessWidget {
       vertical: AppSpacing.spacingXS,
     ),
     this.borderRadius = AppBorders.regularBorderRadiusConst,
+    this.isLoading = false,
   });
 
   const CustomPrimaryButton.regular({
@@ -53,6 +55,7 @@ class CustomPrimaryButton extends StatelessWidget {
       vertical: AppSpacing.spacingM,
     ),
     this.borderRadius = AppBorders.regularBorderRadiusConst,
+    this.isLoading = false,
   });
 
   const CustomPrimaryButton.large({
@@ -71,6 +74,7 @@ class CustomPrimaryButton extends StatelessWidget {
       vertical: AppSpacing.spacingL,
     ),
     this.borderRadius = AppBorders.bigBorderRadiusConst,
+    this.isLoading = false,
   });
 
   @override
@@ -86,55 +90,73 @@ class CustomPrimaryButton extends StatelessWidget {
       child: AnimatedOpacity(
         duration: const Duration(milliseconds: 300),
         opacity: isDisabled ? 0.7 : 1.0,
-        child: Row(
-          spacing: spacing,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          mainAxisSize: fullWidth ? MainAxisSize.max : MainAxisSize.min,
+        child: Stack(
           children: [
-            if (prefixIcon != null)
-              CustomSvgIcon(
-                icon: prefixIcon!,
-                color: context.colors.white,
-                height: iconSize,
-              ),
-            if (prefixIcon == null && suffixIcon != null && fullWidth)
-              Opacity(
-                opacity: 0.0,
-                child: CustomSvgIcon(
-                  icon: suffixIcon!,
-                  color: context.colors.white,
-                  height: iconSize,
-                ),
-              ),
-            Flexible(
-              child: CustomText(
-                text,
-                textStyle: TextStyle(
-                  fontSize: type.fontSize,
-                  fontWeight: FontWeight.bold,
-                ),
-                isWhite: true,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 1,
-                textAlign: TextAlign.center,
+            Opacity(
+              opacity: isLoading ? 0.0 : 1.0,
+              child: Row(
+                spacing: spacing,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisSize: fullWidth ? MainAxisSize.max : MainAxisSize.min,
+                children: [
+                  if (prefixIcon != null)
+                    CustomSvgIcon(
+                      icon: prefixIcon!,
+                      color: context.colors.white,
+                      height: iconSize,
+                    ),
+                  if (prefixIcon == null && suffixIcon != null && fullWidth)
+                    Opacity(
+                      opacity: 0.0,
+                      child: CustomSvgIcon(
+                        icon: suffixIcon!,
+                        color: context.colors.white,
+                        height: iconSize,
+                      ),
+                    ),
+                  Flexible(
+                    child: CustomText(
+                      text,
+                      textStyle: TextStyle(
+                        fontSize: type.fontSize,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      isWhite: true,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  if (suffixIcon == null && prefixIcon != null && fullWidth)
+                    Opacity(
+                      opacity: 0.0,
+                      child: CustomSvgIcon(
+                        icon: prefixIcon!,
+                        color: context.colors.white,
+                        height: iconSize,
+                      ),
+                    ),
+                  if (suffixIcon != null)
+                    CustomSvgIcon(
+                      icon: suffixIcon!,
+                      color: context.colors.white,
+                      height: iconSize,
+                    ),
+                ],
               ),
             ),
-            if (suffixIcon == null && prefixIcon != null && fullWidth)
-              Opacity(
-                opacity: 0.0,
-                child: CustomSvgIcon(
-                  icon: prefixIcon!,
-                  color: context.colors.white,
-                  height: iconSize,
+            Positioned.fill(
+              child: Opacity(
+                opacity: isLoading ? 1.0 : 0.0,
+                child: Center(
+                  child: AspectRatio(
+                    aspectRatio: 1,
+                    child: CircularProgressIndicator.adaptive(backgroundColor: context.colors.white,),
+                  ),
                 ),
               ),
-            if (suffixIcon != null)
-              CustomSvgIcon(
-                icon: suffixIcon!,
-                color: context.colors.white,
-                height: iconSize,
-              ),
+            ),
           ],
         ),
       ),

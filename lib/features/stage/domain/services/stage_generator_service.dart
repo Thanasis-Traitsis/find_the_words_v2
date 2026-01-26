@@ -1,5 +1,9 @@
+import 'package:find_the_words/config/language/app_language.dart';
+import 'package:find_the_words/config/language/cubit/language_cubit.dart';
 import 'package:find_the_words/core/constants/backup_stages_el.dart';
+import 'package:find_the_words/core/constants/backup_stages_en.dart';
 import 'package:find_the_words/core/constants/constants.dart';
+import 'package:find_the_words/core/services/service_locator.dart';
 import 'package:find_the_words/core/utils/file_utils.dart';
 import 'package:find_the_words/features/stage/data/models/current_stage.dart';
 import 'package:find_the_words/features/stage/data/models/stage_criteria.dart';
@@ -116,10 +120,13 @@ class StageGeneratorService {
   }
 
   Future<CurrentStage> _loadBackupStage(int level) async {
-    // TODO: Add the EN language as well
-    final backupEL = BackupStagesEL(_wordSelectionService);
-    final currentBackup = await backupEL.getBackupStage(level);
+    final selectedLang = getIt<LanguageCubit>().state.appLanguage;
 
-    return currentBackup;
+    final backupService = switch (selectedLang) {
+      AppLanguage.greek => BackupStagesEL(_wordSelectionService),
+      AppLanguage.english => BackupStagesEN(_wordSelectionService),
+    };
+
+    return await backupService.getBackupStage(level);
   }
 }

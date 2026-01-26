@@ -330,25 +330,49 @@ class AppLocalizationsEn extends AppLocalizations {
   String get gameRulesSubcontent2c => 'Level 3 → the longest word has 5 letters, and so on';
 
   @override
-  String get gameRulesTitle3 => 'Tips';
+  String get gameRulesTitle3 => 'Levels & Experience (XP)';
 
   @override
-  String get gameRulesContent3a => 'Try forming different word combinations, you might discover bonus words!';
+  String get gameRulesContent3 => 'Each stage features a crossword with a different difficulty level. The experience (XP) you earn depends on several factors:';
 
   @override
-  String get gameRulesContent3b => 'Stuck? Use available hints to reveal letters or words.';
+  String get gameRulesSubcontent3a => 'The number of letters in the puzzle';
 
   @override
-  String get gameRulesContent3c => 'The more you play, the more your vocabulary and word-finding skills will grow!';
+  String get gameRulesSubcontent3b => 'The percentage of consonants';
 
   @override
-  String get gameRulesTitle4 => 'Endless Fun';
+  String get gameRulesSubcontent3c => 'The difficulty of the letters';
 
   @override
-  String get gameRulesContent4 => 'There’s no fixed path. Every puzzle is unique, offering endless word challenges and a fresh experience each time you play.';
+  String get gameRulesSubcontent3d => 'The time it takes to complete the stage';
 
   @override
-  String get gameRulesTitle5 => 'Enjoy your word adventure in Βρες τις Λέξεις!';
+  String get gameRulesFooterContent3a => 'Additionally, if you discover a valid word that is not part of the crossword, you earn extra points and additional experience (XP).';
+
+  @override
+  String get gameRulesFooterContent3b => 'The faster and more efficiently you solve the crossword, and the more extra words you find, the faster you level up!';
+
+  @override
+  String get gameRulesTitle4 => 'Tips';
+
+  @override
+  String get gameRulesContent4a => 'Try forming different word combinations, you might discover bonus words!';
+
+  @override
+  String get gameRulesContent4b => 'Stuck? Use available hints to reveal letters or words.';
+
+  @override
+  String get gameRulesContent4c => 'The more you play, the more your vocabulary and word-finding skills will grow!';
+
+  @override
+  String get gameRulesTitle5 => 'Endless Fun';
+
+  @override
+  String get gameRulesContent5 => 'There’s no fixed path. Every puzzle is unique, offering endless word challenges and a fresh experience each time you play.';
+
+  @override
+  String get gameRulesTitle6 => 'Enjoy your word adventure in Βρες τις Λέξεις!';
 
   @override
   String get filterInfoText => 'All letters are selected automatically, unless specific letters have been selected.';
@@ -680,6 +704,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noWifiNotificationMessage => 'Progress will sync when you’re online.';
+
+  @override
+  String get noWifiRewardsSectionDescription => 'This section requires an internet connection. Connect to the internet to view and claim your rewards.';
 
   @override
   String get profileBannerStatsDescription => 'Profile stats for every available language';
