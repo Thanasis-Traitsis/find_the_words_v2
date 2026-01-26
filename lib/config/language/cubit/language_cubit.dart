@@ -18,13 +18,14 @@ class LanguageCubit extends Cubit<LanguageState> {
 
   Future<void> loadSelectedLang() async {
     try {
-      final prefs = await SharedPreferences.getInstance();
+      final prefs = getIt<SharedPreferences>();
       final String? langCode = prefs.getString(_langKey);
 
       if (langCode != null) {
         emit(state.copyWith(appLanguage: AppLanguage.fromCode(langCode)));
       } else {
         String deviceLocaleCode = LanguageService.getDeviceLanguage();
+        await prefs.setString(_langKey, deviceLocaleCode);
 
         emit(
           state.copyWith(
@@ -40,7 +41,7 @@ class LanguageCubit extends Cubit<LanguageState> {
 
   Future<void> _saveLanguage(String langCode) async {
     try {
-      final prefs = await SharedPreferences.getInstance();
+      final prefs = getIt<SharedPreferences>();
       await prefs.setString(_langKey, langCode);
       emit(
         state.copyWith(
