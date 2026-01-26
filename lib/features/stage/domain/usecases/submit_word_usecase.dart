@@ -1,3 +1,5 @@
+import 'package:find_the_words/core/services/service_locator.dart';
+import 'package:find_the_words/features/auth/auth_cubit/auth_cubit.dart';
 import 'package:find_the_words/features/stage/data/models/current_stage.dart';
 import 'package:find_the_words/features/stage/domain/helpers/word_placement_tracker.dart';
 import 'package:find_the_words/features/stage/domain/usecases/crossword_usecase.dart';
@@ -137,6 +139,24 @@ class SubmitWordUsecase {
     }
 
     // Case 3: If no replacement found, mark as extra word
+    // First check if we already have found this word
+    final authState = getIt<AuthCubit>().state;
+    if (authState is! AuthAuthenticated) {
+      return WordSubmissionData(
+        result: WordSubmissionResult.alreadyFound,
+        updatedStage: currentStage,
+      );
+    }
+
+    final wordsModel = authState.user.currentProgress.wordsModel;
+    final foundWords = wordsModel.words.keys;
+    if (foundWords.contains(word)) {
+      return WordSubmissionData(
+        result: WordSubmissionResult.alreadyFound,
+        updatedStage: currentStage,
+      );
+    }
+
     tracker.markWordAsExtra(word);
 
     final updatedStage = CurrentStage(

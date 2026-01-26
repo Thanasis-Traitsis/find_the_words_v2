@@ -10,7 +10,7 @@ class StageIconButton extends StatelessWidget {
   final CustomIcons icon;
   final String? text;
   final int? points;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   const StageIconButton({
     super.key,

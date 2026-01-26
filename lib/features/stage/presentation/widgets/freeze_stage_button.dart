@@ -18,30 +18,33 @@ class FreezeStageButton extends StatelessWidget {
     return BlocBuilder<FreezeCubit, FreezeState>(
       builder: (context, state) {
         if (state.totalFreezes > 0) {
-          return Stack(
-            clipBehavior: Clip.none,
-            children: [
-              StageIconButton(
-                icon: CustomIcons.freeze,
-                onTap: onTap,
-              ),
-              Positioned(
-                left: -AppSizes.tinyHeight,
-                bottom: 0,
-                child: Container(
-                  padding: const EdgeInsets.all(AppSpacing.spacingS),
-                  decoration: BoxDecoration(
-                    color: context.colors.primary,
-                    borderRadius: AppBorders.smallBorderRadius,
-                  ),
-                  child: CustomText(
-                    state.totalFreezes.toString(),
-                    textType: CustomTextType.smallTag,
-                    isWhite: true,
+          return Opacity(
+            opacity: state.activeFreeze ? 0.5 : 1,
+            child: Stack(
+              clipBehavior: Clip.none,
+              children: [
+                StageIconButton(
+                  icon: CustomIcons.freeze,
+                  onTap: state.activeFreeze ? null : onTap,
+                ),
+                Positioned(
+                  left: -AppSizes.tinyHeight,
+                  bottom: 0,
+                  child: Container(
+                    padding: const EdgeInsets.all(AppSpacing.spacingS),
+                    decoration: BoxDecoration(
+                      color: context.colors.primary,
+                      borderRadius: AppBorders.smallBorderRadius,
+                    ),
+                    child: CustomText(
+                      state.totalFreezes.toString(),
+                      textType: CustomTextType.smallTag,
+                      isWhite: true,
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           );
         } else {
           return const SizedBox.shrink();
