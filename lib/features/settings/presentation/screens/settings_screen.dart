@@ -11,6 +11,7 @@ import 'package:find_the_words/core/widgets/custom_social_button.dart';
 import 'package:find_the_words/features/auth/auth_cubit/auth_cubit.dart';
 import 'package:find_the_words/features/settings/presentation/settings_cubit/settings_cubit.dart';
 import 'package:find_the_words/features/settings/presentation/widgets/bad_word_bottomsheet/bad_word_bottomsheet.dart';
+import 'package:find_the_words/features/settings/presentation/widgets/delete_account_confirmation_dialog.dart';
 import 'package:find_the_words/features/settings/presentation/widgets/logout_confirmation_dialog.dart';
 import 'package:find_the_words/features/settings/presentation/widgets/profile_banner/profile_banner.dart';
 import 'package:find_the_words/features/settings/presentation/widgets/reset_stage_bottomsheet/reset_stage_bottomsheet.dart';
@@ -98,7 +99,9 @@ class SettingsScreen extends StatelessWidget {
           },
           builder: (context, settingsState) {
             return CustomScreen(
-              loadingScreen: authState.signInOutLoading || settingsState is SettingsLoading,
+              loadingScreen:
+                  authState.signInOutLoading ||
+                  settingsState is SettingsLoading,
               child: Padding(
                 padding: const EdgeInsets.symmetric(
                   vertical: AppSpacing.spacingL,
@@ -184,30 +187,52 @@ class SettingsScreen extends StatelessWidget {
                             context.translate.settingsItemReportTermsConditions,
                         link: "https://github.com/Thanasis-Traitsis",
                       ),
-                      currentUser.isGuest
-                          ? Container(
-                              margin: const EdgeInsets.symmetric(
-                                vertical: AppSpacing.spacingL,
-                              ),
-                              child: CustomSocialButton(
-                                social: CustomIcons.google,
-                                text: "Google Sign in",
-                                onPressed: () {
-                                  getIt<AuthCubit>().googleSignIn();
-                                },
-                                requiresInternet: true,
-                              ),
-                            )
-                          : SettingsRowItem.logout(
-                              name: context.translate.logoutBtnText,
-                              onTap: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (context) =>
-                                      const LogoutConfirmationDialog(),
-                                );
-                              },
-                            ),
+                      if (currentUser.isGuest) ...[
+                        SettingsRowItem.delete(
+                          name: context.translate.deleteAccountBtnText,
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) =>
+                                  const DeleteAccountConfirmationDialog(),
+                            );
+                          },
+                        ),
+                        Container(
+                          margin: const EdgeInsets.symmetric(
+                            vertical: AppSpacing.spacingL,
+                          ),
+                          child: CustomSocialButton(
+                            social: CustomIcons.google,
+                            text: "Google Sign in",
+                            onPressed: () {
+                              getIt<AuthCubit>().googleSignIn();
+                            },
+                            requiresInternet: true,
+                          ),
+                        ),
+                      ] else ...[
+                        SettingsRowItem.logout(
+                          name: context.translate.logoutBtnText,
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) =>
+                                  const LogoutConfirmationDialog(),
+                            );
+                          },
+                        ),
+                        SettingsRowItem.delete(
+                          name: context.translate.deleteAccountBtnText,
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) =>
+                                  const DeleteAccountConfirmationDialog(),
+                            );
+                          },
+                        ),
+                      ],
                     ],
                   ),
                 ),

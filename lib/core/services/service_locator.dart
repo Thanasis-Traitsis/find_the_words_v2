@@ -138,10 +138,6 @@ Future<void> _registerBlocs() async {
     () async => RewardedAdCubit()..initialize(),
   );
 
-  getIt.registerSingletonAsync<FreezeCubit>(
-    () async => FreezeCubit()..initializeFreeze(),
-  );
-
   getIt.registerSingletonAsync<AccountBoostCubit>(
     () async => AccountBoostCubit(
       authCubit: getIt<AuthCubit>(),
@@ -182,5 +178,9 @@ Future<void> _registerBlocs() async {
 
   getIt.registerLazySingleton<CloudSyncService>(
     () => CloudSyncService(getIt<UserRepository>()),
+  );
+
+  getIt.registerLazySingleton<FreezeCubit>(
+    () => FreezeCubit(getIt<UserProfileService>()),
   );
 }

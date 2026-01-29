@@ -21,6 +21,7 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       username: fields[1] as String?,
       email: fields[2] as String?,
       points: fields[3] as int,
+      totalFreezes: fields[9] as int,
       progressByLanguage:
           (fields[4] as Map).cast<AppLanguage, ProfileStatusModel>(),
       lastSyncedAt: fields[6] as DateTime?,
@@ -32,7 +33,7 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
   @override
   void write(BinaryWriter writer, UserModel obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -48,7 +49,9 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       ..writeByte(7)
       ..write(obj.isGuest)
       ..writeByte(8)
-      ..write(obj.joinedAt);
+      ..write(obj.joinedAt)
+      ..writeByte(9)
+      ..write(obj.totalFreezes);
   }
 
   @override

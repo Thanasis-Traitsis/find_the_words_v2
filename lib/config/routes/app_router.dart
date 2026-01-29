@@ -33,6 +33,10 @@ class AppRouter {
       final authState = getIt<AuthCubit>().state;
       final langState = getIt<LanguageCubit>().state;
       final isOnSplash = state.matchedLocation == AppRoutes.splashPath;
+      
+      if (authState is AuthUnauthenticated) {
+        return AppRoutes.splashPath; 
+      }
 
       if (authState is AuthLoading && !isOnSplash) {
         return AppRoutes.splashPath;

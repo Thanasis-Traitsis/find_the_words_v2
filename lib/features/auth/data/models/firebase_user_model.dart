@@ -11,6 +11,7 @@ class FirebaseUserModel {
   final Map<AppLanguage, ProfileStatusModel> progressByLanguage;
   final DateTime? lastSyncedAt;
   final DateTime joinedAt;
+  final int totalFreezes;
   final bool isGuest;
 
   FirebaseUserModel({
@@ -18,6 +19,7 @@ class FirebaseUserModel {
     this.username,
     this.email,
     required this.points,
+    required this.totalFreezes,
     required this.progressByLanguage,
     this.lastSyncedAt,
     required this.joinedAt,
@@ -30,6 +32,7 @@ class FirebaseUserModel {
       username: entity.username,
       email: entity.email,
       points: entity.points,
+      totalFreezes: entity.totalFreezes,
       progressByLanguage: entity.progressByLanguage,
       lastSyncedAt: entity.lastSyncedAt,
       joinedAt: entity.joinedAt,
@@ -43,6 +46,7 @@ class FirebaseUserModel {
       'username': username,
       'email': email,
       'points': points,
+      'totalFreezes': totalFreezes,
       'isGuest': isGuest,
       'lastSyncedAt': FieldValue.serverTimestamp(),
       'joinedAt': Timestamp.fromDate(joinedAt),
@@ -67,6 +71,7 @@ class FirebaseUserModel {
       username: data['username'] as String?,
       email: data['email'] as String?,
       points: data['points'] as int? ?? 0,
+      totalFreezes: data['totalFreezes'] as int? ?? 0,
       progressByLanguage: progressMap,
       lastSyncedAt: (data['lastSyncedAt'] as Timestamp?)?.toDate(),
       joinedAt: (data['joinedAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
@@ -79,6 +84,7 @@ class FirebaseUserModel {
       return UserEntity.guest(
         id: id,
         points: points,
+        totalFreezes: totalFreezes,
         progressByLanguage: progressByLanguage,
         lastSyncedAt: lastSyncedAt,
         joinedAt: joinedAt,
@@ -89,6 +95,7 @@ class FirebaseUserModel {
         username: username,
         email: email,
         points: points,
+        totalFreezes: totalFreezes,
         progressByLanguage: progressByLanguage,
         lastSyncedAt: lastSyncedAt,
         joinedAt: joinedAt,

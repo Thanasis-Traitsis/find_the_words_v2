@@ -27,7 +27,7 @@ class AccountBoostCubit extends Cubit<AccountBoostEntity?> {
        super(null) {
     _listenToAuthChanges();
   }
-  
+
   int get currentMultiplier => state?.multiplier ?? 1;
 
   void _listenToAuthChanges() {
@@ -100,10 +100,7 @@ class AccountBoostCubit extends Cubit<AccountBoostEntity?> {
     final updated = boost.decrementStage();
 
     if (updated.isActive) {
-      await _updateBoost(
-        AccountBoostModel.fromEntity(updated),
-        authState.user,
-      );
+      await _updateBoost(AccountBoostModel.fromEntity(updated), authState.user);
     } else {
       await clear();
     }
@@ -141,7 +138,6 @@ class AccountBoostCubit extends Cubit<AccountBoostEntity?> {
       progressByLanguage: updatedProgressByLanguage,
     );
 
-
     final userModel = UserModel.fromEntity(updatedUser);
     await _storageService.saveUser(userModel);
     _authCubit.emit(AuthAuthenticated(user: userModel));
@@ -169,6 +165,10 @@ class AccountBoostCubit extends Cubit<AccountBoostEntity?> {
   AppLanguage _getCurrentLanguage() {
     final currentLang = getIt<LanguageCubit>().state.appLanguage;
     return currentLang;
+  }
+
+  void reset() {
+    _listenToAuthChanges();
   }
 
   @override

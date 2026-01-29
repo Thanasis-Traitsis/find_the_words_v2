@@ -12,11 +12,13 @@ class UserEntity {
   final Map<AppLanguage, ProfileStatusModel> progressByLanguage;
   final DateTime? lastSyncedAt;
   final DateTime joinedAt;
+  final int totalFreezes;
   final bool isGuest;
 
   UserEntity.guest({
     required this.id,
     required this.points,
+    required this.totalFreezes,
     required this.progressByLanguage,
     required this.joinedAt,
     this.lastSyncedAt,
@@ -29,6 +31,7 @@ class UserEntity {
     required this.username,
     this.email,
     required this.points,
+    required this.totalFreezes,
     required this.progressByLanguage,
     required this.joinedAt,
     this.lastSyncedAt,
@@ -71,6 +74,7 @@ class UserEntity {
     String? username,
     String? email,
     int? points,
+    int? totalFreezes,
     Map<AppLanguage, ProfileStatusModel>? progressByLanguage,
     DateTime? lastSyncedAt,
     DateTime? joinedAt,
@@ -79,6 +83,7 @@ class UserEntity {
       return UserEntity.guest(
         id: id ?? this.id,
         points: points ?? this.points,
+        totalFreezes: totalFreezes ?? this.totalFreezes,
         progressByLanguage: progressByLanguage ?? this.progressByLanguage,
         lastSyncedAt: lastSyncedAt ?? this.lastSyncedAt,
         joinedAt: joinedAt ?? this.joinedAt,
@@ -89,6 +94,7 @@ class UserEntity {
         username: username ?? this.username,
         email: email ?? this.email,
         points: points ?? this.points,
+        totalFreezes: totalFreezes ?? this.totalFreezes,
         progressByLanguage: progressByLanguage ?? this.progressByLanguage,
         lastSyncedAt: lastSyncedAt ?? this.lastSyncedAt,
         joinedAt: joinedAt ?? this.joinedAt,

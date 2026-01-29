@@ -105,4 +105,76 @@ class UserProfileService {
       _syncService.scheduleSync(refreshedUser);
     }
   }
+
+  Future<void> updateFreezeStatus({
+    required AppLanguage language,
+    required bool activeFreeze,
+    int? totalFreezes,
+  }) async {
+    final authState = _authCubit.state;
+    if (authState is! AuthAuthenticated) return;
+
+    final currentUser = authState.user;
+    final profileStatus = currentUser.progressByLanguage[language];
+
+    if (profileStatus == null) {
+      return;
+    }
+
+    final currentStage = profileStatus.currentStage;
+    if (currentStage == null) {
+      return;
+    }
+
+    // Update CurrentStage with new activeFreeze
+    final updatedCurrentStage = currentStage.copyWith(
+      activeFreeze: activeFreeze,
+    );
+
+    // Update ProfileStatusModel with updated CurrentStage
+    final updatedProfileStatus = profileStatus.copyWith(
+      currentStage: updatedCurrentStage,
+    );
+
+    // Update progressByLanguage map
+    final updatedProgressByLanguage = Map<AppLanguage, ProfileStatusModel>.from(
+      currentUser.progressByLanguage,
+    );
+    updatedProgressByLanguage[language] = updatedProfileStatus;
+
+    // Update user with new progress and optionally new totalFreezes
+    final updatedUser = currentUser.copyWith(
+      progressByLanguage: updatedProgressByLanguage,
+      totalFreezes: totalFreezes,
+      lastSyncedAt: DateTime.now(),
+    );
+
+    await _userRepo.updateUser(updatedUser);
+    _authCubit.updateUser(updatedUser);
+
+    if (!updatedUser.isGuest) {
+      _syncService.scheduleSync(updatedUser);
+    }
+  }
+
+  Future<void> updateUserTotalFreezes(int totalFreezes) async {
+    final authState = _authCubit.state;
+    if (authState is! AuthAuthenticated) return;
+
+    final updatedUser = authState.user.copyWith(
+      totalFreezes: totalFreezes,
+      lastSyncedAt: DateTime.now(),
+    );
+
+    // Save locally
+    await _userRepo.updateUser(updatedUser);
+
+    // Update AuthCubit state
+    _authCubit.updateUser(updatedUser);
+
+    // Sync to Firebase if not guest
+    if (!updatedUser.isGuest) {
+      _syncService.scheduleSync(updatedUser);
+    }
+  }
 }

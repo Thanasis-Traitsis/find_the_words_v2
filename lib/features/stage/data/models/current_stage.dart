@@ -17,11 +17,15 @@ class CurrentStage extends HiveObject {
   @HiveField(3)
   final WordPlacementTracker placementTracker;
 
+  @HiveField(4)
+  final bool activeFreeze;
+
   CurrentStage({
     required this.allWords,
     required this.letters,
     required this.board,
     required this.placementTracker,
+    this.activeFreeze = false
   });
 
   CurrentStage copyWith({
@@ -29,12 +33,14 @@ class CurrentStage extends HiveObject {
     List<String>? letters,
     List<String>? board,
     WordPlacementTracker? placementTracker,
+    bool? activeFreeze,
   }) {
     return CurrentStage(
       allWords: allWords ?? this.allWords,
       letters: letters ?? this.letters,
       board: board ?? this.board,
       placementTracker: placementTracker ?? this.placementTracker,
+      activeFreeze: activeFreeze ?? this.activeFreeze,
     );
   }
 
@@ -44,6 +50,7 @@ class CurrentStage extends HiveObject {
       'letters': letters,
       'board': board,
       'placementTracker': placementTracker.toMap(),
+      'activeFreeze': activeFreeze,
     };
   }
 
@@ -55,6 +62,7 @@ class CurrentStage extends HiveObject {
       placementTracker: WordPlacementTracker.fromMap(
         map['placementTracker'] as Map<String, dynamic>? ?? {},
       ),
+      activeFreeze: map['activeFreeze'] as bool? ?? false,
     );
   }
 }

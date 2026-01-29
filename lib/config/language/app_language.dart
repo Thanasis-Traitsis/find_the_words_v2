@@ -19,10 +19,10 @@ enum AppLanguage {
 
   Locale get locale => Locale(code);
 
-  static AppLanguage fromCode(String code) {
+  static AppLanguage fromCode(String? code) {
     return AppLanguage.values.firstWhere(
       (lang) => lang.code == code,
-      orElse: () => AppLanguage.english,
+      orElse: () => AppLanguage.greek,
     );
   }
 

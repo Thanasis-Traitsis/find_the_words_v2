@@ -21,13 +21,14 @@ class CurrentStageAdapter extends TypeAdapter<CurrentStage> {
       letters: (fields[1] as List).cast<String>(),
       board: (fields[2] as List).cast<String>(),
       placementTracker: fields[3] as WordPlacementTracker,
+      activeFreeze: fields[4] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, CurrentStage obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.allWords)
       ..writeByte(1)
@@ -35,7 +36,9 @@ class CurrentStageAdapter extends TypeAdapter<CurrentStage> {
       ..writeByte(2)
       ..write(obj.board)
       ..writeByte(3)
-      ..write(obj.placementTracker);
+      ..write(obj.placementTracker)
+      ..writeByte(4)
+      ..write(obj.activeFreeze);
   }
 
   @override

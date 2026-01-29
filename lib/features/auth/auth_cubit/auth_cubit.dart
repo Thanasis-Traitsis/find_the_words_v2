@@ -12,6 +12,7 @@ import 'package:find_the_words/features/auth/data/models/profile_status_model.da
 import 'package:find_the_words/features/auth/data/models/user_model.dart';
 import 'package:find_the_words/features/auth/domain/entities/user_entity.dart';
 import 'package:find_the_words/features/auth/domain/repositories/user_repository.dart';
+import 'package:find_the_words/features/freeze/freeze_cubit/freeze_cubit.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -47,13 +48,13 @@ class AuthCubit extends Cubit<AuthState> {
         final UserEntity user = await _userRepo.getCurrentUser();
         emit(AuthAuthenticated(user: user));
       } catch (e) {
-        await _createNewUser();
+        await createNewUser();
       }
       return;
     }
 
     // Step 3: Create new guest user
-    await _createNewUser();
+    await createNewUser();
   }
 
   Future<void> googleSignIn() async {
@@ -80,7 +81,7 @@ class AuthCubit extends Cubit<AuthState> {
       }
 
       final firebaseUser = userCredential.user!;
-      final syncService = getIt<CloudSyncService>();      
+      final syncService = getIt<CloudSyncService>();
       final syncedUser = await syncService.syncWithCloud(
         firebaseUser: firebaseUser,
         localUser: currentState.user,
@@ -89,7 +90,9 @@ class AuthCubit extends Cubit<AuthState> {
       await _userRepo.updateUser(syncedUser);
       await AuthService.instance.saveToken(firebaseUser.uid);
 
-      emit(AuthAuthenticated(user: syncedUser, effect: AuthEffect.signInSuccess));
+      emit(
+        AuthAuthenticated(user: syncedUser, effect: AuthEffect.signInSuccess),
+      );
     } on GoogleSignInException catch (e) {
       debugPrint('Google Sign-In exception: ${e.code} - ${e.description}');
       emit(
@@ -126,6 +129,7 @@ class AuthCubit extends Cubit<AuthState> {
         progressByLanguage: currentUser.progressByLanguage,
         lastSyncedAt: currentUser.lastSyncedAt,
         joinedAt: currentUser.joinedAt,
+        totalFreezes: currentUser.totalFreezes
       );
 
       await _userRepo.updateUser(guestUser);
@@ -139,6 +143,29 @@ class AuthCubit extends Cubit<AuthState> {
           effect: AuthEffect.signOutFailure,
         ),
       );
+    }
+  }
+
+  Future<void> deleteAccount() async {
+    if (state is! AuthAuthenticated) return;
+    final currentState = state as AuthAuthenticated;
+    emit(currentState.copyWith(deleteAccountLoading: true));
+
+    try {
+      final userId = currentState.user.id;
+      final isGuest = currentState.user.isGuest;
+
+      debugPrint('Deleting account - isGuest: $isGuest');
+
+      await AuthService.instance.deleteAccount(
+        userId: userId,
+        isGuest: isGuest,
+      );
+
+      await createNewUser(afterDeletion: true);
+    } catch (e) {
+      emit(currentState.copyWith(deleteAccountLoading: false));
+      rethrow;
     }
   }
 
@@ -200,6 +227,8 @@ class AuthCubit extends Cubit<AuthState> {
     firebase_auth.User firebaseUser,
     UserEntity? localUser,
   ) async {
+    final freezeState = getIt<FreezeCubit>().state;
+
     return UserEntity.authenticated(
       id: firebaseUser.uid,
       username: firebaseUser.displayName,
@@ -215,6 +244,7 @@ class AuthCubit extends Cubit<AuthState> {
           },
       lastSyncedAt: DateTime.now(),
       joinedAt: localUser?.joinedAt ?? DateTime.now(),
+      totalFreezes: localUser?.totalFreezes ?? freezeState.totalFreezes
     );
   }
 
@@ -233,6 +263,7 @@ class AuthCubit extends Cubit<AuthState> {
         },
         lastSyncedAt: DateTime.now(),
         joinedAt: DateTime.now(),
+        totalFreezes: 0
       );
 
       await _saveCloudUserAndToken(newUser, firebaseUser.uid);
@@ -254,7 +285,12 @@ class AuthCubit extends Cubit<AuthState> {
     await AuthService.instance.saveToken(id);
   }
 
-  Future<void> _createNewUser() async {
+  Future<void> createNewUser({bool afterDeletion = false}) async {
+    if(afterDeletion) {
+      emit(AuthUnauthenticated());
+      await Future.delayed(Duration(seconds: 2));
+
+    }
     final String newToken = TokenUtils.generateGuestToken();
     await AuthService.instance.saveToken(newToken);
 

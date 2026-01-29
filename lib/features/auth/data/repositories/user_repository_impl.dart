@@ -29,6 +29,7 @@ class UserRepositoryImpl extends UserRepository {
       },
       lastSyncedAt: DateTime.now(),
       joinedAt: DateTime.now(),
+      totalFreezes: 0
     );
 
     await _storageService.saveUser(user);

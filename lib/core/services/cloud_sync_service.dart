@@ -7,6 +7,7 @@ import 'package:find_the_words/core/models/words_model.dart';
 import 'package:find_the_words/core/services/connectivity_service.dart';
 import 'package:find_the_words/core/services/service_locator.dart';
 import 'package:find_the_words/features/auth/data/models/profile_status_model.dart';
+import 'package:find_the_words/features/freeze/freeze_cubit/freeze_cubit.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:find_the_words/features/auth/data/models/firebase_user_model.dart';
 import 'package:find_the_words/features/auth/domain/entities/user_entity.dart';
@@ -46,6 +47,8 @@ class CloudSyncService {
     UserEntity localUser,
     firebase_auth.User firebaseUser,
   ) async {
+    final freezeCubit = getIt<FreezeCubit>();
+
     final newUser = UserEntity.authenticated(
       id: firebaseUser.uid,
       username: firebaseUser.displayName,
@@ -54,6 +57,7 @@ class CloudSyncService {
       progressByLanguage: localUser.progressByLanguage,
       lastSyncedAt: DateTime.now(),
       joinedAt: localUser.joinedAt,
+      totalFreezes: freezeCubit.state.totalFreezes,
     );
 
     await _userRepo.createFirebaseUser(newUser);
@@ -66,6 +70,7 @@ class CloudSyncService {
     UserEntity cloudUser,
     firebase_auth.User firebaseUser,
   ) async {
+    final freezeCubit = getIt<FreezeCubit>();
     final localScore = localUser.totalProgressScore;
     final cloudScore = cloudUser.totalProgressScore;
 
@@ -87,6 +92,7 @@ class CloudSyncService {
         progressByLanguage: localUser.progressByLanguage,
         lastSyncedAt: DateTime.now(),
         joinedAt: earliestJoinedAt,
+        totalFreezes: freezeCubit.state.totalFreezes,
       );
 
       await _userRepo.updateFirebaseUser(mergedUser);
@@ -137,6 +143,7 @@ class CloudSyncService {
         progressByLanguage: cleanedProgressMap,
         lastSyncedAt: DateTime.now(),
         joinedAt: earliestJoinedAt,
+        totalFreezes: cloudUser.totalFreezes,
       );
     } else {
       // ✅ Same level - merge carefully
@@ -226,6 +233,9 @@ class CloudSyncService {
       progressByLanguage: mergedProgress,
       lastSyncedAt: DateTime.now(),
       joinedAt: joinedAt,
+      totalFreezes: localUser.totalFreezes > cloudUser.totalFreezes
+          ? localUser.totalFreezes
+          : cloudUser.totalFreezes,
     );
   }
 

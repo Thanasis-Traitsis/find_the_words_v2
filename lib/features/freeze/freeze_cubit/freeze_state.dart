@@ -2,24 +2,39 @@ part of 'freeze_cubit.dart';
 
 class FreezeState extends Equatable {
   final int totalFreezes;
-  final bool activeFreeze;
+  final Map<String, bool> activeFreezeByLanguage;
   final DateTime? lastFreeAdTimestamp;
 
   const FreezeState({
     this.totalFreezes = 0,
-    this.activeFreeze = false,
+    this.activeFreezeByLanguage = const {},
     this.lastFreeAdTimestamp,
   });
 
+  const FreezeState.initial()
+    : totalFreezes = 0,
+      activeFreezeByLanguage = const {},
+      lastFreeAdTimestamp = null;
+
   FreezeState copyWith({
     int? totalFreezes,
-    bool? activeFreeze,
+    Map<String, bool>? activeFreezeByLanguage,
     DateTime? lastFreeAdTimestamp,
   }) => FreezeState(
     totalFreezes: totalFreezes ?? this.totalFreezes,
-    activeFreeze: activeFreeze ?? this.activeFreeze,
+    activeFreezeByLanguage:
+        activeFreezeByLanguage ?? this.activeFreezeByLanguage,
     lastFreeAdTimestamp: lastFreeAdTimestamp ?? this.lastFreeAdTimestamp,
   );
+
+  bool isLanguageFrozen(AppLanguage language) {
+    return activeFreezeByLanguage[language.code] ?? false;
+  }
+
+  bool get activeFreeze {
+    final currentLang = getIt<LanguageCubit>().state.appLanguage;
+    return isLanguageFrozen(currentLang);
+  }
 
   bool get canWatchFreeAd {
     if (lastFreeAdTimestamp == null) return true;
@@ -31,12 +46,18 @@ class FreezeState extends Equatable {
   Duration? get timeUntilNextFreeAd {
     if (lastFreeAdTimestamp == null) return null;
 
-    final nextAvailable = lastFreeAdTimestamp!.add(const Duration(hours: AppValues.freeFreezeRewardHours));
+    final nextAvailable = lastFreeAdTimestamp!.add(
+      const Duration(hours: AppValues.freeFreezeRewardHours),
+    );
     final difference = nextAvailable.difference(DateTime.now());
 
     return difference.isNegative ? null : difference;
   }
 
   @override
-  List<Object> get props => [totalFreezes, activeFreeze, ?lastFreeAdTimestamp];
+  List<Object?> get props => [
+    totalFreezes,
+    activeFreezeByLanguage,
+    lastFreeAdTimestamp,
+  ];
 }

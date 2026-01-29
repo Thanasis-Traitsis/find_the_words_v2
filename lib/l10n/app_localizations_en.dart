@@ -676,6 +676,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get logoutDialogButtonSubmit => 'Sign out';
 
   @override
+  String get deleteAccountBtnText => 'Delete account';
+
+  @override
+  String get deleteAccountDialogHeader => 'Delete account';
+
+  @override
+  String get deleteAccountDialogDescription => 'Are you sure you want to delete your account? All your progress, data, and settings will be permanently lost and cannot be recovered.';
+
+  @override
+  String get deleteAccountDialogButtonCancel => 'Cancel';
+
+  @override
+  String get deleteAccountDialogButtonSubmit => 'Delete';
+
+  @override
   String get googleSignInSuccessTitle => 'Welcome in!';
 
   @override

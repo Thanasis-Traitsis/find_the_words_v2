@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:find_the_words/config/language/app_language.dart';
 import 'package:find_the_words/features/auth/data/models/profile_status_model.dart';
 import 'package:find_the_words/features/auth/domain/entities/user_entity.dart';
@@ -41,11 +43,16 @@ class UserModel extends UserEntity {
   @override
   final DateTime joinedAt;
 
+  @HiveField(9)
+  @override
+  final int totalFreezes;
+
   UserModel({
     required this.id,
     this.username,
     this.email,
     required this.points,
+    required this.totalFreezes,
     required this.progressByLanguage,
     this.lastSyncedAt,
     required this.joinedAt,
@@ -56,6 +63,7 @@ class UserModel extends UserEntity {
           username: username,
           email: email,
           points: points,
+          totalFreezes: totalFreezes,
           progressByLanguage: progressByLanguage,
           lastSyncedAt: lastSyncedAt,
           joinedAt: joinedAt
@@ -65,6 +73,7 @@ class UserModel extends UserEntity {
   UserModel.guest({
     required this.id,
     required this.points,
+    required this.totalFreezes,
     required this.progressByLanguage,
     this.lastSyncedAt,
     required this.joinedAt,
@@ -74,6 +83,7 @@ class UserModel extends UserEntity {
         super.guest(
           id: id,
           points: points,
+          totalFreezes: totalFreezes,
           progressByLanguage: progressByLanguage,
           lastSyncedAt: lastSyncedAt,
           joinedAt: joinedAt
@@ -84,6 +94,7 @@ class UserModel extends UserEntity {
     required this.username,
     this.email,
     required this.points,
+    required this.totalFreezes,
     required this.progressByLanguage,
     this.lastSyncedAt,
     required this.joinedAt,
@@ -93,6 +104,7 @@ class UserModel extends UserEntity {
           username: username,
           email: email,
           points: points,
+          totalFreezes: totalFreezes,
           progressByLanguage: progressByLanguage,
           lastSyncedAt: lastSyncedAt,
           joinedAt: joinedAt
@@ -103,6 +115,7 @@ class UserModel extends UserEntity {
       return UserModel.guest(
         id: entity.id,
         points: entity.points,
+        totalFreezes: entity.totalFreezes,
         progressByLanguage: entity.progressByLanguage,
         lastSyncedAt: entity.lastSyncedAt,
         joinedAt: entity.joinedAt
@@ -113,6 +126,7 @@ class UserModel extends UserEntity {
         username: entity.username,
         email: entity.email,
         points: entity.points,
+        totalFreezes: entity.totalFreezes,
         progressByLanguage: entity.progressByLanguage,
         lastSyncedAt: entity.lastSyncedAt,
         joinedAt: entity.joinedAt
@@ -127,6 +141,7 @@ class UserModel extends UserEntity {
     String? username,
     String? email,
     int? points,
+    int? totalFreezes,
     Map<AppLanguage, ProfileStatusModel>? progressByLanguage,
     DateTime? lastSyncedAt,
     bool? isGuest,
@@ -137,6 +152,7 @@ class UserModel extends UserEntity {
       username: username ?? this.username,
       email: email ?? this.email,
       points: points ?? this.points,
+      totalFreezes: totalFreezes ?? this.totalFreezes,
       progressByLanguage: progressByLanguage ?? this.progressByLanguage,
       lastSyncedAt: lastSyncedAt ?? this.lastSyncedAt,
       isGuest: isGuest ?? this.isGuest,

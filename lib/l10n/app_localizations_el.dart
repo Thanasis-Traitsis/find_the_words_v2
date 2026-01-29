@@ -688,6 +688,21 @@ class AppLocalizationsEl extends AppLocalizations {
   String get logoutDialogButtonSubmit => 'Αποσύνδεση';
 
   @override
+  String get deleteAccountBtnText => 'Διαγραφή λογαριασμού';
+
+  @override
+  String get deleteAccountDialogHeader => 'Διαγραφή λογαριασμού';
+
+  @override
+  String get deleteAccountDialogDescription => 'Είστε σίγουροι ότι θέλετε να διαγράψετε τον λογαριασμό σας; Όλη η πρόοδος, τα δεδομένα και οι ρυθμίσεις σας θα χαθούν οριστικά και δεν θα είναι δυνατή η ανάκτησή τους.';
+
+  @override
+  String get deleteAccountDialogButtonCancel => 'Ακύρωση';
+
+  @override
+  String get deleteAccountDialogButtonSubmit => 'Διαγραφή';
+
+  @override
   String get googleSignInSuccessTitle => 'Καλώς ήρθες!';
 
   @override

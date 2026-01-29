@@ -7,13 +7,14 @@ import 'package:find_the_words/features/auth/data/models/user_model.dart';
 import 'package:find_the_words/features/stage/data/models/current_stage.dart';
 import 'package:find_the_words/features/stage/domain/helpers/word_placement.dart';
 import 'package:find_the_words/features/stage/domain/helpers/word_placement_tracker.dart';
+import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class StorageService {
   static const String _userBoxKey = "user_box";
   static const String _userKey = "current_user";
   static const String _stageBoxKey = "stage_box";
-  static const String _stageKeyPrefix = "current_stage"; 
+  static const String _stageKeyPrefix = "current_stage";
 
   late Box<UserModel> _userBox;
   late Box<CurrentStage> _stageBox;
@@ -26,10 +27,6 @@ class StorageService {
   Future<void> init() async {
     if (_isInitialized) return;
     await Hive.initFlutter();
-
-    // AuthService.instance.deleteToken();
-    // await Hive.deleteBoxFromDisk(_userBoxKey);
-    // await Hive.deleteBoxFromDisk(_stageBoxKey);
 
     // Register all adapters once
     if (!Hive.isAdapterRegistered(0)) {
@@ -67,6 +64,7 @@ class StorageService {
 
   /// Save or update the current user
   Future<void> saveUser(UserModel user) async {
+    if (!_isInitialized) await init();
     await _userBox.put(_userKey, user);
   }
 
@@ -78,7 +76,31 @@ class StorageService {
   /// Delete user data
   Future<void> deleteUser() async {
     if (!_isInitialized) await init();
-    await _userBox.delete(_userKey);
+
+    try {
+      await AuthService.instance.deleteToken();
+
+      // Clear user data from boxes (but keep them open)
+      await _userBox.clear();
+      await _stageBox.clear();
+
+      // Close the boxes before deleting from disk
+      await _userBox.close();
+      await _stageBox.close();
+
+      // Delete boxes from disk
+      await Future.wait([
+        Hive.deleteBoxFromDisk(_userBoxKey),
+        Hive.deleteBoxFromDisk(_stageBoxKey),
+      ]);
+
+      _isInitialized = false;
+
+      debugPrint('User data deleted successfully');
+    } catch (e) {
+      debugPrint('Error deleting user data: $e');
+      rethrow;
+    }
   }
 
   /// Save or update the current stage

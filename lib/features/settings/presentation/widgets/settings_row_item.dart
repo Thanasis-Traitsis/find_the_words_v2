@@ -15,6 +15,7 @@ class SettingsRowItem extends StatelessWidget {
   final Widget? iconWidget;
   final String? link;
   final bool isLogout;
+  final bool isDelete;
 
   const SettingsRowItem({
     super.key,
@@ -24,6 +25,7 @@ class SettingsRowItem extends StatelessWidget {
     this.iconWidget,
     this.link,
     this.isLogout = false,
+    this.isDelete = false,
   });
 
   SettingsRowItem.navigateToPage({
@@ -33,6 +35,7 @@ class SettingsRowItem extends StatelessWidget {
   }) : iconWidget = null,
        link = null,
        isLogout = false,
+       isDelete = false,
        onTap = (() => page!.push());
 
   SettingsRowItem.navigateToWeb({
@@ -42,6 +45,7 @@ class SettingsRowItem extends StatelessWidget {
   }) : iconWidget = null,
        page = null,
        isLogout = false,
+       isDelete = false,
        onTap = (() async {
          final Uri url = Uri.parse(link!);
 
@@ -53,11 +57,25 @@ class SettingsRowItem extends StatelessWidget {
          }
        });
 
-  SettingsRowItem.logout({super.key, required this.name, required this.onTap})
-    : iconWidget = null,
-      page = null,
-      link = null,
-      isLogout = true;
+  const SettingsRowItem.logout({
+    super.key,
+    required this.name,
+    required this.onTap,
+  }) : iconWidget = null,
+       page = null,
+       link = null,
+       isDelete = false,
+       isLogout = true;
+
+  const SettingsRowItem.delete({
+    super.key,
+    required this.name,
+    required this.onTap,
+  }) : iconWidget = null,
+       page = null,
+       link = null,
+       isDelete = true,
+       isLogout = false;
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +90,9 @@ class SettingsRowItem extends StatelessWidget {
             border: Border(
               bottom: BorderSide(
                 width: AppBorders.smallBorderWidth,
-                color: isLogout ? context.colors.error : context.colors.black,
+                color: isLogout || isDelete
+                    ? context.colors.error
+                    : context.colors.black,
               ),
             ),
           ),
@@ -89,7 +109,7 @@ class SettingsRowItem extends StatelessWidget {
                     fontWeight: CustomTextType.bigBody.fontWeight,
                     height: 1,
                     leadingDistribution: TextLeadingDistribution.even,
-                    color: isLogout
+                    color: isLogout || isDelete
                         ? context.colors.error
                         : context.colors.text,
                   ),
@@ -108,6 +128,11 @@ class SettingsRowItem extends StatelessWidget {
               if (isLogout)
                 CustomSvgIcon(
                   icon: CustomIcons.logout,
+                  color: context.colors.error,
+                ),
+              if (isDelete)
+                CustomSvgIcon(
+                  icon: CustomIcons.delete,
                   color: context.colors.error,
                 ),
               if (iconWidget != null) iconWidget!,

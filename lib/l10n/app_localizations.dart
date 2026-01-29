@@ -1241,6 +1241,36 @@ abstract class AppLocalizations {
   /// **'Sign out'**
   String get logoutDialogButtonSubmit;
 
+  /// No description provided for @deleteAccountBtnText.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete account'**
+  String get deleteAccountBtnText;
+
+  /// No description provided for @deleteAccountDialogHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete account'**
+  String get deleteAccountDialogHeader;
+
+  /// No description provided for @deleteAccountDialogDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete your account? All your progress, data, and settings will be permanently lost and cannot be recovered.'**
+  String get deleteAccountDialogDescription;
+
+  /// No description provided for @deleteAccountDialogButtonCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get deleteAccountDialogButtonCancel;
+
+  /// No description provided for @deleteAccountDialogButtonSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get deleteAccountDialogButtonSubmit;
+
   /// No description provided for @googleSignInSuccessTitle.
   ///
   /// In en, this message translates to:

@@ -1,4 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:find_the_words/config/language/app_language.dart';
 import 'package:find_the_words/core/constants/app_keys.dart';
+import 'package:find_the_words/core/services/service_locator.dart';
+import 'package:find_the_words/core/services/storage_service.dart';
+import 'package:find_the_words/core/services/store_discount_service.dart';
+import 'package:find_the_words/features/auth/account_boost_cubit/account_boost_cubit.dart';
+import 'package:find_the_words/features/freeze/freeze_cubit/freeze_cubit.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -43,6 +50,15 @@ class AuthService {
   Future<bool> deleteToken() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.remove(AppKeys.authTokenKey);
+  }
+
+  Future<void> deleteFirebaseUser(String userId) async {
+    debugPrint('Deleting Firestore document for user: $userId');
+    await FirebaseFirestore.instance
+        .collection(AppKeys.usersFirebaseCollectionKey)
+        .doc(userId)
+        .delete();
+    debugPrint('Firestore document deleted');
   }
 
   // Google Sign-In methods
@@ -104,6 +120,102 @@ class AuthService {
       debugPrint('Disconnect successful');
     } catch (e) {
       debugPrint('Error disconnecting: $e');
+      rethrow;
+    }
+  }
+
+  Future<void> clearLocalStorage() async {
+    final prefs = getIt<SharedPreferences>();
+    final storageService = getIt<StorageService>();
+
+    const String langKey = AppKeys.languageCodeKey;
+    final String? langCode = prefs.getString(langKey);
+
+    await storageService.deleteUser();
+    await prefs.clear();
+
+    getIt<StoreDiscountService>().clearDiscount();
+    getIt<AccountBoostCubit>().reset(); 
+    getIt<FreezeCubit>().reset(); 
+    await prefs.setString(langKey,langCode ?? AppLanguage.greek.code);
+  }
+
+  // Delete account - removes Firebase account (if signed in) and all local data
+  Future<void> deleteAccount({
+    required String userId,
+    required bool isGuest,
+  }) async {
+    try {
+      final user = _firebaseAuth.currentUser;
+      final hasFirebaseAccount = user != null && !user.isAnonymous;
+
+      // Check if user has EVER authenticated with Firebase
+      if (!hasFirebaseAccount || isGuest) {
+        // Guest user - just clear local data
+        debugPrint('Guest user: Clearing local data only');
+        await clearLocalStorage();
+        return;
+      }
+
+      // Authenticated user - delete Firebase account too
+      // Step 1: Delete Firestore document
+      await deleteFirebaseUser(userId);
+
+      // Step 2: Delete Firebase Authentication account
+      try {
+        await user.delete();
+        debugPrint('Firebase auth account deleted for: ${user.email}');
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'requires-recent-login') {
+          throw FirebaseAuthException(
+            code: 'requires-recent-login',
+            message: 'Please sign in again before deleting your account',
+          );
+        }
+        rethrow;
+      }
+
+      // Step 3: Sign out from Google
+      await GoogleSignIn.instance.signOut();
+
+      // Step 4: Clear local storage
+      await clearLocalStorage();
+
+      debugPrint('✅ Complete account deletion successful');
+    } catch (e) {
+      debugPrint('❌ Error deleting account: $e');
+      rethrow;
+    }
+  }
+
+  Future<UserCredential?> reauthenticateWithGoogle() async {
+    try {
+      final user = _firebaseAuth.currentUser;
+      if (user == null) {
+        throw Exception('No user signed in');
+      }
+
+      if (!_googleSignInInitialized) {
+        await initializeGoogleSignIn();
+      }
+
+      final GoogleSignInAccount googleUser = await GoogleSignIn.instance
+          .authenticate();
+      final GoogleSignInAuthentication googleAuth = googleUser.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        idToken: googleAuth.idToken,
+      );
+
+      // Reauthenticate
+      final userCredential = await user.reauthenticateWithCredential(
+        credential,
+      );
+      debugPrint('Reauthentication successful');
+
+      return userCredential;
+    } catch (e) {
+      debugPrint('Error reauthenticating: $e');
       rethrow;
     }
   }

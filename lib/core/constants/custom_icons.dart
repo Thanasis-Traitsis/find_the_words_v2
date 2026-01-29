@@ -43,6 +43,7 @@ enum CustomIcons {
   noWifi('no_wifi'),
   levelUp('level_up'),
   crossword('crossword'),
+  delete('delete'),
 
   // Logos
   homeLogoEn('home_logo_en'),
