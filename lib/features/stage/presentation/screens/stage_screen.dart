@@ -42,7 +42,7 @@ class _StageScreenState extends State<StageScreen> {
       stageBloc: getIt<StageBloc>(),
       helpOverlayCubit: context.read<HelpOverlayCubit>(),
       timerCubit: context.read<StageTimerCubit>(),
-      freezeCubit: context.read<FreezeCubit>(),
+      freezeCubit: getIt<FreezeCubit>()..initializeFreeze(),
       soundService: SoundService(),
     );
   }

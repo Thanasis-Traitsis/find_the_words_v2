@@ -145,6 +145,7 @@ class CloudSyncService {
         joinedAt: earliestJoinedAt,
         totalFreezes: cloudUser.totalFreezes,
       );
+
     } else {
       // ✅ Same level - merge carefully
       debugPrint('⚖️ Same level - merging both');
@@ -157,6 +158,7 @@ class CloudSyncService {
       await _userRepo.updateFirebaseUser(mergedUser);
     }
 
+    await _userRepo.updateCurrentStageFromMerge(mergedUser);
     return mergedUser;
   }
 

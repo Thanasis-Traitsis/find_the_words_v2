@@ -40,6 +40,10 @@ final class StageInProgress extends StageActive {
   List<Object> get props => [stage, timestamp, newPositions];
 }
 
+final class FrozenStage extends StageActive {
+  FrozenStage(super.stage);
+}
+
 final class ShuffleLetters extends StageActive {
   ShuffleLetters(super.stage);
 }

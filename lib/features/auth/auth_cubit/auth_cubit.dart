@@ -82,9 +82,11 @@ class AuthCubit extends Cubit<AuthState> {
 
       final firebaseUser = userCredential.user!;
       final syncService = getIt<CloudSyncService>();
+      final cloudUserDoc = await _userRepo.getFirebaseUser(firebaseUser.uid);
       final syncedUser = await syncService.syncWithCloud(
         firebaseUser: firebaseUser,
         localUser: currentState.user,
+        cloudUserDoc: cloudUserDoc
       );
 
       await _userRepo.updateUser(syncedUser);

@@ -1,9 +1,6 @@
-import 'dart:math';
-
 import 'package:find_the_words/config/language/app_language.dart';
 import 'package:find_the_words/features/auth/data/models/profile_status_model.dart';
 import 'package:find_the_words/features/auth/domain/entities/user_entity.dart';
-import 'package:find_the_words/features/stage/data/models/current_stage.dart';
 import 'package:hive/hive.dart';
 
 part 'user_model.g.dart';

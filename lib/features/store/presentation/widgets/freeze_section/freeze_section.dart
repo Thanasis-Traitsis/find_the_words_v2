@@ -33,9 +33,9 @@ class FreezeSection extends StatelessWidget {
                 return CustomOfferButton(
                   originalCost: freezeCost,
                   actualCost: actualCost,
-                  onTap: () {
+                  onTap: () async {
+                    await getIt<PointsCubit>().deductPoints(actualCost);
                     getIt<FreezeCubit>().incrementTotalFreezes(1);
-                    getIt<PointsCubit>().deductPoints(actualCost);
                   },
                   isHorizontal: true,
                   isDisabled:

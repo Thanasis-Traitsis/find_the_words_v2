@@ -28,6 +28,8 @@ class StorageService {
     if (_isInitialized) return;
     await Hive.initFlutter();
 
+    // deleteUser();
+
     // Register all adapters once
     if (!Hive.isAdapterRegistered(0)) {
       Hive.registerAdapter(UserModelAdapter());

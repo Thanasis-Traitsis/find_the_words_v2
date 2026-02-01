@@ -7,35 +7,47 @@ import 'package:find_the_words/features/auth/auth_cubit/auth_cubit.dart';
 import 'package:find_the_words/features/auth/data/models/profile_status_model.dart';
 import 'package:find_the_words/features/auth/domain/entities/user_entity.dart';
 import 'package:find_the_words/features/auth/domain/repositories/user_repository.dart';
+import 'package:find_the_words/features/stage/data/datasources/stage_local_datasource.dart';
+import 'package:find_the_words/features/stage/data/models/current_stage.dart';
 import 'package:find_the_words/features/stage/domain/services/dictionary_service.dart';
 
 class UserProfileService {
   final UserRepository _userRepo;
   final AuthCubit _authCubit;
   final CloudSyncService _syncService;
+  final StageLocalDataSource _localDataSource;
 
-  UserProfileService(this._userRepo, this._authCubit, this._syncService);
+  UserProfileService(
+    this._userRepo,
+    this._authCubit,
+    this._syncService,
+    this._localDataSource,
+  );
 
-  Future<void> addFoundWord(String word) async {
+  Future<void> addFoundWord(String? word) async {
     final authState = _authCubit.state;
     if (authState is! AuthAuthenticated) return;
 
     final currentUser = authState.user;
-
-    if (currentUser.currentProgress.wordsModel.words.containsKey(word)) return;
-
-    final dictionaryService = getIt<DictionaryService>();
     final currentProgress = currentUser.currentProgress;
 
-    final updatedWords = Map<String, dynamic>.from(
-      currentProgress.wordsModel.words,
-    )..[word] = dictionaryService.cachedDictionary[word]['words'];
+    if (word == null) {
+      await _saveUpdatedProgress(currentProgress, currentUser);
+    } else {
+      if (currentUser.currentProgress.wordsModel.words.containsKey(word)) return;
 
-    final updatedProgress = currentProgress.copyWith(
-      words: WordsModel(words: updatedWords),
-    );
+      final dictionaryService = getIt<DictionaryService>();
 
-    await _saveUpdatedProgress(updatedProgress, currentUser);
+      final updatedWords = Map<String, dynamic>.from(
+        currentProgress.wordsModel.words,
+      )..[word] = dictionaryService.cachedDictionary[word]['words'];
+
+      final updatedProgress = currentProgress.copyWith(
+        words: WordsModel(words: updatedWords),
+      );
+
+      await _saveUpdatedProgress(updatedProgress, currentUser);
+    }
   }
 
   Future<void> updateAfterStage(int xpEarned, double newProgress) async {
@@ -149,6 +161,7 @@ class UserProfileService {
       lastSyncedAt: DateTime.now(),
     );
 
+    await _localDataSource.saveStage(updatedCurrentStage, language);
     await _userRepo.updateUser(updatedUser);
     _authCubit.updateUser(updatedUser);
 
@@ -176,5 +189,17 @@ class UserProfileService {
     if (!updatedUser.isGuest) {
       _syncService.scheduleSync(updatedUser);
     }
+  }
+
+  Future<void> saveStage(CurrentStage stage) async {
+    final authState = _authCubit.state;
+    if (authState is! AuthAuthenticated) return;
+
+    final currentUser = authState.user;
+    final currentProgress = currentUser.currentProgress;
+
+    final updatedProgress = currentProgress.copyWith(currentStage: stage);
+
+    await _saveUpdatedProgress(updatedProgress, currentUser);
   }
 }

@@ -29,6 +29,7 @@ class CrosswordUsecase {
       letters: oldStage.letters,
       board: updatedBoard ?? oldStage.board,
       placementTracker: updatedTracker,
+      activeFreeze: oldStage.activeFreeze
     );
 
     return updatedStage;

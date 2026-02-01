@@ -173,6 +173,7 @@ Future<void> _registerBlocs() async {
       getIt<UserRepository>(),
       getIt<AuthCubit>(),
       getIt<CloudSyncService>(),
+      StageLocalDataSource(),
     ),
   );
 
@@ -181,6 +182,6 @@ Future<void> _registerBlocs() async {
   );
 
   getIt.registerLazySingleton<FreezeCubit>(
-    () => FreezeCubit(getIt<UserProfileService>()),
+    () => FreezeCubit(getIt<UserProfileService>())..initializeFreeze(),
   );
 }

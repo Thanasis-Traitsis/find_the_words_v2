@@ -55,15 +55,15 @@ class FreezeCubit extends Cubit<FreezeState> {
     }
   }
 
-  Future<void> activateFreeze() async {
+  Future<bool> activateFreeze() async {
     if (state.totalFreezes <= 0) {
-      return;
+      return false;
     }
 
     final currentLang = getIt<LanguageCubit>().state.appLanguage;
 
     if (state.isLanguageFrozen(currentLang)) {
-      return;
+      return false;
     }
 
     try {
@@ -90,6 +90,7 @@ class FreezeCubit extends Cubit<FreezeState> {
       debugPrint(
         'Freeze activated for $currentLang: ${state.totalFreezes} freezes remaining',
       );
+      return true;
     } catch (e) {
       debugPrint('Error activating freeze: $e');
       // Revert state on error

@@ -37,6 +37,7 @@ class StageBloc extends Bloc<StageEvent, StageState> {
     on<SubmitFormatedWord>(_onSubmitFormatedWord);
     on<CrosswordLetterReveal>(_onCrosswordLetterReveal);
     on<StageRefreshRequested>(_onStageRefresh);
+    on<StageFreezeActivated>(_onStageFreeze);
   }
 
   Future<void> _onNextStageButtonPressed(
@@ -60,7 +61,7 @@ class StageBloc extends Bloc<StageEvent, StageState> {
     if (state is! StageActive) return;
 
     final currentState = state as StageActive;
-
+    
     final wordResult = await _submitWordUsecase(
       submittedWord: event.formatedWord,
       currentStage: currentState.stage,
@@ -154,6 +155,23 @@ class StageBloc extends Bloc<StageEvent, StageState> {
     );
 
     emit(ShuffleLetters(updatedStage));
+  }
+
+  Future<void> _onStageFreeze(
+    StageFreezeActivated event,
+    Emitter<StageState> emit,
+  ) async {
+    if (state is! StageActive) return;
+
+    final currentState = state as StageActive;
+
+    final updatedStage = currentState.stage.copyWith(
+      activeFreeze: true,
+    );
+
+    print("STAGE BLOC : UPDATED STAGE after stage FREEZE ${updatedStage.activeFreeze}");
+
+    emit(FrozenStage(updatedStage));
   }
 
   Future<void> _clearStage() async {

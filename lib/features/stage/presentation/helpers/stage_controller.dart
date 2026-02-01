@@ -46,9 +46,11 @@ class StageController {
     showDialog(context: context, builder: (context) => const HelpDialog());
   }
 
-  void onFreezeTap() {
+  void onFreezeTap() async {
     timerCubit.pause();
-    freezeCubit.activateFreeze();
+   final successfulFreeze = await freezeCubit.activateFreeze();
+
+   if (successfulFreeze) stageBloc.add(StageFreezeActivated());
   }
 
   void onShuffleTap(StageActive state) {

@@ -29,7 +29,7 @@ class UserRepositoryImpl extends UserRepository {
       },
       lastSyncedAt: DateTime.now(),
       joinedAt: DateTime.now(),
-      totalFreezes: 0
+      totalFreezes: 0,
     );
 
     await _storageService.saveUser(user);
@@ -128,8 +128,12 @@ class UserRepositoryImpl extends UserRepository {
     final bannedCollection = firestore.collection(AppKeys.bannedWords);
 
     // Fetch both documents
-    final greekDoc = await bannedCollection.doc(AppKeys.greekBannedWordsId).get();
-    final englishDoc = await bannedCollection.doc(AppKeys.englishBannedWordsId).get();
+    final greekDoc = await bannedCollection
+        .doc(AppKeys.greekBannedWordsId)
+        .get();
+    final englishDoc = await bannedCollection
+        .doc(AppKeys.englishBannedWordsId)
+        .get();
 
     final List<String> greekWords = List<String>.from(
       greekDoc.data()?['words'] ?? [],
@@ -143,7 +147,21 @@ class UserRepositoryImpl extends UserRepository {
     final allBannedWords = <String>{...greekWords, ...englishWords}.toList();
 
     // Persist to SharedPreferences
-    print(allBannedWords);
     await prefs.setStringList(AppKeys.bannedWords, allBannedWords);
+  }
+
+  @override
+  Future<void> updateCurrentStageFromMerge(UserEntity user) async {
+    for (final entry in user.progressByLanguage.entries) {
+      final language = entry.key;
+      final progress = entry.value;
+
+      if (progress.currentStage != null) {
+        await _storageService.saveCurrentStage(
+          progress.currentStage!,
+          language,
+        );
+      }
+    }
   }
 }

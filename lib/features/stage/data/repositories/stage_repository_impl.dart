@@ -39,10 +39,7 @@ class StageRepositoryImpl implements StageRepository {
     final userProfileService = getIt<UserProfileService>();
 
     await _localDataSource.saveStage(stage, currentLang);
-
-    if (foundWord != null) {
-      await userProfileService.addFoundWord(foundWord);
-    }
+    await userProfileService.addFoundWord(foundWord);
   }
 
   @override
@@ -51,6 +48,7 @@ class StageRepositoryImpl implements StageRepository {
     required int stageNumber,
     required double progress,
   }) async {
+    final userProfileService = getIt<UserProfileService>();
     final currentLang = getIt<LanguageCubit>().state.appLanguage;
     final int wordLength = level + 2;
 
@@ -61,6 +59,7 @@ class StageRepositoryImpl implements StageRepository {
     );
 
     await _localDataSource.saveStage(stage, currentLang);
+    await userProfileService.saveStage(stage);
 
     return stage;
   }
