@@ -24,7 +24,7 @@ class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext settingsContext) {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, authState) {
         if (authState is AuthAuthenticated) {
@@ -194,7 +194,9 @@ class SettingsScreen extends StatelessWidget {
                             showDialog(
                               context: context,
                               builder: (context) =>
-                                  const DeleteAccountConfirmationDialog(),
+                                  DeleteAccountConfirmationDialog(
+                                    settingsContext: settingsContext,
+                                  ),
                             );
                           },
                         ),
@@ -228,7 +230,9 @@ class SettingsScreen extends StatelessWidget {
                             showDialog(
                               context: context,
                               builder: (context) =>
-                                  const DeleteAccountConfirmationDialog(),
+                                  DeleteAccountConfirmationDialog(
+                                    settingsContext: settingsContext,
+                                  ),
                             );
                           },
                         ),

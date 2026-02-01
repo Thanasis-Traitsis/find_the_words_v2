@@ -86,7 +86,7 @@ class AuthCubit extends Cubit<AuthState> {
       final syncedUser = await syncService.syncWithCloud(
         firebaseUser: firebaseUser,
         localUser: currentState.user,
-        cloudUserDoc: cloudUserDoc
+        cloudUserDoc: cloudUserDoc,
       );
 
       await _userRepo.updateUser(syncedUser);
@@ -131,7 +131,7 @@ class AuthCubit extends Cubit<AuthState> {
         progressByLanguage: currentUser.progressByLanguage,
         lastSyncedAt: currentUser.lastSyncedAt,
         joinedAt: currentUser.joinedAt,
-        totalFreezes: currentUser.totalFreezes
+        totalFreezes: currentUser.totalFreezes,
       );
 
       await _userRepo.updateUser(guestUser);
@@ -163,6 +163,21 @@ class AuthCubit extends Cubit<AuthState> {
         userId: userId,
         isGuest: isGuest,
       );
+
+      await createNewUser(afterDeletion: true);
+    } catch (e) {
+      emit(currentState.copyWith(deleteAccountLoading: false));
+      rethrow;
+    }
+  }
+
+  Future<void> reauthenticateAndDeleteAccount() async {
+    if (state is! AuthAuthenticated) return;
+    final currentState = state as AuthAuthenticated;
+    emit(currentState.copyWith(deleteAccountLoading: true));
+    
+    try {
+      await AuthService.instance.reauthenticateWithGoogle();
 
       await createNewUser(afterDeletion: true);
     } catch (e) {
@@ -246,7 +261,7 @@ class AuthCubit extends Cubit<AuthState> {
           },
       lastSyncedAt: DateTime.now(),
       joinedAt: localUser?.joinedAt ?? DateTime.now(),
-      totalFreezes: localUser?.totalFreezes ?? freezeState.totalFreezes
+      totalFreezes: localUser?.totalFreezes ?? freezeState.totalFreezes,
     );
   }
 
@@ -265,7 +280,7 @@ class AuthCubit extends Cubit<AuthState> {
         },
         lastSyncedAt: DateTime.now(),
         joinedAt: DateTime.now(),
-        totalFreezes: 0
+        totalFreezes: 0,
       );
 
       await _saveCloudUserAndToken(newUser, firebaseUser.uid);
@@ -288,10 +303,9 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> createNewUser({bool afterDeletion = false}) async {
-    if(afterDeletion) {
+    if (afterDeletion) {
       emit(AuthUnauthenticated());
       await Future.delayed(Duration(seconds: 2));
-
     }
     final String newToken = TokenUtils.generateGuestToken();
     await AuthService.instance.saveToken(newToken);

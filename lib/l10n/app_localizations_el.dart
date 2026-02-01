@@ -703,6 +703,18 @@ class AppLocalizationsEl extends AppLocalizations {
   String get deleteAccountDialogButtonSubmit => 'Διαγραφή';
 
   @override
+  String get reauthenticateDialogHeader => 'Απαιτείται εκ νέου σύνδεση';
+
+  @override
+  String get reauthenticateDialogDescription => 'Για λόγους ασφαλείας, πρέπει να συνδεθείτε ξανά πριν διαγράψετε τον λογαριασμό σας.';
+
+  @override
+  String get reauthenticateDialogButtonCancel => 'Ακύρωση';
+
+  @override
+  String get reauthenticateDialogButtonSubmit => 'Σύνδεση';
+
+  @override
   String get googleSignInSuccessTitle => 'Καλώς ήρθες!';
 
   @override

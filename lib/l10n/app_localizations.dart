@@ -1271,6 +1271,30 @@ abstract class AppLocalizations {
   /// **'Delete'**
   String get deleteAccountDialogButtonSubmit;
 
+  /// No description provided for @reauthenticateDialogHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign In Again Required'**
+  String get reauthenticateDialogHeader;
+
+  /// No description provided for @reauthenticateDialogDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'For security reasons, you need to sign in again before deleting your account.'**
+  String get reauthenticateDialogDescription;
+
+  /// No description provided for @reauthenticateDialogButtonCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get reauthenticateDialogButtonCancel;
+
+  /// No description provided for @reauthenticateDialogButtonSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign In'**
+  String get reauthenticateDialogButtonSubmit;
+
   /// No description provided for @googleSignInSuccessTitle.
   ///
   /// In en, this message translates to:

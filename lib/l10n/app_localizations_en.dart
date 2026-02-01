@@ -691,6 +691,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get deleteAccountDialogButtonSubmit => 'Delete';
 
   @override
+  String get reauthenticateDialogHeader => 'Sign In Again Required';
+
+  @override
+  String get reauthenticateDialogDescription => 'For security reasons, you need to sign in again before deleting your account.';
+
+  @override
+  String get reauthenticateDialogButtonCancel => 'Cancel';
+
+  @override
+  String get reauthenticateDialogButtonSubmit => 'Sign In';
+
+  @override
   String get googleSignInSuccessTitle => 'Welcome in!';
 
   @override
