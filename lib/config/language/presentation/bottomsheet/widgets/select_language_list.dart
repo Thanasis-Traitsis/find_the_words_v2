@@ -20,20 +20,36 @@ class SelectLanguageList extends StatefulWidget {
 class _SelectLanguageListState extends State<SelectLanguageList> {
   late String appLanguage;
   late String selectedLangCode;
+  bool _isApplying = false;
   final StorageService _storage = getIt<StorageService>();
 
   @override
   void initState() {
     super.initState();
 
-    final langState = context.read<LanguageCubit>().state;
+    final langState = getIt<LanguageCubit>().state;
     appLanguage = langState.appLanguage.code;
     selectedLangCode = langState.appLanguage.code;
   }
 
-  void applyNewLanguage() {
-    context.read<LanguageCubit>().setNewLanguage(selectedLangCode);
-    updateBottomsheetState();
+  Future<void> applyNewLanguage() async {
+    setState(() {
+      _isApplying = true;
+    });
+    await Future.delayed(const Duration(milliseconds: 50));
+
+    try {
+      await getIt<LanguageCubit>().setNewLanguage(selectedLangCode);
+
+      setState(() {
+        appLanguage = selectedLangCode;
+        _isApplying = false;
+      });
+    } catch (e) {
+      setState(() {
+        _isApplying = false;
+      });
+    }
   }
 
   void updateBottomsheetState() {
@@ -73,7 +89,7 @@ class _SelectLanguageListState extends State<SelectLanguageList> {
           );
         }),
         BlocBuilder<LanguageCubit, LanguageState>(
-          builder: (context, state) {            
+          builder: (context, state) {
             return Container(
               margin: const EdgeInsets.symmetric(
                 vertical: AppSpacing.spacingXL,
@@ -83,7 +99,7 @@ class _SelectLanguageListState extends State<SelectLanguageList> {
                 text: context.translate.languageBottomsheetUpdateBtn,
                 onTap: applyNewLanguage,
                 isDisabled: appLanguage == selectedLangCode,
-                isLoading: state.isLoading,
+                isLoading: _isApplying,
               ),
             );
           },

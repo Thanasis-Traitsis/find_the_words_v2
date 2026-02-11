@@ -3,20 +3,18 @@ part of 'language_cubit.dart';
 class LanguageState extends Equatable {
   final AppLanguage appLanguage;
   final bool isFirstTime;
-  final bool isLoading;
 
-  const LanguageState(this.appLanguage, {this.isFirstTime = false, this.isLoading = false});
+  const LanguageState(this.appLanguage, {this.isFirstTime = false});
 
-  LanguageState copyWith({AppLanguage? appLanguage, bool? isFirstTime, bool? isLoading}) {
+  LanguageState copyWith({AppLanguage? appLanguage, bool? isFirstTime}) {
     return LanguageState(
       appLanguage ?? this.appLanguage,
       isFirstTime: isFirstTime ?? this.isFirstTime,
-      isLoading: isLoading ?? this.isLoading,
     );
   }
 
   @override
-  List<Object?> get props => [appLanguage, isLoading];
+  List<Object?> get props => [appLanguage];
 
   @override
   String toString() {

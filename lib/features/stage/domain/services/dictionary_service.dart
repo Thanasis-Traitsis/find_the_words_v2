@@ -6,9 +6,14 @@ class DictionaryService {
   Map<String, dynamic> cachedDictionary = {};
 
   Future<void> loadDictionaryJson({String? langCode}) async {
-    final currentLang = langCode ?? getIt<LanguageCubit>().state.appLanguage.code;
+    final currentLang =
+        langCode ?? getIt<LanguageCubit>().state.appLanguage.code;
 
     final dictionaryPath = FileUtils.dictionaryFile('dictionary', currentLang);
     cachedDictionary = await FileUtils.loadCompressedJson(dictionaryPath);
+  }
+
+  void setCachedDictionary(Map<String, dynamic> dictionary) {
+    cachedDictionary = dictionary;
   }
 }
