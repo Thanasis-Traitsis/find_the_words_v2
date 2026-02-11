@@ -30,15 +30,15 @@ class RewardsSection extends StatelessWidget {
               RewardsCard(
                 rewardConfig: RewardConfig(
                   type: RewardType.earnPoints,
-                  amount: 20,
+                  amount: AppValues.rewardPoints,
                   isActive: false,
                   notificationTitle: context.translate.rewardNotificationTitle,
                   notificationMessage: context.translate
-                      .rewardPointsNotificationMessage(20),
+                      .rewardPointsNotificationMessage(AppValues.rewardPoints),
                 ),
                 smallTitle: context.translate.rewardsFirstOfferTitleSmall,
-                bigTitle: context.translate.rewardsFirstOfferTitleBig(20),
-                description: context.translate.rewardsFirstOfferDescription(20),
+                bigTitle: context.translate.rewardsFirstOfferTitleBig(AppValues.rewardPoints),
+                description: context.translate.rewardsFirstOfferDescription(AppValues.rewardPoints),
                 rewardIcon: CustomIcons.stars,
                 backgroundColor: context.colors.lightPink,
                 iconColor: context.colors.secondary,
@@ -47,16 +47,16 @@ class RewardsSection extends StatelessWidget {
               RewardsCard(
                 rewardConfig: RewardConfig(
                   type: RewardType.storeDiscount,
-                  amount: 50,
+                  amount: AppValues.rewardDiscountPercentage,
                   isActive: discountService.hasActiveDiscount,
                   notificationTitle: context.translate.rewardNotificationTitle,
                   notificationMessage: context.translate
-                      .rewardDiscountNotificationMessage(50),
+                      .rewardDiscountNotificationMessage(AppValues.rewardDiscountPercentage),
                 ),
                 smallTitle: context.translate.rewardsSecondOfferTitleSmall,
-                bigTitle: context.translate.rewardsSecondOfferTitleBig(50),
+                bigTitle: context.translate.rewardsSecondOfferTitleBig(AppValues.rewardDiscountPercentage),
                 description: context.translate.rewardsSecondOfferDescription(
-                  50,
+                  AppValues.rewardDiscountPercentage,
                 ),
                 rewardIcon: CustomIcons.discount,
                 backgroundColor: context.colors.lightBlue,
@@ -68,7 +68,7 @@ class RewardsSection extends StatelessWidget {
                   return RewardsCard(
                     rewardConfig: RewardConfig(
                       type: RewardType.freeze,
-                      amount: 1,
+                      amount: AppValues.rewardFreeFreeeze,
                       isActive: !state.canWatchFreeAd,
                       notAvailableUntil: state.timeUntilNextFreeAd,
                       notificationTitle:
@@ -77,9 +77,9 @@ class RewardsSection extends StatelessWidget {
                           context.translate.rewardFreezeNotificationMessage,
                     ),
                     smallTitle: context.translate.rewardsThirdOfferTitleSmall,
-                    bigTitle: context.translate.rewardsThirdOfferTitleBig(1),
+                    bigTitle: context.translate.rewardsThirdOfferTitleBig(AppValues.rewardFreeFreeeze),
                     description: context.translate.rewardsThirdOfferDescription(
-                      1,
+                      AppValues.rewardFreeFreeeze,
                     ),
                     rewardIcon: CustomIcons.freeze,
                     backgroundColor: context.colors.white,

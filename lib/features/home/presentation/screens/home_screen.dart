@@ -20,69 +20,82 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomScreen(
-      appBar: CustomAppbar.withUserPoints(
-        isHomePage: true,
-        suffixWidget: LanguageButton(),
-        suffixIcon: CustomIcons.settings,
-        suffixOnTap: () {
-          AppPages.settings.push();
-        },
-      ),
-      child: BlocBuilder<AuthCubit, AuthState>(
-        builder: (context, state) {
-          if (state is! AuthAuthenticated) {
-            return Center(child: CircularProgressIndicator());
+    return BlocConsumer<StageBloc, StageState>(
+      listener: (context, stageState) {
+        if (stageState is StageReady) {
+          final authState = context.read<AuthCubit>().state;
+
+          if (authState is AuthAuthenticated) {
+            AppPages.stage.push(
+              extra: {
+                'stage': authState.user.currentProgress.stage,
+                'level': authState.user.currentProgress.level,
+                'stageData': stageState.stage,
+              },
+            );
           }
+        }
+      },
+      builder: (context, stageState) {
+        return CustomScreen(
+          loadingScreen: stageState is StageLoading,
+          appBar: CustomAppbar.withUserPoints(
+            isHomePage: true,
+            suffixWidget: LanguageButton(),
+            suffixIcon: CustomIcons.settings,
+            suffixOnTap: () {
+              AppPages.settings.push();
+            },
+          ),
+          child: BlocBuilder<AuthCubit, AuthState>(
+            builder: (context, state) {
+              if (state is! AuthAuthenticated) {
+                return Center(child: CircularProgressIndicator());
+              }
 
-          final user = state.user;
-          final progress = user.currentProgress;
+              final user = state.user;
+              final progress = user.currentProgress;
 
-          return CustomScrollView(
-            physics: const ClampingScrollPhysics(),
-            shrinkWrap: true,
-            slivers: [
-              SliverFillRemaining(
-                hasScrollBody: false,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
+              return CustomScrollView(
+                physics: const ClampingScrollPhysics(),
+                shrinkWrap: true,
+                slivers: [
+                  SliverFillRemaining(
+                    hasScrollBody: false,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const LogoContainer(),
-                        StageAndLevelCard(profileStatus: progress),
-                        TotalWordsCard(wordsModel: progress.wordsModel),
+                        Column(
+                          children: [
+                            const LogoContainer(),
+                            StageAndLevelCard(profileStatus: progress),
+                            TotalWordsCard(wordsModel: progress.wordsModel),
+                          ],
+                        ),
+                        Container(
+                          margin: const EdgeInsets.symmetric(
+                            vertical: AppSpacing.spacingXL,
+                          ),
+                          child: CustomPrimaryButton.large(
+                            text: context.translate.nextStageBtnText,
+                            onTap: () {
+                              getIt<StageBloc>().add(
+                                NextStageButtonPressed(progress),
+                              );
+                            },
+                            suffixIcon: CustomIcons.arrowRight,
+                            fullWidth: true,
+                          ),
+                        ),
                       ],
                     ),
-                    Container(
-                      margin: const EdgeInsets.symmetric(
-                        vertical: AppSpacing.spacingXL,
-                      ),
-                      child: CustomPrimaryButton.large(
-                        text: context.translate.nextStageBtnText,
-                        onTap: () async {
-                          getIt<StageBloc>().add(
-                            NextStageButtonPressed(progress),
-                          );
-
-                          AppPages.stage.push(
-                            extra: {
-                              'stage': user.currentProgress.stage,
-                              'level': user.currentProgress.level,
-                            },
-                          );
-                        },
-                        suffixIcon: CustomIcons.arrowRight,
-                        fullWidth: true,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          );
-        },
-      ),
+                  ),
+                ],
+              );
+            },
+          ),
+        );
+      },
     );
   }
 }

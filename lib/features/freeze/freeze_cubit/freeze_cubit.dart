@@ -157,8 +157,9 @@ class FreezeCubit extends Cubit<FreezeState> {
   Future<void> recordFreeAdWatched() async {
     try {
       final timestamp = DateTime.now();
+      final prefs = getIt<SharedPreferences>();
 
-      // Update local state
+      prefs.setString(_lastFreeAdTimestampKey, timestamp.toString());
       emit(state.copyWith(lastFreeAdTimestamp: timestamp));
 
       debugPrint('Free ad timestamp recorded');
@@ -166,6 +167,10 @@ class FreezeCubit extends Cubit<FreezeState> {
       debugPrint('Error recording free ad: $e');
       rethrow;
     }
+  }
+
+  void checkAdAvailability() {
+    emit(state.copyWith());
   }
 
   Future<void> reset() async {
