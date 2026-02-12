@@ -13,7 +13,7 @@ class LanguageSelectionItem extends StatelessWidget {
   final bool isLast;
   final AppLanguage language;
   final bool isSelected;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   const LanguageSelectionItem({
     super.key,
