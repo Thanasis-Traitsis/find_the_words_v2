@@ -13,6 +13,7 @@ import 'package:find_the_words/features/stage/domain/services/dictionary_service
 import 'package:find_the_words/features/stage/presentation/stage_bloc/stage_bloc.dart';
 import 'package:find_the_words/features/words/presentation/total_words_bloc/total_words_bloc.dart';
 import 'package:find_the_words/firebase_options.dart';
+import 'package:find_the_words/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -29,40 +30,76 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  await MobileAds.instance.initialize();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  MobileAds.instance.initialize();
+  await setupMinimalServiceLocator();
 
-  await setupServiceLocator();
-  await AuthService.instance.initializeGoogleSignIn();
-  
-  await runMyApp();
+  runApp(const MyAppLoader());
 }
 
-Future<void> runMyApp() async {
-  final themeCubit = ThemeCubit();
-  final connectivityCubit = ConnectivityCubit(getIt<ConnectivityService>());
-  final langCubit = getIt<LanguageCubit>();
-  final rewardedAdCubit = getIt<RewardedAdCubit>();
-  final freezeCubit = getIt<FreezeCubit>();
-  final soundCubit = SoundCubit();
-  final settingsCubit = getIt<SettingsCubit>();
-  final dictionaryService = getIt<DictionaryService>();
+class MyAppLoader extends StatefulWidget {
+  const MyAppLoader({super.key});
 
-  await themeCubit.loadTheme();
-  await langCubit.loadSelectedLang();
-  await dictionaryService.loadDictionaryJson();
+  @override
+  State<MyAppLoader> createState() => _MyAppLoaderState();
+}
 
-  runApp(
-    MultiBlocProvider(
+class _MyAppLoaderState extends State<MyAppLoader> {
+  bool _isReady = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeApp();
+  }
+
+  Future<void> _initializeApp() async {
+    try {
+      await Future.wait([
+        setupServiceLocator(),
+        AuthService.instance.initializeGoogleSignIn(),
+        _loadInitialData(),
+      ]);
+
+      setState(() => _isReady = true);
+    } catch (e) {
+      print('❌ Initialization error: $e');
+    }
+  }
+
+  Future<void> _loadInitialData() async {
+    final themeCubit = getIt<ThemeCubit>();
+    final langCubit = getIt<LanguageCubit>();
+
+    await Future.wait([themeCubit.loadTheme(), langCubit.loadSelectedLang()]);
+
+    final dictionaryService = getIt<DictionaryService>();
+    await dictionaryService.loadDictionaryJson();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (!_isReady) {
+      return MultiBlocProvider(
+        providers: [BlocProvider.value(value: getIt<ThemeCubit>())],
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: SplashScreen(),
+        ),
+      );
+    }
+
+    return MultiBlocProvider(
       providers: [
-        BlocProvider.value(value: themeCubit),
-        BlocProvider.value(value: connectivityCubit),
-        BlocProvider.value(value: langCubit),
-        BlocProvider.value(value: rewardedAdCubit),
-        BlocProvider.value(value: freezeCubit),
-        BlocProvider.value(value: soundCubit),
-        BlocProvider.value(value: settingsCubit),
+        BlocProvider.value(value: getIt<ThemeCubit>()),
+        BlocProvider.value(
+          value: ConnectivityCubit(getIt<ConnectivityService>()),
+        ),
+        BlocProvider.value(value: getIt<LanguageCubit>()),
+        BlocProvider.value(value: getIt<RewardedAdCubit>()),
+        BlocProvider.value(value: getIt<FreezeCubit>()),
+        BlocProvider.value(value: SoundCubit()),
+        BlocProvider.value(value: getIt<SettingsCubit>()),
         BlocProvider.value(value: getIt<AuthCubit>()),
         BlocProvider.value(value: getIt<PointsCubit>()),
         BlocProvider.value(value: getIt<AccountBoostCubit>()),
@@ -70,8 +107,8 @@ Future<void> runMyApp() async {
         BlocProvider.value(value: getIt<TotalWordsBloc>()),
       ],
       child: const MyApp(),
-    ),
-  );
+    );
+  }
 }
 
 class MyApp extends StatelessWidget {

@@ -9,7 +9,6 @@ import 'package:find_the_words/error_screen.dart';
 import 'package:find_the_words/features/auth/auth_cubit/auth_cubit.dart';
 import 'package:find_the_words/features/auth/auth_cubit/auth_status_listener.dart';
 import 'package:find_the_words/features/complete/presentation/screens/complete_stage_screen.dart';
-import 'package:find_the_words/features/freeze/freeze_cubit/freeze_cubit.dart';
 import 'package:find_the_words/features/game_instructions/presentation/screens/game_instructions_screen.dart';
 import 'package:find_the_words/features/home/presentation/screens/home_screen.dart';
 import 'package:find_the_words/config/language/presentation/screen/language_selection_screen.dart';
@@ -33,7 +32,6 @@ class AppRouter {
     redirect: (context, state) {
       final authState = getIt<AuthCubit>().state;
       final langState = getIt<LanguageCubit>().state;
-      final freezeCubit = getIt<FreezeCubit>();
       final isOnSplash = state.matchedLocation == AppRoutes.splashPath;
       
       if (authState is AuthUnauthenticated) {
@@ -45,7 +43,6 @@ class AppRouter {
       }
 
       if (authState is AuthAuthenticated && isOnSplash) {
-        freezeCubit.initializeFreeze();
         if (langState.isFirstTime) {
           return AppRoutes.langPath;
         } else {

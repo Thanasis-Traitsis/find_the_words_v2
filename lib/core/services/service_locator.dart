@@ -1,5 +1,6 @@
 import 'package:find_the_words/config/ads/rewarded_cubit/rewarded_ad_cubit.dart';
 import 'package:find_the_words/config/language/cubit/language_cubit.dart';
+import 'package:find_the_words/config/theme/theme_cubit/theme_cubit.dart';
 import 'package:find_the_words/core/services/cloud_sync_service.dart';
 import 'package:find_the_words/core/services/connectivity_service.dart';
 import 'package:find_the_words/core/services/previous_stage_words_service.dart';
@@ -33,6 +34,32 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 final GetIt getIt = GetIt.instance;
 
+Future<void> setupMinimalServiceLocator() async {
+  final prefs = await SharedPreferences.getInstance();
+  getIt.registerSingleton<SharedPreferences>(prefs);
+
+  getIt.registerLazySingleton<LanguageCubit>(() => LanguageCubit());
+  getIt.registerLazySingleton<ThemeCubit>(() => ThemeCubit());
+
+  getIt.registerSingletonAsync<StorageService>(() async {
+    final storage = StorageService();
+    await storage.init();
+    return storage;
+  });
+
+  getIt.registerSingletonAsync<AuthCubit>(
+    () async => AuthCubit(UserRepositoryImpl(getIt<StorageService>())),
+    dependsOn: [StorageService],
+  );
+
+  getIt.registerSingletonAsync<DictionaryService>(() async {
+    final service = DictionaryService();
+    return service;
+  });
+
+  await getIt.allReady();
+}
+
 Future<void> setupServiceLocator() async {
   await _registerCoreServices();
   await _registerRepositories();
@@ -43,15 +70,6 @@ Future<void> setupServiceLocator() async {
 }
 
 Future<void> _registerCoreServices() async {
-  final prefs = await SharedPreferences.getInstance();
-  getIt.registerSingleton<SharedPreferences>(prefs);
-
-  getIt.registerSingletonAsync<StorageService>(() async {
-    final storage = StorageService();
-    await storage.init();
-    return storage;
-  });
-
   getIt.registerLazySingleton<ConnectivityService>(() => ConnectivityService());
   getIt.registerLazySingleton<PreviousStageWordsService>(
     () => PreviousStageWordsService(),
@@ -60,11 +78,6 @@ Future<void> _registerCoreServices() async {
   getIt.registerSingletonAsync<StoreDiscountService>(
     () async => StoreDiscountService.create(),
   );
-
-  getIt.registerSingletonAsync<DictionaryService>(() async {
-    final service = DictionaryService();
-    return service;
-  });
 }
 
 Future<void> _registerRepositories() async {
@@ -119,13 +132,6 @@ Future<void> _registerUsecases() async {
 }
 
 Future<void> _registerBlocs() async {
-  getIt.registerLazySingleton<LanguageCubit>(() => LanguageCubit());
-
-  getIt.registerSingletonAsync<AuthCubit>(
-    () async => AuthCubit(getIt<UserRepository>()),
-    dependsOn: [StorageService],
-  );
-
   getIt.registerSingletonAsync<PointsCubit>(
     () async => PointsCubit(
       authCubit: getIt<AuthCubit>(),

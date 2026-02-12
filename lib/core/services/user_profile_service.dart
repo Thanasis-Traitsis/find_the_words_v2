@@ -47,8 +47,51 @@ class UserProfileService {
       );
 
       await _saveUpdatedProgress(updatedProgress, currentUser);
+      // await addTestWords();
     }
   }
+
+  // Future<void> addTestWords({int count = 1000}) async {
+  //   final authState = _authCubit.state;
+  //   if (authState is! AuthAuthenticated) return;
+
+  //   final currentUser = authState.user;
+  //   final currentProgress = currentUser.currentProgress;
+  //   final dictionaryService = getIt<DictionaryService>();
+
+  //   print('📝 Adding $count test words...');
+
+  //   // Get all available words from dictionary
+  //   final allDictionaryWords = dictionaryService.cachedDictionary.keys.toList();
+
+  //   if (allDictionaryWords.isEmpty) {
+  //     print('❌ Dictionary is empty!');
+  //     return;
+  //   }
+
+  //   // Shuffle and take up to count words
+  //   allDictionaryWords.shuffle();
+  //   final wordsToAdd = allDictionaryWords.take(count).toList();
+
+  //   // Create updated words map
+  //   final updatedWords = Map<String, dynamic>.from(
+  //     currentProgress.wordsModel.words,
+  //   );
+
+  //   for (final word in wordsToAdd) {
+  //     updatedWords[word] = dictionaryService.cachedDictionary[word]['words'];
+  //   }
+
+  //   print('✅ Added ${wordsToAdd.length} words');
+
+  //   final updatedProgress = currentProgress.copyWith(
+  //     words: WordsModel(words: updatedWords),
+  //   );
+
+  //   await _saveUpdatedProgress(updatedProgress, currentUser);
+
+  //   print('💾 Saved to storage');
+  // }
 
   Future<void> updateAfterStage(int xpEarned, double newProgress) async {
     final authState = _authCubit.state;
