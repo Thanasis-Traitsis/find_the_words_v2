@@ -59,13 +59,13 @@ class UserProfileService {
   //   final currentProgress = currentUser.currentProgress;
   //   final dictionaryService = getIt<DictionaryService>();
 
-  //   print('📝 Adding $count test words...');
+  //   debugPrint('📝 Adding $count test words...');
 
   //   // Get all available words from dictionary
   //   final allDictionaryWords = dictionaryService.cachedDictionary.keys.toList();
 
   //   if (allDictionaryWords.isEmpty) {
-  //     print('❌ Dictionary is empty!');
+  //     debugPrint('❌ Dictionary is empty!');
   //     return;
   //   }
 
@@ -82,7 +82,7 @@ class UserProfileService {
   //     updatedWords[word] = dictionaryService.cachedDictionary[word]['words'];
   //   }
 
-  //   print('✅ Added ${wordsToAdd.length} words');
+  //   debugPrint('✅ Added ${wordsToAdd.length} words');
 
   //   final updatedProgress = currentProgress.copyWith(
   //     words: WordsModel(words: updatedWords),
@@ -90,7 +90,7 @@ class UserProfileService {
 
   //   await _saveUpdatedProgress(updatedProgress, currentUser);
 
-  //   print('💾 Saved to storage');
+  //   debugPrint('💾 Saved to storage');
   // }
 
   Future<void> updateAfterStage(int xpEarned, double newProgress) async {

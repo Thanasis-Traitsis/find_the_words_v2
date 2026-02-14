@@ -6,6 +6,7 @@ import 'package:find_the_words/core/constants/app_keys.dart';
 import 'package:find_the_words/core/models/words_model.dart';
 import 'package:find_the_words/core/services/connectivity_service.dart';
 import 'package:find_the_words/core/services/service_locator.dart';
+import 'package:find_the_words/core/services/storage_service.dart';
 import 'package:find_the_words/features/auth/data/models/profile_status_model.dart';
 import 'package:find_the_words/features/freeze/freeze_cubit/freeze_cubit.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
@@ -124,6 +125,7 @@ class CloudSyncService {
               words: WordsModel(words: mergedWords),
               clearCurrentStage: true,
             );
+            await getIt<StorageService>().deleteCurrentStage(language);
           } else {
             cleanedProgressMap[language] = cloudProgress.copyWith(
               words: WordsModel(words: mergedWords),
@@ -149,7 +151,7 @@ class CloudSyncService {
     } else {
       // ✅ Same level - merge carefully
       debugPrint('⚖️ Same level - merging both');
-      mergedUser = _mergeProgressMaps(
+      mergedUser = await _mergeProgressMaps(
         localUser,
         cloudUser,
         firebaseUser,
@@ -162,12 +164,12 @@ class CloudSyncService {
     return mergedUser;
   }
 
-  UserEntity _mergeProgressMaps(
+  Future<UserEntity> _mergeProgressMaps(
     UserEntity localUser,
     UserEntity cloudUser,
     firebase_auth.User firebaseUser,
     DateTime joinedAt,
-  ) {
+  ) async {
     final mergedProgress = <AppLanguage, ProfileStatusModel>{};
 
     for (final language in AppLanguage.values) {
@@ -210,6 +212,7 @@ class CloudSyncService {
               words: WordsModel(words: mergedWords),
               clearCurrentStage: true,
             );
+            await getIt<StorageService>().deleteCurrentStage(language);
           } else {
             mergedProgress[language] = cloudProgress.copyWith(
               words: WordsModel(words: mergedWords),

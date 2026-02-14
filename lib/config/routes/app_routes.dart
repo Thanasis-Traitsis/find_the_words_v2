@@ -2,6 +2,7 @@ import 'package:find_the_words/core/services/navigation_service.dart';
 
 class AppRoutes {
   static const String splashPath = '/splash';
+  static const String forceUpdatePath = '/update';
   static const String langPath = '/lang';
   static const String homePath = '/';
   static const String stagePath = '/stage';
@@ -12,6 +13,7 @@ class AppRoutes {
   static const String completePath = '/complete';
 
   static const String splashScreenName = 'Splash';
+  static const String forceUpdateScreenName = 'Update';
   static const String langScreenName = 'Language';
   static const String homeScreenName = 'Home';
   static const String stageScreenName = 'Stage';

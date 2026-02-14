@@ -2,6 +2,7 @@ import 'package:find_the_words/config/routes/app_routes.dart';
 
 enum AppPages {
   splash,
+  forceUpdate,
   lang,
   home,
   stage,
@@ -19,6 +20,10 @@ enum AppPages {
     splash => const PageInfo(
       path: AppRoutes.splashPath,
       name: AppRoutes.splashScreenName,
+    ),
+    forceUpdate => const PageInfo(
+      path: AppRoutes.forceUpdatePath,
+      name: AppRoutes.forceUpdateScreenName,
     ),
     lang => const PageInfo(
       path: AppRoutes.langPath,

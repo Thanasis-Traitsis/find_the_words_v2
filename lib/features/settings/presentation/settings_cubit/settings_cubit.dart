@@ -1,3 +1,4 @@
+import 'package:find_the_words/core/constants/app_keys.dart';
 import 'package:find_the_words/core/services/previous_stage_words_service.dart';
 import 'package:find_the_words/features/settings/domain/usecases/open_email_usecase.dart';
 import 'package:find_the_words/features/stage/domain/repositories/stage_repository.dart';
@@ -44,7 +45,7 @@ class SettingsCubit extends Cubit<SettingsState> {
       _emailWasOpened = true;
       emit(SettingsInitial());
     } else {
-      emit(SettingsEmailFailed("thanasiswd@gmail.com"));
+      emit(SettingsEmailFailed(AppKeys.emailAccount));
     }
   }
 

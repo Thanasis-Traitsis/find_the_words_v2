@@ -169,8 +169,6 @@ class StageBloc extends Bloc<StageEvent, StageState> {
       activeFreeze: true,
     );
 
-    print("STAGE BLOC : UPDATED STAGE after stage FREEZE ${updatedStage.activeFreeze}");
-
     emit(FrozenStage(updatedStage));
   }
 

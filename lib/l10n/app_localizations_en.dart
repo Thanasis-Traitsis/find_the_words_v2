@@ -746,4 +746,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get profileBannerStatsCardPoints => 'Points';
+
+  @override
+  String get forceUpdateTitle => 'Update Required to Continue';
+
+  @override
+  String get forceUpdateSubtitle => 'Get the latest features and improvements!';
+
+  @override
+  String get forceUpdateButton => 'Update Now';
 }

@@ -28,6 +28,9 @@ class AppKeys {
   static const String discountPercentageKey = 'store_discount_percentage';
   static const String discountExpiryKey = 'store_discount_expiry';
 
+  // Email account
+  static const String emailAccount = 'infofindthewords@gmail.com';
+
   // AdMob Keys - Debug mode
   static const String _androidAdsDebugKey = "ca-app-pub-3940256099942544/5224354917";
   static const String _iosAdsDebugKey = "ca-app-pub-3940256099942544/1712485313";

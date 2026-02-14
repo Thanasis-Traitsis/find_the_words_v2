@@ -180,13 +180,13 @@ class SettingsScreen extends StatelessWidget {
                       ),
                       SettingsRowItem.navigateToWeb(
                         name: context.translate.settingsItemReportPrivacy,
-                        link: "https://github.com/Thanasis-Traitsis",
+                        link: "https://thanasistraitsis.com/projects/find-the-words/privacy-policy",
                       ),
-                      SettingsRowItem.navigateToWeb(
-                        name:
-                            context.translate.settingsItemReportTermsConditions,
-                        link: "https://github.com/Thanasis-Traitsis",
-                      ),
+                      // SettingsRowItem.navigateToWeb(
+                      //   name:
+                      //       context.translate.settingsItemReportTermsConditions,
+                      //   link: "https://github.com/Thanasis-Traitsis",
+                      // ),
                       if (currentUser.isGuest) ...[
                         SettingsRowItem.delete(
                           name: context.translate.deleteAccountBtnText,

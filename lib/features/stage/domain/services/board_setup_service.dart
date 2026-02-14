@@ -247,7 +247,6 @@ class BoardSetupService {
     StageCriteria criteria,
   ) async {
     // Place first word
-    print("ATTEMPT I AM HERE");
     _placeInitialWord(board, words[0], startPosition, tracker);
 
     for (int attempt = 1; attempt < words[0].length; attempt++) {

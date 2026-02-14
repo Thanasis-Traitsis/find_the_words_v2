@@ -1384,6 +1384,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Points'**
   String get profileBannerStatsCardPoints;
+
+  /// No description provided for @forceUpdateTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Required to Continue'**
+  String get forceUpdateTitle;
+
+  /// No description provided for @forceUpdateSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Get the latest features and improvements!'**
+  String get forceUpdateSubtitle;
+
+  /// No description provided for @forceUpdateButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Now'**
+  String get forceUpdateButton;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

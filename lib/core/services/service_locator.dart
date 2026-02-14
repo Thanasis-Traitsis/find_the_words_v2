@@ -1,6 +1,8 @@
 import 'package:find_the_words/config/ads/rewarded_cubit/rewarded_ad_cubit.dart';
 import 'package:find_the_words/config/language/cubit/language_cubit.dart';
 import 'package:find_the_words/config/theme/theme_cubit/theme_cubit.dart';
+import 'package:find_the_words/config/version/version_bloc/version_bloc.dart';
+import 'package:find_the_words/config/version/version_service.dart';
 import 'package:find_the_words/core/services/cloud_sync_service.dart';
 import 'package:find_the_words/core/services/connectivity_service.dart';
 import 'package:find_the_words/core/services/previous_stage_words_service.dart';
@@ -56,6 +58,10 @@ Future<void> setupMinimalServiceLocator() async {
     final service = DictionaryService();
     return service;
   });
+
+  getIt.registerSingletonAsync<VersionBloc>(
+    () async => VersionBloc(VersionService(prefs)),
+  );
 
   await getIt.allReady();
 }

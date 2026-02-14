@@ -1,5 +1,5 @@
 class AppValues {
-  static const int startingPoints = 100;
+  static const int startingPoints = 30;
 
   static const int rewardPoints = 20;
   static const int rewardDiscountPercentage = 50;

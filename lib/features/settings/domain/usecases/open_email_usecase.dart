@@ -1,7 +1,8 @@
+import 'package:find_the_words/core/constants/app_keys.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class OpenEmailUseCase {
-  static const String emailValue = "thanasiswd@gmail.com";
+  static const String emailValue = AppKeys.emailAccount;
 
   Future<bool> call({
     String? subject,

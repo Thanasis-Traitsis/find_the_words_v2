@@ -758,4 +758,13 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String get profileBannerStatsCardPoints => 'Πόντοι';
+
+  @override
+  String get forceUpdateTitle => 'Απαιτείται ενημέρωση για να συνεχίσετε';
+
+  @override
+  String get forceUpdateSubtitle => 'Αποκτήστε τις τελευταίες δυνατότητες και βελτιώσεις!';
+
+  @override
+  String get forceUpdateButton => 'Ενημέρωση τώρα';
 }

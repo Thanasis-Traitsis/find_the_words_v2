@@ -424,5 +424,8 @@
     "profileBannerStatsDescription": "Profile stats for every available language",
     "profileBannerStatsCardWords": "Words", 
     "profileBannerStatsCardStages": "Stages", 
-    "profileBannerStatsCardPoints": "Points" 
+    "profileBannerStatsCardPoints": "Points",
+    "forceUpdateTitle": "Update Required to Continue",
+    "forceUpdateSubtitle": "Get the latest features and improvements!",
+    "forceUpdateButton": "Update Now" 
 }

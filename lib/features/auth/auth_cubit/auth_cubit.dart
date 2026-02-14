@@ -28,7 +28,6 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> _loadAuthState() async {
-    await Future.delayed(Duration(seconds: 2));
     await _userRepo.updateBannedWords();
 
     // Step 1: Check Firebase authentication

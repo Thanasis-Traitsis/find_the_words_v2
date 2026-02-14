@@ -1,6 +1,7 @@
 import 'package:find_the_words/config/ads/rewarded_cubit/rewarded_ad_cubit.dart';
 import 'package:find_the_words/config/connectivity/connectivity_cubit/connectivity_cubit.dart';
 import 'package:find_the_words/config/sound/cubit/sound_cubit.dart';
+import 'package:find_the_words/config/version/version_bloc/version_bloc.dart';
 import 'package:find_the_words/core/services/auth_service.dart';
 import 'package:find_the_words/core/services/connectivity_service.dart';
 import 'package:find_the_words/core/services/service_locator.dart';
@@ -55,15 +56,20 @@ class _MyAppLoaderState extends State<MyAppLoader> {
 
   Future<void> _initializeApp() async {
     try {
+      final versionBloc = getIt<VersionBloc>();
+      versionBloc.add(const CheckVersion());
+
       await Future.wait([
         setupServiceLocator(),
         AuthService.instance.initializeGoogleSignIn(),
         _loadInitialData(),
       ]);
 
+      await Future.delayed(Duration(seconds: 1));
+
       setState(() => _isReady = true);
     } catch (e) {
-      print('❌ Initialization error: $e');
+      debugPrint('Initialization error: $e');
     }
   }
 
@@ -91,6 +97,7 @@ class _MyAppLoaderState extends State<MyAppLoader> {
 
     return MultiBlocProvider(
       providers: [
+        BlocProvider.value(value: getIt<VersionBloc>()),
         BlocProvider.value(value: getIt<ThemeCubit>()),
         BlocProvider.value(
           value: ConnectivityCubit(getIt<ConnectivityService>()),
