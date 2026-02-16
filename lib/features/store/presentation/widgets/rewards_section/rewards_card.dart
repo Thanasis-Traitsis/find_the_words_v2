@@ -39,8 +39,10 @@ class RewardsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<RewardedAdCubit, RewardedAdState>(
       builder: (context, adState) {
-        final isAvailable = !rewardConfig.isActive;
+        final adFailed = adState is RewardedAdFailed;
+        final isAvailable = !rewardConfig.isActive && !adFailed;
         final showLoading = isAvailable && adState is RewardedAdLoading;
+        
         return Stack(
           children: [
             Opacity(

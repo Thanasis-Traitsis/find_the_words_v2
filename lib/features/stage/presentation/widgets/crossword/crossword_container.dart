@@ -62,39 +62,61 @@ class CrosswordContainer extends StatelessWidget {
             Container(
               margin: const EdgeInsets.symmetric(vertical: AppSpacing.spacingM),
               child: Center(
-                child: GridView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: sqrt(stageState.stage.board.length).ceil(),
+                child: AspectRatio(
+                  aspectRatio: 1.0, 
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      final size = min(
+                        constraints.maxWidth,
+                        constraints.maxHeight,
+                      );
+
+                      return SizedBox(
+                        width: size,
+                        height: size,
+                        child: GridView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: sqrt(
+                                  stageState.stage.board.length,
+                                ).ceil(),
+                              ),
+                          itemCount: stageState.stage.board.length,
+                          itemBuilder: (context, index) {
+                            final isRevealed = revealedPositions.contains(
+                              index,
+                            );
+                            final shouldAnimate = newPositions.contains(index);
+
+                            if (remainingPositions.contains(index) &&
+                                !gridKeys.containsKey(index)) {
+                              gridKeys[index] = GlobalKey();
+                            }
+
+                            return Container(
+                              margin: stageState.stage.board.length < 10
+                                  ? EdgeInsets.all(AppSpacing.spacingM)
+                                  : stageState.stage.board.length < 80
+                                  ? EdgeInsets.all(AppSpacing.spacingS)
+                                  : EdgeInsets.all(AppSpacing.spacingXS),
+                              child: CrosswordLetterBox(
+                                key: gridKeys[index],
+                                boardSize: stageState.stage.board.length,
+                                crosswordBoxItem: stageState.stage.board[index],
+                                isVisible: isRevealed,
+                                shouldAnimate: shouldAnimate,
+                                animationDelay:
+                                    newPositions.indexOf(index) * 100,
+                                onTap: () => onCrosswordBoxTap(index),
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    },
                   ),
-                  itemCount: stageState.stage.board.length,
-                  itemBuilder: (context, index) {
-                    final isRevealed = revealedPositions.contains(index);
-                    final shouldAnimate = newPositions.contains(index);
-
-                    if (remainingPositions.contains(index) &&
-                        !gridKeys.containsKey(index)) {
-                      gridKeys[index] = GlobalKey();
-                    }
-
-                    return Container(
-                      margin: stageState.stage.board.length < 10
-                          ? EdgeInsets.all(AppSpacing.spacingM)
-                          : stageState.stage.board.length < 80
-                          ? EdgeInsets.all(AppSpacing.spacingS)
-                          : EdgeInsets.all(AppSpacing.spacingXS),
-                      child: CrosswordLetterBox(
-                        key: gridKeys[index],
-                        boardSize: stageState.stage.board.length,
-                        crosswordBoxItem: stageState.stage.board[index],
-                        isVisible: isRevealed,
-                        shouldAnimate: shouldAnimate,
-                        animationDelay: newPositions.indexOf(index) * 100,
-                        onTap: () => onCrosswordBoxTap(index),
-                      ),
-                    );
-                  },
                 ),
               ),
             ),

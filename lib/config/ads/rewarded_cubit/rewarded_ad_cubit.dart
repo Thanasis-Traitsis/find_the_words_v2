@@ -72,7 +72,7 @@ class RewardedAdCubit extends Cubit<RewardedAdState> {
   void _scheduleRetry(int retryAttempt) {
     _retryTimer?.cancel();
 
-    final delaySeconds = 5 * (3 * retryAttempt + 1);
+    final delaySeconds = (3 * retryAttempt + 1);
 
     _retryTimer = Timer(Duration(seconds: delaySeconds), () {
       loadAd(retryAttempt: retryAttempt + 1);

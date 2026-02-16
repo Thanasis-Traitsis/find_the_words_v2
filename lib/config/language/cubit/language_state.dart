@@ -14,7 +14,7 @@ class LanguageState extends Equatable {
   }
 
   @override
-  List<Object?> get props => [appLanguage];
+  List<Object?> get props => [appLanguage, isFirstTime];
 
   @override
   String toString() {

@@ -10,7 +10,6 @@ import 'package:find_the_words/core/services/user_profile_service.dart';
 import 'package:find_the_words/core/utils/file_utils.dart';
 import 'package:find_the_words/features/stage/domain/services/dictionary_service.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -43,6 +42,10 @@ class LanguageCubit extends Cubit<LanguageState> {
     } catch (e) {
       debugPrint("${AppStrings.devLanguageLoadError}: $e");
     }
+  }
+
+  void triggerInitialLanguageSelection() {
+    emit(LanguageState(state.appLanguage, isFirstTime: false));
   }
 
   Future<void> _saveLanguage(String langCode) async {

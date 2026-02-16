@@ -36,8 +36,8 @@ class AppKeys {
   static const String _iosAdsDebugKey = "ca-app-pub-3940256099942544/1712485313";
 
   // AdMob Keys - Production mode (replace with your real ad unit IDs)
-  static const String _androidAdsProdKey = "ca-app-pub-XXXXXXXXXXXXXXXX/YYYYYYYYYY";
-  static const String _iosAdsProdKey = "ca-app-pub-XXXXXXXXXXXXXXXX/YYYYYYYYYY";
+  static const String _androidAdsProdKey = "ca-app-pub-4519784875288313/5429359375";
+  static const String _iosAdsProdKey = "ca-app-pub-4519784875288313/2077110173";
 
   static String get rewardedAdUnitId {
     if (kDebugMode) {

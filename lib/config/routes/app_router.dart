@@ -27,18 +27,28 @@ class AppRouter {
     return NoTransitionPage(key: state.pageKey, child: child);
   }
 
-  static final authStatusNotifier = AuthStatusNotifier(getIt<AuthCubit>());
+  static final appStatusNotifier = AppStatusNotifier(
+    getIt<AuthCubit>(),
+    getIt<LanguageCubit>(),
+  );
 
   static final GoRouter router = GoRouter(
-    refreshListenable: authStatusNotifier,
+    refreshListenable: appStatusNotifier, 
     redirect: (context, state) {
       final authState = getIt<AuthCubit>().state;
       final langState = getIt<LanguageCubit>().state;
       final isOnSplash = state.matchedLocation == AppRoutes.splashPath;
+      final isOnLang = state.matchedLocation == AppRoutes.langPath;
       final versionState = getIt<VersionBloc>().state;
 
       if (versionState.needsForceUpdate) {
         return AppRoutes.forceUpdatePath;
+      }
+
+      if (authState is AuthAuthenticated &&
+          langState.isFirstTime &&
+          !isOnLang) {
+        return AppRoutes.langPath;
       }
 
       if (authState is AuthUnauthenticated) {
@@ -49,12 +59,10 @@ class AppRouter {
         return AppRoutes.splashPath;
       }
 
-      if (authState is AuthAuthenticated && isOnSplash) {
-        if (langState.isFirstTime) {
-          return AppRoutes.langPath;
-        } else {
-          return AppRoutes.homePath;
-        }
+      if (authState is AuthAuthenticated &&
+          isOnSplash &&
+          !langState.isFirstTime) {
+        return AppRoutes.homePath;
       }
 
       return null;

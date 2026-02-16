@@ -1,20 +1,34 @@
 import 'dart:async';
+import 'package:find_the_words/config/language/cubit/language_cubit.dart';
 import 'package:flutter/foundation.dart';
 import 'package:find_the_words/features/auth/auth_cubit/auth_cubit.dart';
 
-class AuthStatusNotifier extends ChangeNotifier {
+class AppStatusNotifier extends ChangeNotifier {
   final AuthCubit _authCubit;
-  StreamSubscription? _subscription;
-  Type? _previousStateType;
+  final LanguageCubit _languageCubit;
+  StreamSubscription? _authSubscription;
+  StreamSubscription? _langSubscription;
+  Type? _previousAuthStateType;
+  bool? _previousIsFirstTime;
 
-  AuthStatusNotifier(this._authCubit) {
-    _previousStateType = _authCubit.state.runtimeType;
+  AppStatusNotifier(this._authCubit, this._languageCubit) {
+    _previousAuthStateType = _authCubit.state.runtimeType;
+    _previousIsFirstTime = _languageCubit.state.isFirstTime;
     
-    _subscription = _authCubit.stream.listen((state) {
+    _authSubscription = _authCubit.stream.listen((state) {
       final currentStateType = state.runtimeType;
       
-      if (currentStateType != _previousStateType) {
-        _previousStateType = currentStateType;
+      if (currentStateType != _previousAuthStateType) {
+        _previousAuthStateType = currentStateType;
+        notifyListeners();
+      }
+    });
+
+    _langSubscription = _languageCubit.stream.listen((state) {
+      final currentIsFirstTime = state.isFirstTime;
+      
+      if (currentIsFirstTime != _previousIsFirstTime) {
+        _previousIsFirstTime = currentIsFirstTime;
         notifyListeners();
       }
     });
@@ -22,7 +36,8 @@ class AuthStatusNotifier extends ChangeNotifier {
 
   @override
   void dispose() {
-    _subscription?.cancel();
+    _authSubscription?.cancel();
+    _langSubscription?.cancel();
     super.dispose();
   }
 }
