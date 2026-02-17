@@ -10,6 +10,7 @@ import 'package:find_the_words/features/stage/data/models/stage_criteria.dart';
 import 'package:find_the_words/features/stage/domain/services/board_setup_service.dart';
 import 'package:find_the_words/features/stage/domain/services/stage_validation_service.dart';
 import 'package:find_the_words/features/stage/domain/services/word_selection_service.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -79,10 +80,33 @@ class StageGeneratorService {
     return validStage;
   }
 
+  static const bool _debugForceStage = false;
+  static const Map<String, dynamic> _debugStageData = {
+    "ΑΕΗΤΦ": [
+      "ΕΤΑΦΗ",
+      "ΕΦΗ",
+      "ΕΦΤΑ",
+      "ΗΤΑ",
+      "ΤΑΗ",
+      "ΤΑΦΗ",
+      "ΦΑΕ",
+      "ΦΕΤΑ",
+      "ΑΤΗ",
+      "ΑΦΗ",
+    ],
+  };
+
   Future<CurrentStage> _attemptStageGeneration({
     required MapEntry<String, dynamic> selectedWord,
     required StageCriteria criteria,
   }) async {
+    if (kDebugMode && _debugForceStage) {
+      selectedWord = MapEntry(
+        _debugStageData.keys.first,
+        _debugStageData.values.first,
+      );
+    }
+
     final bannedWords = await _getBannedWords();
     final sortedWords = _prepareSortedWords(selectedWord.value, bannedWords);
     final board = _initializeEmptyBoard();

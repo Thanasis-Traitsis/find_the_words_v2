@@ -6,6 +6,7 @@ import 'package:find_the_words/core/services/user_profile_service.dart';
 import 'package:find_the_words/core/utils/file_utils.dart';
 import 'package:find_the_words/features/stage/data/datasources/stage_local_datasource.dart';
 import 'package:find_the_words/features/stage/data/models/current_stage.dart';
+import 'package:find_the_words/features/stage/domain/helpers/word_placement_tracker.dart';
 import 'package:find_the_words/features/stage/domain/repositories/stage_repository.dart';
 import 'package:find_the_words/features/stage/domain/services/stage_generator_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -58,10 +59,12 @@ class StageRepositoryImpl implements StageRepository {
       progress: progress,
     );
 
-    await _localDataSource.saveStage(stage, currentLang);
-    await userProfileService.saveStage(stage);
+    final enrichedStage = _enrichStageWithCommonPositions(stage);
 
-    return stage;
+    await _localDataSource.saveStage(enrichedStage, currentLang);
+    await userProfileService.saveStage(enrichedStage);
+
+    return enrichedStage;
   }
 
   @override
@@ -95,4 +98,51 @@ class StageRepositoryImpl implements StageRepository {
     final String timerKey = AppKeys.timerKey(stageNumber);
     await prefs.remove(timerKey);
   }
+}
+
+CurrentStage _enrichStageWithCommonPositions(CurrentStage stage) {
+  final commonPositions = _findCommonPositions(
+    stage.placementTracker.allPositions,
+  );
+
+  final updatedTracker = WordPlacementTracker.copyWith(
+    placements: stage.placementTracker.placements,
+    foundWords: stage.placementTracker.foundWords,
+    revealedPositions: stage.placementTracker.revealedPositions,
+    commonPositions: commonPositions,
+    extraWords: stage.placementTracker.extraWords,
+  );
+
+  // _logStageForBackup(stage, commonPositions);
+
+  return CurrentStage(
+    allWords: stage.allWords,
+    letters: stage.letters,
+    board: stage.board,
+    placementTracker: updatedTracker,
+  );
+}
+
+List<int> _findCommonPositions(List<List<int>> allPositions) {
+  final positionCounts = _countPositionOccurrences(allPositions);
+  return _extractRepeatedPositions(positionCounts);
+}
+
+Map<int, int> _countPositionOccurrences(List<List<int>> allPositions) {
+  final counts = <int, int>{};
+
+  for (final positions in allPositions) {
+    for (final position in positions) {
+      counts[position] = (counts[position] ?? 0) + 1;
+    }
+  }
+
+  return counts;
+}
+
+List<int> _extractRepeatedPositions(Map<int, int> positionCounts) {
+  return positionCounts.entries
+      .where((entry) => entry.value > 1)
+      .map((entry) => entry.key)
+      .toList();
 }
