@@ -137,16 +137,10 @@ class _TotalWordsViewState extends State<_TotalWordsView> {
                             childCount: state.displayedWords.length,
                             (context, index) {
                               final entry = state.displayedWords[index];
-                              return Container(
-                                margin: index == 0
-                                    ? null
-                                    : const EdgeInsets.only(
-                                        top: AppSpacing.spacingL,
-                                      ),
-                                child: WordRowItem(
-                                  word: entry.key,
-                                  meanings: entry.value,
-                                ),
+                              return WordRowItem(
+                                isFirst: index == 0,
+                                word: entry.key,
+                                meanings: entry.value,
                               );
                             },
                           ),

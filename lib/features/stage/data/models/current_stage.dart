@@ -25,7 +25,7 @@ class CurrentStage extends HiveObject {
     required this.letters,
     required this.board,
     required this.placementTracker,
-    this.activeFreeze = false
+    this.activeFreeze = false,
   });
 
   CurrentStage copyWith({
@@ -64,5 +64,17 @@ class CurrentStage extends HiveObject {
       ),
       activeFreeze: map['activeFreeze'] as bool? ?? false,
     );
+  }
+
+  @override
+  String toString() {
+    return '''
+CurrentStage {
+  allWords: $allWords,
+  letters: $letters,
+  board: $board,
+  placementTracker: $placementTracker,
+  activeFreeze: $activeFreeze,
+}''';
   }
 }

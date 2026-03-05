@@ -130,6 +130,6 @@ class XPConstants {
     if (level == 7) return 6000;
     if (level == 8) return 7500;
     if (level == 9) return 9000;
-    return 10000 + ((level - 10) * 2000);
+    return 12000;
   }
 }

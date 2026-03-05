@@ -37,28 +37,7 @@ class StageResults {
   }
 
   int getPointsForStage() {
-    switch (level) {
-      case 1:
-        return 3;
-      case 2:
-        return 5;
-      case 3:
-        return 8;
-      case 4:
-        return 10;
-      case 5:
-        return 12;
-      case 6:
-        return 15;
-      case 7:
-        return 20;
-      case 8:
-        return 25;
-      case 9:
-        return 30;
-      default:
-        return 40;
-    }
+    return level.clamp(1, 10);
   }
 
   int getPointsForCrosswordWords() {
@@ -94,28 +73,7 @@ class StageResults {
   }
 
   int getPointsForLevelup() {
-    switch (level) {
-      case 1:
-        return 15;
-      case 2:
-        return 25;
-      case 3:
-        return 40;
-      case 4:
-        return 60;
-      case 5:
-        return 80;
-      case 6:
-        return 100;
-      case 7:
-        return 120;
-      case 8:
-        return 150;
-      case 9:
-        return 200;
-      default:
-        return 250;
-    }
+     return getPointsForStage() * 5;
   }
 
   int totalPointsForStage() =>

@@ -42,11 +42,26 @@ class StageDifficultyCalculator {
   }
 
   StageDifficulty getDifficulty() {
-    final score = calculateDifficultyScore() - (25 + (level * 5) / level);
-    if (score < 30) return StageDifficulty.easy;
-    if (score < 55) return StageDifficulty.normal;
-    if (score < 75) return StageDifficulty.hard;
-    return StageDifficulty.veryHard;
+    final score = calculateDifficultyScore();
+
+    final minimumDifficulty = level >= 8
+        ? StageDifficulty.hard
+        : level >= 5
+        ? StageDifficulty.normal
+        : StageDifficulty.easy;
+
+    StageDifficulty raw;
+    if (score < 30) {
+      raw = StageDifficulty.easy;
+    } else if (score < 60) {
+      raw = StageDifficulty.normal;
+    } else if (score < 80) {
+      raw = StageDifficulty.hard;
+    } else {
+      raw = StageDifficulty.veryHard;
+    }
+
+    return raw.index >= minimumDifficulty.index ? raw : minimumDifficulty;
   }
 
   double _calculateConsonantScore() {
@@ -91,10 +106,10 @@ class StageDifficultyCalculator {
 
     final usageRatio = crosswordWordsCount / totalPossibleWords;
 
-    if (usageRatio < 0.2) return 0.2;
-    if (usageRatio < 0.4) return 0.4;
-    if (usageRatio < 0.6) return 0.7;
-    if (usageRatio < 0.8) return 0.9;
+    if (usageRatio >= 0.8) return 0.1;
+    if (usageRatio >= 0.6) return 0.3;
+    if (usageRatio >= 0.4) return 0.6;
+    if (usageRatio >= 0.2) return 0.8;
     return 1.0;
   }
 

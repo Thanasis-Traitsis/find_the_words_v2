@@ -10,8 +10,14 @@ import 'package:flutter_html/flutter_html.dart';
 class WordRowItem extends StatefulWidget {
   final String word;
   final List<dynamic> meanings;
+  final bool isFirst;
 
-  const WordRowItem({super.key, required this.word, required this.meanings});
+  const WordRowItem({
+    super.key,
+    required this.word,
+    required this.meanings,
+    this.isFirst = false,
+  });
 
   @override
   State<WordRowItem> createState() => _WordRowItemState();
@@ -31,6 +37,9 @@ class _WordRowItemState extends State<WordRowItem>
         });
       },
       child: Container(
+        margin: widget.isFirst
+            ? null
+            : const EdgeInsets.only(top: AppSpacing.spacingL),
         decoration: BoxDecoration(
           border: Border(
             bottom: BorderSide(
