@@ -1,3 +1,4 @@
+import 'package:find_the_words/app/bootstrap_error_screen.dart';
 import 'package:find_the_words/app/my_app.dart';
 import 'package:find_the_words/config/ads/rewarded_cubit/rewarded_ad_cubit.dart';
 import 'package:find_the_words/config/connectivity/connectivity_cubit/connectivity_cubit.dart';
@@ -27,8 +28,11 @@ class MyAppLoader extends StatefulWidget {
   State<MyAppLoader> createState() => _MyAppLoaderState();
 }
 
+enum _BootstrapStatus { loading, ready, failed }
+
 class _MyAppLoaderState extends State<MyAppLoader> {
-  bool _isReady = false;
+  _BootstrapStatus _status = _BootstrapStatus.loading;
+  String? _errorMessage;
 
   @override
   void initState() {
@@ -40,10 +44,22 @@ class _MyAppLoaderState extends State<MyAppLoader> {
     try {
       await AppBootstrapper().initialize();
 
-      setState(() => _isReady = true);
+      setState(() => _status = _BootstrapStatus.ready);
     } catch (e) {
       debugPrint('Initialization error: $e');
+      setState(() {
+        _status = _BootstrapStatus.failed;
+        _errorMessage = e.toString();
+      });
     }
+  }
+
+  void _retry() {
+    setState(() {
+      _status = _BootstrapStatus.loading;
+      _errorMessage = null;
+    });
+    _initializeApp();
   }
 
   List<BlocProvider> _splashProviders() {
@@ -73,16 +89,31 @@ class _MyAppLoaderState extends State<MyAppLoader> {
 
   @override
   Widget build(BuildContext context) {
-    if (!_isReady) {
-      return MultiBlocProvider(
-        providers: _splashProviders(),
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          home: SplashScreen(),
-        ),
-      );
+    switch (_status) {
+      case _BootstrapStatus.loading:
+        return MultiBlocProvider(
+          providers: _splashProviders(),
+          child: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            home: SplashScreen(),
+          ),
+        );
+      case _BootstrapStatus.failed:
+        return MultiBlocProvider(
+          providers: _splashProviders(),
+          child: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            home: BootstrapErrorScreen(
+              message: _errorMessage ?? '',
+              onRetry: _retry,
+            ),
+          ),
+        );
+      case _BootstrapStatus.ready:
+        return MultiBlocProvider(
+          providers: _appProviders(),
+          child: const MyApp(),
+        );
     }
-
-    return MultiBlocProvider(providers: _appProviders(), child: const MyApp());
   }
 }
