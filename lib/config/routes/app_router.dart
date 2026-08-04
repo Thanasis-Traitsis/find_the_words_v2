@@ -58,6 +58,7 @@ class AppRouter {
         },
       ),
       GoRoute(
+        parentNavigatorKey: NavigationService.rootNavigatorKey,
         path: AppPages.forceUpdate.info.path,
         name: AppPages.forceUpdate.info.name,
         pageBuilder: (context, state) {
