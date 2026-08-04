@@ -7,7 +7,6 @@ import 'package:find_the_words/config/sound/cubit/sound_cubit.dart';
 import 'package:find_the_words/config/theme/theme_cubit/theme_cubit.dart';
 import 'package:find_the_words/config/version/version_bloc/version_bloc.dart';
 import 'package:find_the_words/core/services/app_bootstrapper.dart';
-import 'package:find_the_words/core/services/connectivity_service.dart';
 import 'package:find_the_words/core/services/service_locator.dart';
 import 'package:find_the_words/features/auth/account_boost_cubit/account_boost_cubit.dart';
 import 'package:find_the_words/features/auth/auth_cubit/auth_cubit.dart';
@@ -70,14 +69,12 @@ class _MyAppLoaderState extends State<MyAppLoader> {
     return [
       BlocProvider.value(value: getIt<VersionBloc>()),
       BlocProvider.value(value: getIt<ThemeCubit>()),
-      BlocProvider.value(
-        value: ConnectivityCubit(getIt<ConnectivityService>()),
-      ),
+      BlocProvider.value(value: getIt<ConnectivityCubit>()),
       BlocProvider.value(value: getIt<LanguageCubit>()),
       BlocProvider.value(value: getIt<RewardedAdCubit>()),
       BlocProvider.value(value: getIt<FreezeCubit>()),
       BlocProvider.value(value: getIt<PointsAdLimitCubit>()),
-      BlocProvider.value(value: SoundCubit()),
+      BlocProvider.value(value: getIt<SoundCubit>()),
       BlocProvider.value(value: getIt<SettingsCubit>()),
       BlocProvider.value(value: getIt<AuthCubit>()),
       BlocProvider.value(value: getIt<PointsCubit>()),
