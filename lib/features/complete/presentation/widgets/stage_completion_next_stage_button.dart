@@ -1,4 +1,4 @@
-import 'package:find_the_words/config/routes/app_pages.dart';
+import 'package:find_the_words/config/routes/args/stage_route_args.dart';
 import 'package:find_the_words/core/constants/custom_icons.dart';
 import 'package:find_the_words/core/services/service_locator.dart';
 import 'package:find_the_words/core/utils/text_extensions.dart';
@@ -23,12 +23,10 @@ class StageCompletionNextStageButton extends StatelessWidget {
     return BlocListener<StageBloc, StageState>(
       listener: (context, state) {
         if (state is StageReady && isButtonAvailable) {
-          AppPages.stage.pushReplacement(
-            extra: {
-              'stage': user.currentProgress.stage,
-              'level': user.currentProgress.level,
-            },
-          );
+          StageRouteArgs(
+            stage: user.currentProgress.stage,
+            level: user.currentProgress.level,
+          ).pushReplacement();
         }
       },
       child: CustomPrimaryButton.large(

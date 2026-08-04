@@ -2,6 +2,8 @@ import 'package:find_the_words/config/language/cubit/language_cubit.dart';
 import 'package:find_the_words/config/routes/app_pages.dart';
 import 'package:find_the_words/config/routes/app_redirect_policy.dart';
 import 'package:find_the_words/config/routes/app_routes.dart';
+import 'package:find_the_words/config/routes/args/complete_route_args.dart';
+import 'package:find_the_words/config/routes/args/stage_route_args.dart';
 import 'package:find_the_words/config/theme/screens/theme_screen.dart';
 import 'package:find_the_words/config/version/force_update_screen.dart';
 import 'package:find_the_words/config/version/version_bloc/version_bloc.dart';
@@ -16,7 +18,6 @@ import 'package:find_the_words/features/game_instructions/presentation/screens/g
 import 'package:find_the_words/features/home/presentation/screens/home_screen.dart';
 import 'package:find_the_words/config/language/presentation/screen/language_selection_screen.dart';
 import 'package:find_the_words/features/settings/presentation/screens/settings_screen.dart';
-import 'package:find_the_words/features/stage/data/models/stage_results.dart';
 import 'package:find_the_words/features/stage/presentation/screens/stage_screen_provider.dart';
 import 'package:find_the_words/features/words/presentation/screens/total_words_screen.dart';
 import 'package:find_the_words/splash_screen.dart';
@@ -84,11 +85,9 @@ class AppRouter {
         path: AppPages.stage.info.path,
         name: AppPages.stage.info.name,
         pageBuilder: (context, state) {
-          final params = state.extra as Map<String, dynamic>?;
-          final stage = params?['stage'] as int? ?? 0;
-          final level = params?['level'] as int? ?? 1;
+          final args = state.extra as StageRouteArgs;
           return _noAnimationPage(
-            StageScreenProvider(stage: stage, level: level),
+            StageScreenProvider(stage: args.stage, level: args.level),
             state,
           );
         },
@@ -135,9 +134,9 @@ class AppRouter {
         path: AppPages.complete.info.path,
         name: AppPages.complete.info.name,
         pageBuilder: (context, state) {
-          final stageResults = state.extra as StageResults;
+          final args = state.extra as CompleteRouteArgs;
           return _noAnimationPage(
-            CompleteStageScreen(stageResults: stageResults),
+            CompleteStageScreen(stageResults: args.stageResults),
             state,
           );
         },
