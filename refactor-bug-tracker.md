@@ -24,7 +24,7 @@ Fold these fixes into whichever refactor phase touches the relevant module. Upda
 
 | # | Bug | File | Status |
 |---|---|---|---|
-| 10 | `MobileAds.instance.initialize()` not awaited in `main.dart` — possible race if anything requests an ad before init completes. Confirm intentional vs. oversight. | `main.dart` | Open |
+| 10 | `MobileAds.instance.initialize()` not awaited in `main.dart` — possible race if anything requests an ad before init completes. Confirm intentional vs. oversight. | `main.dart` | Fixed — was an oversight, not intentional: `RewardedAdCubit` (registered eagerly via `registerSingletonAsync` inside `setupServiceLocator()`) calls `RewardedAd.load()` on construction, with no guaranteed happens-before relationship to the unawaited `initialize()` call — real race, just usually masked by incidental timing. Moved both `MobileAds.instance.initialize()` (now awaited) and `updateRequestConfiguration(...)` into `AppBootstrapper.initialize()`, sequenced before `setupServiceLocator()`. Doesn't delay first paint — splash still renders immediately from `MyAppLoader`'s `loading` state regardless of how long bootstrap takes. |
 | 11 | `forceUpdate` route missing `parentNavigatorKey` that every other route has — confirm intentional or copy-paste miss. | `app_router.dart` | Open |
 | 12 | `SoundCubit()` and `ConnectivityCubit(...)` constructed inline in `_appProviders()` while every other cubit comes from `getIt<T>()` — inconsistent DI pattern, flagged by the flutter-clean-architecture skill. | `app_loader.dart` | Open |
 | 13 | Redundant `Builder` wrapper in `MyApp.build()` — context already supports `watch<T>()` without it. | `my_app.dart` | Open |
