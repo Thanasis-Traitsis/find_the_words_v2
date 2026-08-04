@@ -15,29 +15,25 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Builder(
-      builder: (context) {
-        final themeState = context.watch<ThemeCubit>().state;
-        final langState = context.watch<LanguageCubit>().state;
+    final themeState = context.watch<ThemeCubit>().state;
+    final langState = context.watch<LanguageCubit>().state;
 
-        return MaterialApp.router(
-          debugShowCheckedModeBanner: false,
-          scaffoldMessengerKey: AppKeys.scaffoldMessengerKey,
-          title: AppStrings.appName,
-          localizationsDelegates: [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          locale: langState.appLanguage.locale,
-          supportedLocales: AppLanguage.langLocales,
-          themeMode: themeState.themeMode,
-          theme: AppTheme(AppColors.mainColors).getTheme(),
-          darkTheme: AppTheme(AppColors.darkColors).getTheme(),
-          routerConfig: AppRouter.router,
-        );
-      },
+    return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
+      scaffoldMessengerKey: AppKeys.scaffoldMessengerKey,
+      title: AppStrings.appName,
+      localizationsDelegates: [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      locale: langState.appLanguage.locale,
+      supportedLocales: AppLanguage.langLocales,
+      themeMode: themeState.themeMode,
+      theme: AppTheme(AppColors.mainColors).getTheme(),
+      darkTheme: AppTheme(AppColors.darkColors).getTheme(),
+      routerConfig: AppRouter.router,
     );
   }
 }
