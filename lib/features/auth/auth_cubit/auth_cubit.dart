@@ -17,6 +17,7 @@ import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 part 'auth_state.dart';
 
@@ -104,6 +105,63 @@ class AuthCubit extends Cubit<AuthState> {
       );
     } catch (e) {
       debugPrint('Error signing in with Google: $e');
+      emit(
+        currentState.copyWith(
+          signInOutLoading: false,
+          effect: AuthEffect.signInFailure,
+        ),
+      );
+    }
+  }
+
+  Future<void> appleSignIn() async {
+    if (state is! AuthAuthenticated) return;
+    final currentState = state as AuthAuthenticated;
+    emit(currentState.copyWith(signInOutLoading: true));
+
+    try {
+      // Attempt Apple Sign-In
+      final firebase_auth.UserCredential? userCredential = await AuthService
+          .instance
+          .signInWithApple();
+
+      if (userCredential == null) {
+        // User canceled - return to previous state
+        debugPrint('Apple Sign-In canceled');
+        emit(
+          currentState.copyWith(
+            signInOutLoading: false,
+            effect: AuthEffect.signInFailure,
+          ),
+        );
+        return;
+      }
+
+      final firebaseUser = userCredential.user!;
+      final syncService = getIt<CloudSyncService>();
+      final cloudUserDoc = await _userRepo.getFirebaseUser(firebaseUser.uid);
+      final syncedUser = await syncService.syncWithCloud(
+        firebaseUser: firebaseUser,
+        localUser: currentState.user,
+        cloudUserDoc: cloudUserDoc,
+      );
+
+      await _userRepo.updateUser(syncedUser);
+      await AuthService.instance.saveToken(firebaseUser.uid);
+
+      emit(
+        AuthAuthenticated(user: syncedUser, effect: AuthEffect.signInSuccess),
+      );
+    } on SignInWithAppleAuthorizationException catch (e) {
+      debugPrint('Apple Sign-In exception: ${e.code} - ${e.message}');
+      emit(
+        currentState.copyWith(
+          signInOutLoading: false,
+          effect: AuthEffect.signInFailure,
+        ),
+      );
+    } catch (e) {
+      debugPrint('Error signing in with Apple: $e');
       emit(
         currentState.copyWith(
           signInOutLoading: false,

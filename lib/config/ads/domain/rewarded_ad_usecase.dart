@@ -1,6 +1,7 @@
 import 'package:find_the_words/core/services/service_locator.dart';
 import 'package:find_the_words/core/services/store_discount_service.dart';
 import 'package:find_the_words/features/freeze/freeze_cubit/freeze_cubit.dart';
+import 'package:find_the_words/features/points/cubit/points_ad_limit_cubit.dart';
 import 'package:find_the_words/features/points/cubit/points_cubit.dart';
 import 'package:find_the_words/features/store/data/models/reward_type.dart';
 
@@ -21,6 +22,8 @@ class EarnPointsUseCase implements RewardAdUseCase {
       points,
       reason: 'Watched rewarded ad - Earn points',
     );
+
+    await getIt<PointsAdLimitCubit>().recordWatch();
   }
 }
 

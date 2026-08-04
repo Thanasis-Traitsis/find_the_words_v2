@@ -20,15 +20,18 @@ class PointsContainer extends StatelessWidget {
     return GestureDetector(
       onTap: withVoidCallback
           ? () {
-              showModalBottomSheet(
-                context: context,
-                useRootNavigator: true,
-                isScrollControlled: true,
-                backgroundColor: Colors.transparent,
-                builder: (BuildContext context) {
-                  return const StoreBottomsheet();
-                },
-              );
+              Future.delayed(const Duration(milliseconds: 350), () {
+                if (!context.mounted) return;
+                showModalBottomSheet(
+                  context: context,
+                  useRootNavigator: true,
+                  isScrollControlled: true,
+                  backgroundColor: Colors.transparent,
+                  builder: (BuildContext context) {
+                    return const StoreBottomsheet();
+                  },
+                );
+              });
             }
           : null,
       child: Container(

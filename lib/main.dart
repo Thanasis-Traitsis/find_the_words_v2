@@ -8,6 +8,7 @@ import 'package:find_the_words/core/services/service_locator.dart';
 import 'package:find_the_words/features/auth/account_boost_cubit/account_boost_cubit.dart';
 import 'package:find_the_words/features/auth/auth_cubit/auth_cubit.dart';
 import 'package:find_the_words/features/freeze/freeze_cubit/freeze_cubit.dart';
+import 'package:find_the_words/features/points/cubit/points_ad_limit_cubit.dart';
 import 'package:find_the_words/features/points/cubit/points_cubit.dart';
 import 'package:find_the_words/features/settings/presentation/settings_cubit/settings_cubit.dart';
 import 'package:find_the_words/features/stage/domain/services/dictionary_service.dart';
@@ -33,6 +34,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   MobileAds.instance.initialize();
+  MobileAds.instance.updateRequestConfiguration(
+    RequestConfiguration(testDeviceIds: AppKeys.testDeviceIds),
+  );
   await setupMinimalServiceLocator();
 
   runApp(const MyAppLoader());
@@ -105,6 +109,7 @@ class _MyAppLoaderState extends State<MyAppLoader> {
         BlocProvider.value(value: getIt<LanguageCubit>()),
         BlocProvider.value(value: getIt<RewardedAdCubit>()),
         BlocProvider.value(value: getIt<FreezeCubit>()),
+        BlocProvider.value(value: getIt<PointsAdLimitCubit>()),
         BlocProvider.value(value: SoundCubit()),
         BlocProvider.value(value: getIt<SettingsCubit>()),
         BlocProvider.value(value: getIt<AuthCubit>()),

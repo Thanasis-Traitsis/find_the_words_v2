@@ -10,6 +10,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class AuthService {
   static final AuthService _instance = AuthService._internal();
@@ -113,6 +114,52 @@ class AuthService {
     }
   }
 
+  // Apple Sign-In methods
+  Future<UserCredential?> signInWithApple() async {
+    try {
+      // Request Apple ID credential
+      final appleCredential = await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
+      );
+
+      // Create OAuth credential for Firebase
+      final oauthCredential = OAuthProvider("apple.com").credential(
+        idToken: appleCredential.identityToken,
+        accessToken: appleCredential.authorizationCode,
+      );
+
+      // Sign in to Firebase with the Apple credential
+      final UserCredential userCredential = await _firebaseAuth
+          .signInWithCredential(oauthCredential);
+
+      // Update display name if available and not already set
+      if (userCredential.user != null && 
+          userCredential.user!.displayName == null &&
+          appleCredential.givenName != null) {
+        final displayName = '${appleCredential.givenName ?? ''} ${appleCredential.familyName ?? ''}'.trim();
+        if (displayName.isNotEmpty) {
+          await userCredential.user!.updateDisplayName(displayName);
+        }
+      }
+
+      debugPrint('Apple Sign-In successful: ${userCredential.user?.email}');
+      return userCredential;
+    } on SignInWithAppleAuthorizationException catch (e) {
+      if (e.code == AuthorizationErrorCode.canceled) {
+        debugPrint('Apple Sign-In canceled by user');
+        return null;
+      }
+      debugPrint('Apple Sign-In exception: ${e.code} - ${e.message}');
+      rethrow;
+    } catch (e) {
+      debugPrint('Error signing in with Apple: $e');
+      rethrow;
+    }
+  }
+
   Future<void> disconnect() async {
     try {
       await GoogleSignIn.instance.disconnect();
@@ -184,6 +231,40 @@ class AuthService {
       debugPrint('✅ Complete account deletion successful');
     } catch (e) {
       debugPrint('❌ Error deleting account: $e');
+      rethrow;
+    }
+  }
+
+  Future<UserCredential?> reauthenticateWithApple() async {
+    try {
+      final user = _firebaseAuth.currentUser;
+      if (user == null) {
+        throw Exception('No user signed in');
+      }
+
+      // Request Apple ID credential
+      final appleCredential = await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
+      );
+
+      // Create OAuth credential for Firebase
+      final oauthCredential = OAuthProvider("apple.com").credential(
+        idToken: appleCredential.identityToken,
+        accessToken: appleCredential.authorizationCode,
+      );
+
+      // Reauthenticate
+      final userCredential = await user.reauthenticateWithCredential(
+        oauthCredential,
+      );
+      debugPrint('Apple reauthentication successful');
+
+      return userCredential;
+    } catch (e) {
+      debugPrint('Error reauthenticating with Apple: $e');
       rethrow;
     }
   }

@@ -28,6 +28,9 @@ class AppKeys {
   static const String discountPercentageKey = 'store_discount_percentage';
   static const String discountExpiryKey = 'store_discount_expiry';
 
+  static const String pointsAdWatchCountKey = 'points_ad_watch_count';
+  static const String pointsAdWindowStartKey = 'points_ad_window_start';
+
   // Email account
   static const String emailAccount = 'infofindthewords@gmail.com';
 
@@ -38,16 +41,19 @@ class AppKeys {
   // AdMob Keys - Production mode (replace with your real ad unit IDs)
   static const String _androidAdsProdKey = "ca-app-pub-4519784875288313/5429359375";
   static const String _iosAdsProdKey = "ca-app-pub-4519784875288313/2077110173";
+  static const List<String> testDeviceIds = ["BC28D1EFE1C9E33CEC4E6649E1D36B66"];
 
   static String get rewardedAdUnitId {
-    if (kDebugMode) {
-      return defaultTargetPlatform == TargetPlatform.android
-          ? _androidAdsDebugKey
-          : _iosAdsDebugKey;
-    } else {
+    // kReleaseMode (not kDebugMode) gates production IDs, since kDebugMode is also false in
+    // profile mode - using it here would leak production ad units into profile builds.
+    if (kReleaseMode) {
       return defaultTargetPlatform == TargetPlatform.android
           ? _androidAdsProdKey
           : _iosAdsProdKey;
+    } else {
+      return defaultTargetPlatform == TargetPlatform.android
+          ? _androidAdsDebugKey
+          : _iosAdsDebugKey;
     }
   }
 

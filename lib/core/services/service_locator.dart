@@ -14,6 +14,7 @@ import 'package:find_the_words/features/auth/auth_cubit/auth_cubit.dart';
 import 'package:find_the_words/features/auth/data/repositories/user_repository_impl.dart';
 import 'package:find_the_words/features/auth/domain/repositories/user_repository.dart';
 import 'package:find_the_words/features/freeze/freeze_cubit/freeze_cubit.dart';
+import 'package:find_the_words/features/points/cubit/points_ad_limit_cubit.dart';
 import 'package:find_the_words/features/points/cubit/points_cubit.dart';
 import 'package:find_the_words/features/settings/domain/usecases/open_email_usecase.dart';
 import 'package:find_the_words/features/settings/presentation/settings_cubit/settings_cubit.dart';
@@ -195,5 +196,9 @@ Future<void> _registerBlocs() async {
 
   getIt.registerLazySingleton<FreezeCubit>(
     () => FreezeCubit(getIt<UserProfileService>())..initializeFreeze(),
+  );
+
+  getIt.registerLazySingleton<PointsAdLimitCubit>(
+    () => PointsAdLimitCubit()..initialize(),
   );
 }

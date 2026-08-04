@@ -5,6 +5,7 @@ import 'package:find_the_words/core/services/store_discount_service.dart';
 import 'package:find_the_words/core/utils/text_extensions.dart';
 import 'package:find_the_words/core/utils/theme_extensions.dart';
 import 'package:find_the_words/features/freeze/freeze_cubit/freeze_cubit.dart';
+import 'package:find_the_words/features/points/cubit/points_ad_limit_cubit.dart';
 import 'package:find_the_words/features/store/data/models/reward_type.dart';
 import 'package:find_the_words/features/store/presentation/widgets/rewards_section/rewards_card.dart';
 import 'package:find_the_words/features/store/presentation/widgets/rewards_section/rewards_section_header.dart';
@@ -27,22 +28,28 @@ class RewardsSection extends StatelessWidget {
           sectionContent: Column(
             spacing: AppSpacing.spacingM,
             children: [
-              RewardsCard(
-                rewardConfig: RewardConfig(
-                  type: RewardType.earnPoints,
-                  amount: AppValues.rewardPoints,
-                  isActive: false,
-                  notificationTitle: context.translate.rewardNotificationTitle,
-                  notificationMessage: context.translate
-                      .rewardPointsNotificationMessage(AppValues.rewardPoints),
-                ),
-                smallTitle: context.translate.rewardsFirstOfferTitleSmall,
-                bigTitle: context.translate.rewardsFirstOfferTitleBig(AppValues.rewardPoints),
-                description: context.translate.rewardsFirstOfferDescription(AppValues.rewardPoints),
-                rewardIcon: CustomIcons.stars,
-                backgroundColor: context.colors.lightPink,
-                iconColor: context.colors.secondary,
-                textColor: context.colors.darkPink,
+              BlocBuilder<PointsAdLimitCubit, PointsAdLimitState>(
+                builder: (context, adLimitState) {
+                  return RewardsCard(
+                    rewardConfig: RewardConfig(
+                      type: RewardType.earnPoints,
+                      amount: AppValues.rewardPoints,
+                      isActive: !adLimitState.canWatch,
+                      notAvailableUntil: adLimitState.timeUntilReset,
+                      notificationTitle:
+                          context.translate.rewardNotificationTitle,
+                      notificationMessage: context.translate
+                          .rewardPointsNotificationMessage(AppValues.rewardPoints),
+                    ),
+                    smallTitle: context.translate.rewardsFirstOfferTitleSmall,
+                    bigTitle: context.translate.rewardsFirstOfferTitleBig(AppValues.rewardPoints),
+                    description: context.translate.rewardsFirstOfferDescription(AppValues.rewardPoints),
+                    rewardIcon: CustomIcons.stars,
+                    backgroundColor: context.colors.lightPink,
+                    iconColor: context.colors.secondary,
+                    textColor: context.colors.darkPink,
+                  );
+                },
               ),
               RewardsCard(
                 rewardConfig: RewardConfig(

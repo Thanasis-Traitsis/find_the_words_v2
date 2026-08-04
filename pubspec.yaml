@@ -16,7 +16,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 2.1.0+15
+version: 2.1.2+17
 
 environment:
   sdk: ^3.8.1
@@ -32,7 +32,7 @@ dependencies:
   audioplayers: ^6.5.1
   bloc_concurrency: ^0.3.0
   cloud_firestore: ^6.1.1
-  connectivity_plus: ^6.1.5
+  connectivity_plus: ^7.3.1
   cupertino_icons: ^1.0.8
   equatable: ^2.0.7
   firebase_auth: ^6.1.3
@@ -41,28 +41,41 @@ dependencies:
     sdk: flutter
   flutter_bloc: ^9.1.1
   flutter_html: ^3.0.0
-  flutter_localization: ^0.3.3
+  flutter_localization: ^0.4.0
   flutter_svg: ^2.2.0
-  get_it: ^8.2.0
-  go_router: ^16.1.0
-  google_mobile_ads: ^6.0.0
+  get_it: ^9.2.1
+  go_router: ^17.3.0
+  google_mobile_ads: ^9.0.0
   google_sign_in: ^7.2.0
+  sign_in_with_apple: ^8.1.0
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   hive_generator: ^2.0.1
   intl: ^0.20.2
   loading_animation_widget: ^1.3.0
-  package_info_plus: ^9.0.0
+  package_info_plus: ^10.2.1
   shared_preferences: ^2.5.3
   shimmer: ^3.0.0
   stream_transform: ^2.1.1
   url_launcher: ^6.3.2
 
 dev_dependencies:
-  flutter_lints: ^5.0.0
+  flutter_lints: ^6.0.0
   flutter_launcher_icons: ^0.14.4
   flutter_test:
     sdk: flutter
+
+# flutter_localization 0.4.0 and 0.4.1 are both broken: 0.4.1's android/build.gradle.kts uses
+# the kotlin{} extension without applying the kotlin-android plugin (breaks Android), and both
+# versions' iOS Swift plugin has an invalid trailing comma in a function call (breaks iOS).
+# Pinned to the last known-good version until upstream fixes it:
+# https://pub.dev/packages/flutter_localization
+dependency_overrides:
+  flutter_localization: 0.3.3
+  # connectivity_plus 7.1.0+ references NWPath.isUltraConstrained (iOS 26 SDK API), which needs
+  # a newer Xcode than what's installed here (Xcode 16.2 / iOS 18.2 SDK). Pinned to the last
+  # version compiled against the current SDK; bump once Xcode is updated.
+  connectivity_plus: 7.0.0
 
 flutter_launcher_icons:
   android: true

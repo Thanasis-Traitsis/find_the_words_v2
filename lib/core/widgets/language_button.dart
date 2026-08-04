@@ -17,15 +17,18 @@ class LanguageButton extends StatelessWidget {
       child: InkWell(
         borderRadius: AppBorders.smallBorderRadius,
         onTap: () {
-          showModalBottomSheet(
-            context: context,
-            useRootNavigator: true,
-            isScrollControlled: true,
-            backgroundColor: Colors.transparent,
-            builder: (context) {
-              return LangBottomsheet();
-            },
-          );
+          Future.delayed(const Duration(milliseconds: 350), () {
+            if (!context.mounted) return;
+            showModalBottomSheet(
+              context: context,
+              useRootNavigator: true,
+              isScrollControlled: true,
+              backgroundColor: Colors.transparent,
+              builder: (context) {
+                return LangBottomsheet();
+              },
+            );
+          });
         },
         child: Container(
           decoration: BoxDecoration(

@@ -19,6 +19,7 @@ import 'package:find_the_words/features/settings/presentation/widgets/settings_r
 import 'package:find_the_words/features/settings/presentation/widgets/sound_settings_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'dart:io' show Platform;
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -213,6 +214,20 @@ class SettingsScreen extends StatelessWidget {
                             requiresInternet: true,
                           ),
                         ),
+                        if (Platform.isIOS)
+                          Container(
+                            margin: const EdgeInsets.only(
+                              bottom: AppSpacing.spacingL,
+                            ),
+                            child: CustomSocialButton(
+                              social: CustomIcons.apple,
+                              text: "Apple Sign in",
+                              onPressed: () {
+                                getIt<AuthCubit>().appleSignIn();
+                              },
+                              requiresInternet: true,
+                            ),
+                          ),
                       ] else ...[
                         SettingsRowItem.logout(
                           name: context.translate.logoutBtnText,

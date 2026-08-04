@@ -3,11 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>1076835651206-g37pl8e0umi299ovvevrvq1k0n7d2g1u.apps.googleusercontent.com</string>
+	<string>1076835651206-e0u632l08j8m5qjp2vdt4uq3q759mikp.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.1076835651206-g37pl8e0umi299ovvevrvq1k0n7d2g1u</string>
+	<string>com.googleusercontent.apps.1076835651206-e0u632l08j8m5qjp2vdt4uq3q759mikp</string>
 	<key>ANDROID_CLIENT_ID</key>
-	<string>1076835651206-gre4bmmev304u9ndc6bkba16kagjcd2l.apps.googleusercontent.com</string>
+	<string>1076835651206-1ok1m6nhuuler8h34nqd8ikmriqc1ns9.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
 	<string>AIzaSyCuYT_blX--VFCmDovRj8BRulyXwu_Z_e4</string>
 	<key>GCM_SENDER_ID</key>
@@ -15,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.findTheWords</string>
+	<string>com.thanasistraitsis.findthewords</string>
 	<key>PROJECT_ID</key>
 	<string>words-lists</string>
 	<key>STORAGE_BUCKET</key>
@@ -31,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:1076835651206:ios:0ed38b233921cdbf3e4b07</string>
+	<string>1:1076835651206:ios:c25a24f3403884cd3e4b07</string>
 </dict>
 </plist>

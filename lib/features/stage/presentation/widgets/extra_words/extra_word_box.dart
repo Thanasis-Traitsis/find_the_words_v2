@@ -54,10 +54,13 @@ class _ExtraWordsBoxState extends State<ExtraWordsBox>
       children: [
         GestureDetector(
           onTap: () {
-            showDialog(
-              context: context,
-              builder: (context) => const ExtraWordsDialog(),
-            );
+            Future.delayed(const Duration(milliseconds: 350), () {
+              if (!context.mounted) return;
+              showDialog(
+                context: context,
+                builder: (context) => const ExtraWordsDialog(),
+              );
+            });
           },
           child: Container(
             padding: const EdgeInsets.all(AppSpacing.spacingM),

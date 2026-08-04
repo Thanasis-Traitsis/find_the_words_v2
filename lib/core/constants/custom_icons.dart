@@ -50,7 +50,8 @@ enum CustomIcons {
   homeLogo('home_logo'),
 
   // Social
-  google('google');
+  google('google'),
+  apple('apple');
 
   const CustomIcons(this.fileName);
   
