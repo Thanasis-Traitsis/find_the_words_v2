@@ -1,5 +1,6 @@
 import 'package:find_the_words/config/language/cubit/language_cubit.dart';
 import 'package:find_the_words/config/routes/app_pages.dart';
+import 'package:find_the_words/config/routes/app_redirect_policy.dart';
 import 'package:find_the_words/config/routes/app_routes.dart';
 import 'package:find_the_words/config/theme/screens/theme_screen.dart';
 import 'package:find_the_words/config/version/force_update_screen.dart';
@@ -32,40 +33,17 @@ class AppRouter {
     getIt<LanguageCubit>(),
   );
 
+  static final _redirectPolicy = AppRedirectPolicy();
+
   static final GoRouter router = GoRouter(
-    refreshListenable: appStatusNotifier, 
+    refreshListenable: appStatusNotifier,
     redirect: (context, state) {
-      final authState = getIt<AuthCubit>().state;
-      final langState = getIt<LanguageCubit>().state;
-      final isOnSplash = state.matchedLocation == AppRoutes.splashPath;
-      final isOnLang = state.matchedLocation == AppRoutes.langPath;
-      final versionState = getIt<VersionBloc>().state;
-
-      if (versionState.needsForceUpdate) {
-        return AppRoutes.forceUpdatePath;
-      }
-
-      if (authState is AuthAuthenticated &&
-          langState.isFirstTime &&
-          !isOnLang) {
-        return AppRoutes.langPath;
-      }
-
-      if (authState is AuthUnauthenticated) {
-        return AppRoutes.splashPath;
-      }
-
-      if (authState is AuthLoading && !isOnSplash) {
-        return AppRoutes.splashPath;
-      }
-
-      if (authState is AuthAuthenticated &&
-          isOnSplash &&
-          !langState.isFirstTime) {
-        return AppRoutes.homePath;
-      }
-
-      return null;
+      return _redirectPolicy.resolve(
+        authState: getIt<AuthCubit>().state,
+        langState: getIt<LanguageCubit>().state,
+        versionState: getIt<VersionBloc>().state,
+        currentLocation: state.matchedLocation,
+      );
     },
     initialLocation: AppRoutes.homePath,
     navigatorKey: NavigationService.rootNavigatorKey,
