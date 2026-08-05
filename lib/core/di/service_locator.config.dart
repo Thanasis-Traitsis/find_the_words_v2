@@ -29,8 +29,15 @@ import '../../features/auth/data/repositories/user_repository_impl.dart'
 import '../../features/auth/domain/repositories/user_repository.dart' as _i926;
 import '../../features/auth/domain/usecases/build_authenticated_user_usecase.dart'
     as _i253;
+import '../../features/auth/domain/usecases/create_guest_user_usecase.dart'
+    as _i792;
+import '../../features/auth/domain/usecases/delete_account_usecase.dart'
+    as _i914;
 import '../../features/auth/domain/usecases/merge_user_progress_usecase.dart'
     as _i542;
+import '../../features/auth/domain/usecases/resolve_initial_auth_state_usecase.dart'
+    as _i710;
+import '../../features/auth/domain/usecases/sign_in_usecase.dart' as _i259;
 import '../../features/freeze/freeze_cubit/freeze_cubit.dart' as _i341;
 import '../../features/points/cubit/points_ad_limit_cubit.dart' as _i183;
 import '../../features/points/cubit/points_cubit.dart' as _i640;
@@ -183,6 +190,10 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i253.BuildAuthenticatedUserUsecase(),
       registerFor: {_minimal},
     );
+    gh.factory<_i914.DeleteAccountUsecase>(
+      () => _i914.DeleteAccountUsecase(),
+      registerFor: {_minimal},
+    );
     gh.lazySingleton<_i990.StageGeneratorService>(
       () => _i990.StageGeneratorService(
         wordSelectionService: gh<_i887.WordSelectionService>(),
@@ -230,6 +241,10 @@ extension GetItInjectableX on _i174.GetIt {
       ),
       registerFor: {_full},
     );
+    gh.factory<_i792.CreateGuestUserUsecase>(
+      () => _i792.CreateGuestUserUsecase(gh<_i926.UserRepository>()),
+      registerFor: {_minimal},
+    );
     await gh.lazySingletonAsync<_i341.FreezeCubit>(
       () {
         final i = _i341.FreezeCubit(gh<_i442.UserProfileService>());
@@ -242,10 +257,10 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i427.LoadStageUsecase(repository: gh<_i316.StageRepository>()),
       registerFor: {_full},
     );
-    gh.lazySingleton<_i199.AuthCubit>(
-      () => _i199.AuthCubit(
+    gh.factory<_i259.SignInUsecase>(
+      () => _i259.SignInUsecase(
         gh<_i926.UserRepository>(),
-        gh<_i253.BuildAuthenticatedUserUsecase>(),
+        gh<_i1007.CloudSyncService>(),
       ),
       registerFor: {_minimal},
     );
@@ -271,6 +286,16 @@ extension GetItInjectableX on _i174.GetIt {
       ),
       registerFor: {_full},
     );
+    gh.factory<_i710.ResolveInitialAuthStateUsecase>(
+      () => _i710.ResolveInitialAuthStateUsecase(
+        gh<_i926.UserRepository>(),
+        gh<_i47.ConnectivityService>(),
+        gh<_i1007.CloudSyncService>(),
+        gh<_i253.BuildAuthenticatedUserUsecase>(),
+        gh<_i792.CreateGuestUserUsecase>(),
+      ),
+      registerFor: {_minimal},
+    );
     gh.factory<_i188.SubmitWordUsecase>(
       () => _i188.SubmitWordUsecase(
         crosswordUsecase: gh<_i811.CrosswordUsecase>(),
@@ -280,6 +305,16 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i778.VersionBloc>(
       () => _i778.VersionBloc(gh<_i339.VersionService>()),
+      registerFor: {_minimal},
+    );
+    gh.lazySingleton<_i199.AuthCubit>(
+      () => _i199.AuthCubit(
+        gh<_i926.UserRepository>(),
+        gh<_i710.ResolveInitialAuthStateUsecase>(),
+        gh<_i259.SignInUsecase>(),
+        gh<_i914.DeleteAccountUsecase>(),
+        gh<_i792.CreateGuestUserUsecase>(),
+      ),
       registerFor: {_minimal},
     );
     gh.lazySingleton<_i772.StageBloc>(
