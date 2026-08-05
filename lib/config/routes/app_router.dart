@@ -5,8 +5,6 @@ import 'package:find_the_words/config/routes/app_routes.dart';
 import 'package:find_the_words/config/routes/args/complete_route_args.dart';
 import 'package:find_the_words/config/routes/args/stage_route_args.dart';
 import 'package:find_the_words/config/theme/screens/theme_screen.dart';
-import 'package:find_the_words/config/version/force_update_screen.dart';
-import 'package:find_the_words/config/version/version_bloc/version_bloc.dart';
 import 'package:find_the_words/core/models/words_model.dart';
 import 'package:find_the_words/core/services/navigation_service.dart';
 import 'package:find_the_words/core/services/service_locator.dart';
@@ -42,7 +40,6 @@ class AppRouter {
       return _redirectPolicy.resolve(
         authState: getIt<AuthCubit>().state,
         langState: getIt<LanguageCubit>().state,
-        versionState: getIt<VersionBloc>().state,
         currentLocation: state.matchedLocation,
       );
     },
@@ -55,14 +52,6 @@ class AppRouter {
         name: AppPages.splash.info.name,
         pageBuilder: (context, state) {
           return _noAnimationPage(SplashScreen(), state);
-        },
-      ),
-      GoRoute(
-        parentNavigatorKey: NavigationService.rootNavigatorKey,
-        path: AppPages.forceUpdate.info.path,
-        name: AppPages.forceUpdate.info.name,
-        pageBuilder: (context, state) {
-          return _noAnimationPage(ForceUpdateScreen(), state);
         },
       ),
       GoRoute(
