@@ -1,5 +1,6 @@
 import 'package:find_the_words/config/language/app_language.dart';
 import 'package:find_the_words/config/language/cubit/language_cubit.dart';
+import 'package:find_the_words/core/di/env.dart';
 import 'package:find_the_words/core/models/words_model.dart';
 import 'package:find_the_words/core/services/cloud_sync_service.dart';
 import 'package:find_the_words/core/di/service_locator.dart';
@@ -10,7 +11,10 @@ import 'package:find_the_words/features/auth/domain/repositories/user_repository
 import 'package:find_the_words/features/stage/data/datasources/stage_local_datasource.dart';
 import 'package:find_the_words/features/stage/data/models/current_stage.dart';
 import 'package:find_the_words/features/stage/domain/services/dictionary_service.dart';
+import 'package:injectable/injectable.dart';
 
+@lazySingleton
+@Environment(Env.full)
 class UserProfileService {
   final UserRepository _userRepo;
   final AuthCubit _authCubit;

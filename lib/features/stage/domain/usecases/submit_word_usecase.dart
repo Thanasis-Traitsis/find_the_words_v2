@@ -1,9 +1,11 @@
+import 'package:find_the_words/core/di/env.dart';
 import 'package:find_the_words/core/di/service_locator.dart';
 import 'package:find_the_words/features/auth/auth_cubit/auth_cubit.dart';
 import 'package:find_the_words/features/stage/data/models/current_stage.dart';
 import 'package:find_the_words/features/stage/domain/helpers/word_placement_tracker.dart';
 import 'package:find_the_words/features/stage/domain/usecases/crossword_usecase.dart';
 import 'package:find_the_words/features/stage/domain/repositories/stage_repository.dart';
+import 'package:injectable/injectable.dart';
 
 enum WordSubmissionResult { found, replaced, extra, notFound, alreadyFound }
 
@@ -19,6 +21,8 @@ class WordSubmissionData {
   });
 }
 
+@injectable
+@Environment(Env.full)
 class SubmitWordUsecase {
   final CrosswordUsecase _crosswordUsecase;
   final StageRepository _repository;

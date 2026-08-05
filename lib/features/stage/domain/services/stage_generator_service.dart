@@ -3,6 +3,7 @@ import 'package:find_the_words/config/language/cubit/language_cubit.dart';
 import 'package:find_the_words/core/constants/backup_stages_el.dart';
 import 'package:find_the_words/core/constants/backup_stages_en.dart';
 import 'package:find_the_words/core/constants/constants.dart';
+import 'package:find_the_words/core/di/env.dart';
 import 'package:find_the_words/core/di/service_locator.dart';
 import 'package:find_the_words/core/utils/file_utils.dart';
 import 'package:find_the_words/features/stage/data/models/current_stage.dart';
@@ -12,8 +13,11 @@ import 'package:find_the_words/features/stage/domain/services/stage_validation_s
 import 'package:find_the_words/features/stage/domain/services/word_selection_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+@lazySingleton
+@Environment(Env.full)
 class StageGeneratorService {
   static const int maxRowLength = 12;
   static const int maxBoardSize = maxRowLength * maxRowLength;

@@ -1,6 +1,10 @@
 import 'package:find_the_words/core/constants/app_keys.dart';
+import 'package:find_the_words/core/di/env.dart';
+import 'package:injectable/injectable.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+@injectable
+@Environment(Env.full)
 class OpenEmailUseCase {
   static const String emailValue = AppKeys.emailAccount;
 

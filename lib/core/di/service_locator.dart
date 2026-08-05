@@ -1,38 +1,7 @@
-import 'package:find_the_words/config/ads/rewarded_cubit/rewarded_ad_cubit.dart';
-import 'package:find_the_words/config/connectivity/connectivity_cubit/connectivity_cubit.dart';
-import 'package:find_the_words/config/sound/cubit/sound_cubit.dart';
 import 'package:find_the_words/core/di/env.dart';
 import 'package:find_the_words/core/di/service_locator.config.dart';
-import 'package:find_the_words/core/services/cloud_sync_service.dart';
-import 'package:find_the_words/core/services/connectivity_service.dart';
-import 'package:find_the_words/core/services/previous_stage_words_service.dart';
-import 'package:find_the_words/core/services/storage_service.dart';
-import 'package:find_the_words/core/services/store_discount_service.dart';
-import 'package:find_the_words/core/services/user_profile_service.dart';
-import 'package:find_the_words/features/auth/account_boost_cubit/account_boost_cubit.dart';
-import 'package:find_the_words/features/auth/auth_cubit/auth_cubit.dart';
-import 'package:find_the_words/features/auth/domain/repositories/user_repository.dart';
-import 'package:find_the_words/features/freeze/freeze_cubit/freeze_cubit.dart';
-import 'package:find_the_words/features/points/cubit/points_ad_limit_cubit.dart';
-import 'package:find_the_words/features/points/cubit/points_cubit.dart';
-import 'package:find_the_words/features/settings/domain/usecases/open_email_usecase.dart';
-import 'package:find_the_words/features/settings/presentation/settings_cubit/settings_cubit.dart';
-import 'package:find_the_words/features/stage/data/datasources/stage_local_datasource.dart';
-import 'package:find_the_words/features/stage/data/repositories/stage_repository_impl.dart';
-import 'package:find_the_words/features/stage/domain/repositories/stage_repository.dart';
-import 'package:find_the_words/features/stage/domain/services/board_setup_service.dart';
-import 'package:find_the_words/features/stage/domain/services/stage_generator_service.dart';
-import 'package:find_the_words/features/stage/domain/services/word_selection_service.dart';
-import 'package:find_the_words/features/stage/domain/usecases/check_intersection_usecase.dart';
-import 'package:find_the_words/features/stage/domain/usecases/crossword_usecase.dart';
-import 'package:find_the_words/features/stage/domain/usecases/load_stage_usecase.dart';
-import 'package:find_the_words/features/stage/domain/usecases/reveal_letter_usecase.dart';
-import 'package:find_the_words/features/stage/domain/usecases/submit_word_usecase.dart';
-import 'package:find_the_words/features/stage/presentation/stage_bloc/stage_bloc.dart';
-import 'package:find_the_words/features/words/presentation/total_words_bloc/total_words_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -46,150 +15,26 @@ Future<void> registerSplashCriticalDependencies() =>
     getIt.init(environmentFilter: NoEnvOrContainsAll({Env.minimal}));
 
 // Everything else — registered once AppBootstrapper.initialize() runs, i.e.
-// after the splash-critical dependencies above are already resolved. Still
-// hand-written for now; migrating this to @Environment(Env.full) is the
-// next step.
+// after the splash-critical dependencies above are already resolved.
+//
+// GetItHelper caches the EnvironmentFilter passed to the *first* getIt.init()
+// call (under a fixed instance name) and silently reuses it on every later
+// call, ignoring whatever filter is passed then — see injectable's
+// GetItHelper constructor. Since registerSplashCriticalDependencies() above
+// already called init() once with the minimal filter, that stale filter
+// would otherwise still be in effect here, causing this call to try
+// re-registering every minimal-env dependency (already registered) instead
+// of applying the full filter. Clearing the cached filter first forces
+// GetItHelper to pick up the new one.
 Future<void> registerRemainingDependencies() async {
-  await _registerCoreServices();
-  await _registerRepositories();
-  await _registerUsecases();
-  await _registerBlocs();
+  if (getIt.isRegistered<EnvironmentFilter>(
+    instanceName: kEnvironmentsFilterName,
+  )) {
+    getIt.unregister<EnvironmentFilter>(instanceName: kEnvironmentsFilterName);
+  }
+  if (getIt.isRegistered<Set<String>>(instanceName: kEnvironmentsName)) {
+    getIt.unregister<Set<String>>(instanceName: kEnvironmentsName);
+  }
 
-  await getIt.allReady();
-}
-
-Future<void> _registerCoreServices() async {
-  getIt.registerLazySingleton<ConnectivityService>(() => ConnectivityService());
-  getIt.registerLazySingleton<PreviousStageWordsService>(
-    () => PreviousStageWordsService(),
-  );
-
-  getIt.registerSingletonAsync<StoreDiscountService>(
-    () async => StoreDiscountService.create(),
-  );
-}
-
-Future<void> _registerRepositories() async {
-  // UserRepository is registered via injectable (Env.minimal) — AuthCubit
-  // needs it before this runs. Don't re-register it here.
-  getIt.registerLazySingleton<StageRepository>(() {
-    final wordService = WordSelectionService(getIt<SharedPreferences>());
-    final boardService = BoardSetupService();
-    final generatorService = StageGeneratorService(
-      wordSelectionService: wordService,
-      boardSetupService: boardService,
-      prefs: getIt<SharedPreferences>(),
-    );
-
-    return StageRepositoryImpl(
-      localDataSource: StageLocalDataSource(),
-      generatorService: generatorService,
-      previousStageWordsService: getIt<PreviousStageWordsService>(),
-    );
-  });
-}
-
-Future<void> _registerUsecases() async {
-  getIt.registerLazySingleton<CrosswordUsecase>(() => CrosswordUsecase());
-
-  getIt.registerLazySingleton<LoadStageUsecase>(
-    () => LoadStageUsecase(repository: getIt<StageRepository>()),
-  );
-
-  getIt.registerLazySingleton<SubmitWordUsecase>(
-    () => SubmitWordUsecase(
-      crosswordUsecase: getIt<CrosswordUsecase>(),
-      repository: getIt<StageRepository>(),
-    ),
-  );
-
-  getIt.registerLazySingleton<CheckIntersectionsUsecase>(
-    () => CheckIntersectionsUsecase(
-      repository: getIt<StageRepository>(),
-      crosswordUsecase: getIt<CrosswordUsecase>(),
-    ),
-  );
-
-  getIt.registerLazySingleton<RevealLetterUsecase>(
-    () => RevealLetterUsecase(
-      repository: getIt<StageRepository>(),
-      crosswordUsecase: getIt<CrosswordUsecase>(),
-    ),
-  );
-}
-
-Future<void> _registerBlocs() async {
-  // PointsCubit/AccountBoostCubit/SettingsCubit were registerSingletonAsync
-  // + dependsOn purely to sequence them after AuthCubit/StorageService —
-  // their constructors are fully synchronous. Now that AuthCubit and
-  // StorageService are both injectable-managed (minimal env, resolved
-  // before registerRemainingDependencies() ever runs), that ordering is
-  // guaranteed by construction — plain lazy singletons are enough, and
-  // GetIt's dependsOn can't validate against injectable's module/lazy-async
-  // registrations anyway (different internal registration kind).
-  getIt.registerLazySingleton<PointsCubit>(
-    () => PointsCubit(
-      authCubit: getIt<AuthCubit>(),
-      storageService: getIt<StorageService>(),
-    ),
-  );
-
-  getIt.registerSingletonAsync<RewardedAdCubit>(
-    () async => RewardedAdCubit()..initialize(),
-  );
-
-  getIt.registerLazySingleton<AccountBoostCubit>(
-    () => AccountBoostCubit(
-      authCubit: getIt<AuthCubit>(),
-      storageService: getIt<StorageService>(),
-    ),
-  );
-
-  getIt.registerLazySingleton<TotalWordsBloc>(() => TotalWordsBloc());
-
-  getIt.registerLazySingleton<SoundCubit>(() => SoundCubit());
-
-  getIt.registerLazySingleton<ConnectivityCubit>(
-    () => ConnectivityCubit(getIt<ConnectivityService>()),
-  );
-
-  getIt.registerLazySingleton<SettingsCubit>(
-    () => SettingsCubit(
-      openEmailUseCase: OpenEmailUseCase(),
-      previousStageWordsService: getIt<PreviousStageWordsService>(),
-      stageRepo: getIt<StageRepository>(),
-    ),
-  );
-
-  getIt.registerLazySingleton<StageBloc>(
-    () => StageBloc(
-      loadStageUsecase: getIt<LoadStageUsecase>(),
-      submitWordUsecase: getIt<SubmitWordUsecase>(),
-      checkIntersectionsUsecase: getIt<CheckIntersectionsUsecase>(),
-      revealLetterUsecase: getIt<RevealLetterUsecase>(),
-      stageRepo: getIt<StageRepository>(),
-    ),
-  );
-
-  // User & Cloud Service
-  getIt.registerLazySingleton<UserProfileService>(
-    () => UserProfileService(
-      getIt<UserRepository>(),
-      getIt<AuthCubit>(),
-      getIt<CloudSyncService>(),
-      StageLocalDataSource(),
-    ),
-  );
-
-  getIt.registerLazySingleton<CloudSyncService>(
-    () => CloudSyncService(getIt<UserRepository>()),
-  );
-
-  getIt.registerLazySingleton<FreezeCubit>(
-    () => FreezeCubit(getIt<UserProfileService>())..initializeFreeze(),
-  );
-
-  getIt.registerLazySingleton<PointsAdLimitCubit>(
-    () => PointsAdLimitCubit()..initialize(),
-  );
+  await getIt.init(environmentFilter: NoEnvOrContainsAll({Env.full}));
 }

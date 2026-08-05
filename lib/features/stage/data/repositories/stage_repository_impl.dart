@@ -1,5 +1,6 @@
 import 'package:find_the_words/config/language/cubit/language_cubit.dart';
 import 'package:find_the_words/core/constants/constants.dart';
+import 'package:find_the_words/core/di/env.dart';
 import 'package:find_the_words/core/services/previous_stage_words_service.dart';
 import 'package:find_the_words/core/di/service_locator.dart';
 import 'package:find_the_words/core/services/user_profile_service.dart';
@@ -9,8 +10,11 @@ import 'package:find_the_words/features/stage/data/models/current_stage.dart';
 import 'package:find_the_words/features/stage/domain/helpers/word_placement_tracker.dart';
 import 'package:find_the_words/features/stage/domain/repositories/stage_repository.dart';
 import 'package:find_the_words/features/stage/domain/services/stage_generator_service.dart';
+import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+@LazySingleton(as: StageRepository)
+@Environment(Env.full)
 class StageRepositoryImpl implements StageRepository {
   final StageLocalDataSource _localDataSource;
   final StageGeneratorService _generatorService;

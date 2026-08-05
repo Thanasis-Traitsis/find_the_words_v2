@@ -1,10 +1,14 @@
 import 'dart:async';
 import 'package:equatable/equatable.dart';
+import 'package:find_the_words/core/di/env.dart';
 import 'package:find_the_words/core/services/connectivity_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 
 part 'connectivity_state.dart';
 
+@lazySingleton
+@Environment(Env.full)
 class ConnectivityCubit extends Cubit<ConnectivityState> {
   final ConnectivityService _connectivityService;
   StreamSubscription? _connectivitySubscription;

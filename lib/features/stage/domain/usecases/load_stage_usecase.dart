@@ -1,10 +1,14 @@
 import 'package:find_the_words/config/language/app_language.dart';
 import 'dart:developer' as developer;
 
+import 'package:find_the_words/core/di/env.dart';
 import 'package:find_the_words/features/auth/data/models/profile_status_model.dart';
 import 'package:find_the_words/features/stage/data/models/current_stage.dart';
 import 'package:find_the_words/features/stage/domain/repositories/stage_repository.dart';
+import 'package:injectable/injectable.dart';
 
+@injectable
+@Environment(Env.full)
 class LoadStageUsecase {
   final StageRepository _repository;
 

@@ -1,14 +1,18 @@
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
+import 'package:find_the_words/core/di/env.dart';
 import 'package:find_the_words/core/models/words_model.dart';
 import 'package:find_the_words/features/words/domain/enums/sort_type.dart';
 import 'package:find_the_words/features/words/domain/models/word_filters.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 import 'package:stream_transform/stream_transform.dart';
 
 part 'total_words_event.dart';
 part 'total_words_state.dart';
 
+@lazySingleton
+@Environment(Env.full)
 class TotalWordsBloc extends Bloc<TotalWordsEvent, TotalWordsState> {
   static const int _pageSize = 15;
 

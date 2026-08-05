@@ -1,8 +1,12 @@
 import 'package:find_the_words/config/language/app_language.dart';
+import 'package:find_the_words/core/di/env.dart';
 import 'package:find_the_words/core/di/service_locator.dart';
 import 'package:find_the_words/core/services/storage_service.dart';
 import 'package:find_the_words/features/stage/data/models/current_stage.dart';
+import 'package:injectable/injectable.dart';
 
+@lazySingleton
+@Environment(Env.full)
 class StageLocalDataSource {
   CurrentStage? getCurrentStage(AppLanguage language) {
     return getIt<StorageService>().getCurrentStage(language);

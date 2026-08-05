@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_the_words/config/language/app_language.dart';
 import 'package:find_the_words/core/constants/app_keys.dart';
+import 'package:find_the_words/core/di/env.dart';
 import 'package:find_the_words/core/models/words_model.dart';
 import 'package:find_the_words/core/services/connectivity_service.dart';
 import 'package:find_the_words/core/di/service_locator.dart';
@@ -14,8 +15,11 @@ import 'package:find_the_words/features/auth/data/models/firebase_user_model.dar
 import 'package:find_the_words/features/auth/domain/entities/user_entity.dart';
 import 'package:find_the_words/features/auth/domain/repositories/user_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+@lazySingleton
+@Environment(Env.full)
 class CloudSyncService {
   final UserRepository _userRepo;
   Timer? _syncDebounceTimer;

@@ -1,11 +1,15 @@
 import 'dart:async';
 
+import 'package:find_the_words/core/di/env.dart';
 import 'package:find_the_words/core/services/storage_service.dart';
 import 'package:find_the_words/features/auth/auth_cubit/auth_cubit.dart';
 import 'package:find_the_words/features/auth/data/models/user_model.dart';
 import 'package:find_the_words/features/auth/domain/entities/user_entity.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 
+@lazySingleton
+@Environment(Env.full)
 class PointsCubit extends Cubit<int> {
   final AuthCubit _authCubit;
   final StorageService _storageService;

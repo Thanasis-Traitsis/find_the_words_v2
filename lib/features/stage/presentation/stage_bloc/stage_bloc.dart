@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:find_the_words/core/di/env.dart';
 import 'package:find_the_words/core/di/service_locator.dart';
 import 'package:find_the_words/features/auth/data/models/profile_status_model.dart';
 import 'package:find_the_words/features/points/cubit/points_cubit.dart';
@@ -10,10 +11,13 @@ import 'package:find_the_words/features/stage/domain/usecases/reveal_letter_usec
 import 'package:find_the_words/features/stage/domain/usecases/submit_word_usecase.dart';
 import 'package:find_the_words/features/stage/presentation/helpers/error_utils.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 
 part 'stage_event.dart';
 part 'stage_state.dart';
 
+@lazySingleton
+@Environment(Env.full)
 class StageBloc extends Bloc<StageEvent, StageState> {
   final LoadStageUsecase _loadStageUsecase;
   final SubmitWordUsecase _submitWordUsecase;

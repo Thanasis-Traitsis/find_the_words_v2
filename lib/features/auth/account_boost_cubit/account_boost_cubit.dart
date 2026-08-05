@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:find_the_words/config/language/app_language.dart';
 import 'package:find_the_words/config/language/cubit/language_cubit.dart';
+import 'package:find_the_words/core/di/env.dart';
 import 'package:find_the_words/core/di/service_locator.dart';
 import 'package:find_the_words/core/services/storage_service.dart';
 import 'package:find_the_words/features/auth/auth_cubit/auth_cubit.dart';
@@ -12,7 +13,10 @@ import 'package:find_the_words/features/auth/domain/entities/account_boost_entit
 import 'package:find_the_words/features/auth/domain/entities/user_entity.dart';
 import 'package:find_the_words/features/points/cubit/points_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 
+@lazySingleton
+@Environment(Env.full)
 class AccountBoostCubit extends Cubit<AccountBoostEntity?> {
   final AuthCubit _authCubit;
   final StorageService _storageService;
