@@ -1,11 +1,15 @@
 import 'package:equatable/equatable.dart';
 import 'package:find_the_words/config/version/version_service.dart';
+import 'package:find_the_words/core/di/env.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 
 part 'version_event.dart';
 part 'version_state.dart';
 
+@lazySingleton
+@Environment(Env.minimal)
 class VersionBloc extends Bloc<VersionEvent, VersionState> {
   final VersionService _versionService;
 

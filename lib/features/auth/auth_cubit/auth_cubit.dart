@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:equatable/equatable.dart';
 import 'package:find_the_words/config/language/app_language.dart';
 import 'package:find_the_words/core/constants/constants.dart';
+import 'package:find_the_words/core/di/env.dart';
 import 'package:find_the_words/core/services/auth_service.dart';
 import 'package:find_the_words/core/services/cloud_sync_service.dart';
 import 'package:find_the_words/core/services/connectivity_service.dart';
@@ -17,10 +18,13 @@ import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:injectable/injectable.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 part 'auth_state.dart';
 
+@lazySingleton
+@Environment(Env.minimal)
 class AuthCubit extends Cubit<AuthState> {
   final UserRepository _userRepo;
 

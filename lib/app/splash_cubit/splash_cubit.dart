@@ -1,8 +1,12 @@
 import 'package:find_the_words/app/splash_cubit/splash_state.dart';
 import 'package:find_the_words/config/version/version_bloc/version_bloc.dart';
+import 'package:find_the_words/core/di/env.dart';
 import 'package:find_the_words/core/services/app_bootstrapper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 
+@lazySingleton
+@Environment(Env.minimal)
 class SplashCubit extends Cubit<SplashState> {
   final AppBootstrapper bootstrapper;
   final VersionBloc versionBloc;

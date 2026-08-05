@@ -1,12 +1,8 @@
-import 'package:find_the_words/app/splash_cubit/splash_cubit.dart';
 import 'package:find_the_words/config/ads/rewarded_cubit/rewarded_ad_cubit.dart';
 import 'package:find_the_words/config/connectivity/connectivity_cubit/connectivity_cubit.dart';
-import 'package:find_the_words/config/language/cubit/language_cubit.dart';
 import 'package:find_the_words/config/sound/cubit/sound_cubit.dart';
-import 'package:find_the_words/config/theme/theme_cubit/theme_cubit.dart';
-import 'package:find_the_words/config/version/version_bloc/version_bloc.dart';
-import 'package:find_the_words/config/version/version_service.dart';
-import 'package:find_the_words/core/services/app_bootstrapper.dart';
+import 'package:find_the_words/core/di/env.dart';
+import 'package:find_the_words/core/di/service_locator.config.dart';
 import 'package:find_the_words/core/services/cloud_sync_service.dart';
 import 'package:find_the_words/core/services/connectivity_service.dart';
 import 'package:find_the_words/core/services/previous_stage_words_service.dart';
@@ -15,7 +11,6 @@ import 'package:find_the_words/core/services/store_discount_service.dart';
 import 'package:find_the_words/core/services/user_profile_service.dart';
 import 'package:find_the_words/features/auth/account_boost_cubit/account_boost_cubit.dart';
 import 'package:find_the_words/features/auth/auth_cubit/auth_cubit.dart';
-import 'package:find_the_words/features/auth/data/repositories/user_repository_impl.dart';
 import 'package:find_the_words/features/auth/domain/repositories/user_repository.dart';
 import 'package:find_the_words/features/freeze/freeze_cubit/freeze_cubit.dart';
 import 'package:find_the_words/features/points/cubit/points_ad_limit_cubit.dart';
@@ -26,7 +21,6 @@ import 'package:find_the_words/features/stage/data/datasources/stage_local_datas
 import 'package:find_the_words/features/stage/data/repositories/stage_repository_impl.dart';
 import 'package:find_the_words/features/stage/domain/repositories/stage_repository.dart';
 import 'package:find_the_words/features/stage/domain/services/board_setup_service.dart';
-import 'package:find_the_words/features/stage/domain/services/dictionary_service.dart';
 import 'package:find_the_words/features/stage/domain/services/stage_generator_service.dart';
 import 'package:find_the_words/features/stage/domain/services/word_selection_service.dart';
 import 'package:find_the_words/features/stage/domain/usecases/check_intersection_usecase.dart';
@@ -37,52 +31,25 @@ import 'package:find_the_words/features/stage/domain/usecases/submit_word_usecas
 import 'package:find_the_words/features/stage/presentation/stage_bloc/stage_bloc.dart';
 import 'package:find_the_words/features/words/presentation/total_words_bloc/total_words_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final GetIt getIt = GetIt.instance;
 
-Future<void> setupMinimalServiceLocator() async {
-  final prefs = await SharedPreferences.getInstance();
-  getIt.registerSingleton<SharedPreferences>(prefs);
+// Everything AppLoader/SplashCubit need before AppBootstrapper.initialize()
+// runs — annotated with @Environment(Env.minimal) at the class (or, for
+// SharedPreferences/StorageService, the @module method) itself, so the
+// bucket a dependency belongs to is visible on the dependency, not decided
+// by which hand-written function a human filed it into.
+@InjectableInit(preferRelativeImports: true)
+Future<void> registerSplashCriticalDependencies() =>
+    getIt.init(environmentFilter: NoEnvOrContainsAll({Env.minimal}));
 
-  getIt.registerLazySingleton<LanguageCubit>(() => LanguageCubit());
-  getIt.registerLazySingleton<ThemeCubit>(() => ThemeCubit());
-
-  getIt.registerSingletonAsync<StorageService>(() async {
-    final storage = StorageService();
-    await storage.init();
-    return storage;
-  });
-
-  getIt.registerLazySingleton<UserRepository>(
-    () => UserRepositoryImpl(getIt<StorageService>()),
-  );
-
-  getIt.registerSingletonAsync<AuthCubit>(
-    () async => AuthCubit(getIt<UserRepository>()),
-    dependsOn: [StorageService],
-  );
-
-  getIt.registerSingletonAsync<DictionaryService>(() async {
-    final service = DictionaryService();
-    return service;
-  });
-
-  getIt.registerSingletonAsync<VersionBloc>(
-    () async => VersionBloc(VersionService(prefs)),
-  );
-
-  getIt.registerLazySingleton<SplashCubit>(
-    () => SplashCubit(
-      bootstrapper: AppBootstrapper(),
-      versionBloc: getIt<VersionBloc>(),
-    ),
-  );
-
-  await getIt.allReady();
-}
-
-Future<void> setupServiceLocator() async {
+// Everything else — registered once AppBootstrapper.initialize() runs, i.e.
+// after the splash-critical dependencies above are already resolved. Still
+// hand-written for now; migrating this to @Environment(Env.full) is the
+// next step.
+Future<void> registerRemainingDependencies() async {
   await _registerCoreServices();
   await _registerRepositories();
   await _registerUsecases();
@@ -103,8 +70,8 @@ Future<void> _registerCoreServices() async {
 }
 
 Future<void> _registerRepositories() async {
-  // UserRepository is registered in setupMinimalServiceLocator() — AuthCubit
-  // needs it before the full locator ever runs. Don't re-register it here.
+  // UserRepository is registered via injectable (Env.minimal) — AuthCubit
+  // needs it before this runs. Don't re-register it here.
   getIt.registerLazySingleton<StageRepository>(() {
     final wordService = WordSelectionService(getIt<SharedPreferences>());
     final boardService = BoardSetupService();
@@ -152,24 +119,30 @@ Future<void> _registerUsecases() async {
 }
 
 Future<void> _registerBlocs() async {
-  getIt.registerSingletonAsync<PointsCubit>(
-    () async => PointsCubit(
+  // PointsCubit/AccountBoostCubit/SettingsCubit were registerSingletonAsync
+  // + dependsOn purely to sequence them after AuthCubit/StorageService —
+  // their constructors are fully synchronous. Now that AuthCubit and
+  // StorageService are both injectable-managed (minimal env, resolved
+  // before registerRemainingDependencies() ever runs), that ordering is
+  // guaranteed by construction — plain lazy singletons are enough, and
+  // GetIt's dependsOn can't validate against injectable's module/lazy-async
+  // registrations anyway (different internal registration kind).
+  getIt.registerLazySingleton<PointsCubit>(
+    () => PointsCubit(
       authCubit: getIt<AuthCubit>(),
       storageService: getIt<StorageService>(),
     ),
-    dependsOn: [AuthCubit, StorageService],
   );
 
   getIt.registerSingletonAsync<RewardedAdCubit>(
     () async => RewardedAdCubit()..initialize(),
   );
 
-  getIt.registerSingletonAsync<AccountBoostCubit>(
-    () async => AccountBoostCubit(
+  getIt.registerLazySingleton<AccountBoostCubit>(
+    () => AccountBoostCubit(
       authCubit: getIt<AuthCubit>(),
       storageService: getIt<StorageService>(),
     ),
-    dependsOn: [AuthCubit, StorageService],
   );
 
   getIt.registerLazySingleton<TotalWordsBloc>(() => TotalWordsBloc());
@@ -180,13 +153,12 @@ Future<void> _registerBlocs() async {
     () => ConnectivityCubit(getIt<ConnectivityService>()),
   );
 
-  getIt.registerSingletonAsync<SettingsCubit>(
-    () async => SettingsCubit(
+  getIt.registerLazySingleton<SettingsCubit>(
+    () => SettingsCubit(
       openEmailUseCase: OpenEmailUseCase(),
       previousStageWordsService: getIt<PreviousStageWordsService>(),
       stageRepo: getIt<StageRepository>(),
     ),
-    dependsOn: [AuthCubit, StorageService],
   );
 
   getIt.registerLazySingleton<StageBloc>(

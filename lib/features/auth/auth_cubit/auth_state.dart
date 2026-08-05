@@ -48,7 +48,12 @@ final class AuthAuthenticated extends AuthState {
   }
 
   @override
-  List<Object> get props => [user, signInOutLoading, ?effect, deleteAccountLoading];
+  List<Object> get props => [
+    user,
+    signInOutLoading,
+    if (effect != null) effect!,
+    deleteAccountLoading,
+  ];
 }
 
 final class AuthUnauthenticated extends AuthState {}

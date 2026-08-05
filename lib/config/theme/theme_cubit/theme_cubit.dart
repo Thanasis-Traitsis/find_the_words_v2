@@ -1,12 +1,16 @@
 import 'package:equatable/equatable.dart';
 import 'package:find_the_words/core/constants/app_keys.dart';
 import 'package:find_the_words/core/constants/app_strings.dart';
+import 'package:find_the_words/core/di/env.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'theme_state.dart';
 
+@lazySingleton
+@Environment(Env.minimal)
 class ThemeCubit extends Cubit<ThemeState> {
   static const String _themeKey = AppKeys.themeModeKey;
 
