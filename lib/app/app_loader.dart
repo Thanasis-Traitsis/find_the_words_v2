@@ -1,12 +1,16 @@
 import 'package:find_the_words/app/bootstrap_error_screen.dart';
 import 'package:find_the_words/app/my_app.dart';
+import 'package:find_the_words/app/splash_cubit/splash_cubit.dart';
+import 'package:find_the_words/app/splash_cubit/splash_state.dart';
 import 'package:find_the_words/config/ads/rewarded_cubit/rewarded_ad_cubit.dart';
 import 'package:find_the_words/config/connectivity/connectivity_cubit/connectivity_cubit.dart';
 import 'package:find_the_words/config/language/cubit/language_cubit.dart';
 import 'package:find_the_words/config/sound/cubit/sound_cubit.dart';
+import 'package:find_the_words/config/theme/app_colors.dart';
+import 'package:find_the_words/config/theme/app_theme.dart';
 import 'package:find_the_words/config/theme/theme_cubit/theme_cubit.dart';
+import 'package:find_the_words/config/version/force_update_screen.dart';
 import 'package:find_the_words/config/version/version_bloc/version_bloc.dart';
-import 'package:find_the_words/core/services/app_bootstrapper.dart';
 import 'package:find_the_words/core/services/service_locator.dart';
 import 'package:find_the_words/features/auth/account_boost_cubit/account_boost_cubit.dart';
 import 'package:find_the_words/features/auth/auth_cubit/auth_cubit.dart';
@@ -21,57 +25,35 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/single_child_widget.dart';
 
-class MyAppLoader extends StatefulWidget {
-  const MyAppLoader({super.key});
+class AppLoader extends StatelessWidget {
+  const AppLoader({super.key});
 
   @override
-  State<MyAppLoader> createState() => _MyAppLoaderState();
-}
-
-enum _BootstrapStatus { loading, ready, failed }
-
-class _MyAppLoaderState extends State<MyAppLoader> {
-  _BootstrapStatus _status = _BootstrapStatus.loading;
-  String? _errorMessage;
-
-  @override
-  void initState() {
-    super.initState();
-    _initializeApp();
+  Widget build(BuildContext context) {
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider.value(value: getIt<ThemeCubit>()),
+        BlocProvider.value(value: getIt<LanguageCubit>()),
+        BlocProvider(create: (_) => getIt<SplashCubit>()..start()),
+      ],
+      child: BlocBuilder<SplashCubit, SplashState>(
+        builder: (context, state) {
+          if (state is SplashReady) {
+            return MultiBlocProvider(
+              providers: _fullAppProviders(),
+              child: const MyApp(),
+            );
+          }
+          return _SplashShell(state: state);
+        },
+      ),
+    );
   }
 
-  Future<void> _initializeApp() async {
-    try {
-      await AppBootstrapper().initialize();
-
-      setState(() => _status = _BootstrapStatus.ready);
-    } catch (e) {
-      debugPrint('Initialization error: $e');
-      setState(() {
-        _status = _BootstrapStatus.failed;
-        _errorMessage = e.toString();
-      });
-    }
-  }
-
-  void _retry() {
-    setState(() {
-      _status = _BootstrapStatus.loading;
-      _errorMessage = null;
-    });
-    _initializeApp();
-  }
-
-  List<SingleChildWidget> _splashProviders() {
-    return [BlocProvider.value(value: getIt<ThemeCubit>())];
-  }
-
-  List<SingleChildWidget> _appProviders() {
+  List<SingleChildWidget> _fullAppProviders() {
     return [
       BlocProvider.value(value: getIt<VersionBloc>()),
-      BlocProvider.value(value: getIt<ThemeCubit>()),
       BlocProvider.value(value: getIt<ConnectivityCubit>()),
-      BlocProvider.value(value: getIt<LanguageCubit>()),
       BlocProvider.value(value: getIt<RewardedAdCubit>()),
       BlocProvider.value(value: getIt<FreezeCubit>()),
       BlocProvider.value(value: getIt<PointsAdLimitCubit>()),
@@ -84,34 +66,30 @@ class _MyAppLoaderState extends State<MyAppLoader> {
       BlocProvider.value(value: getIt<TotalWordsBloc>()),
     ];
   }
+}
+
+class _SplashShell extends StatelessWidget {
+  final SplashState state;
+  const _SplashShell({required this.state});
 
   @override
   Widget build(BuildContext context) {
-    switch (_status) {
-      case _BootstrapStatus.loading:
-        return MultiBlocProvider(
-          providers: _splashProviders(),
-          child: MaterialApp(
-            debugShowCheckedModeBanner: false,
-            home: SplashScreen(),
+    final themeState = context.watch<ThemeCubit>().state;
+
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      themeMode: themeState.themeMode,
+      theme: AppTheme(AppColors.mainColors).getTheme(),
+      darkTheme: AppTheme(AppColors.darkColors).getTheme(),
+      home: switch (state) {
+        SplashLoading() => const SplashScreen(),
+        SplashForceUpdate() => const ForceUpdateScreen(),
+        SplashFailed(:final message) => BootstrapErrorScreen(
+            message: message,
+            onRetry: () => context.read<SplashCubit>().retry(),
           ),
-        );
-      case _BootstrapStatus.failed:
-        return MultiBlocProvider(
-          providers: _splashProviders(),
-          child: MaterialApp(
-            debugShowCheckedModeBanner: false,
-            home: BootstrapErrorScreen(
-              message: _errorMessage ?? '',
-              onRetry: _retry,
-            ),
-          ),
-        );
-      case _BootstrapStatus.ready:
-        return MultiBlocProvider(
-          providers: _appProviders(),
-          child: const MyApp(),
-        );
-    }
+        SplashReady() => const SizedBox.shrink(),
+      },
+    );
   }
 }

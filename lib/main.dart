@@ -9,5 +9,5 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await setupMinimalServiceLocator();
 
-  runApp(const MyAppLoader());
+  runApp(const AppLoader());
 }
