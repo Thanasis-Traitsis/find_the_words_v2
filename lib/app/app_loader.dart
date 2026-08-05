@@ -1,5 +1,5 @@
+import 'package:find_the_words/app/app.dart';
 import 'package:find_the_words/app/bootstrap_error_screen.dart';
-import 'package:find_the_words/app/my_app.dart';
 import 'package:find_the_words/app/splash_cubit/splash_cubit.dart';
 import 'package:find_the_words/app/splash_cubit/splash_state.dart';
 import 'package:find_the_words/config/ads/rewarded_cubit/rewarded_ad_cubit.dart';
@@ -41,7 +41,7 @@ class AppLoader extends StatelessWidget {
           if (state is SplashReady) {
             return MultiBlocProvider(
               providers: _fullAppProviders(),
-              child: const MyApp(),
+              child: const App(),
             );
           }
           return _SplashShell(state: state);
