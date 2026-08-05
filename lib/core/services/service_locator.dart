@@ -54,8 +54,12 @@ Future<void> setupMinimalServiceLocator() async {
     return storage;
   });
 
+  getIt.registerLazySingleton<UserRepository>(
+    () => UserRepositoryImpl(getIt<StorageService>()),
+  );
+
   getIt.registerSingletonAsync<AuthCubit>(
-    () async => AuthCubit(UserRepositoryImpl(getIt<StorageService>())),
+    () async => AuthCubit(getIt<UserRepository>()),
     dependsOn: [StorageService],
   );
 
@@ -99,10 +103,8 @@ Future<void> _registerCoreServices() async {
 }
 
 Future<void> _registerRepositories() async {
-  getIt.registerLazySingleton<UserRepository>(
-    () => UserRepositoryImpl(getIt<StorageService>()),
-  );
-
+  // UserRepository is registered in setupMinimalServiceLocator() — AuthCubit
+  // needs it before the full locator ever runs. Don't re-register it here.
   getIt.registerLazySingleton<StageRepository>(() {
     final wordService = WordSelectionService(getIt<SharedPreferences>());
     final boardService = BoardSetupService();
