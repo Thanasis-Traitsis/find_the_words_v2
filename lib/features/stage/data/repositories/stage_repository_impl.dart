@@ -1,7 +1,7 @@
 import 'package:find_the_words/config/language/cubit/language_cubit.dart';
 import 'package:find_the_words/core/constants/constants.dart';
 import 'package:find_the_words/core/services/previous_stage_words_service.dart';
-import 'package:find_the_words/core/services/service_locator.dart';
+import 'package:find_the_words/core/di/service_locator.dart';
 import 'package:find_the_words/core/services/user_profile_service.dart';
 import 'package:find_the_words/core/utils/file_utils.dart';
 import 'package:find_the_words/features/stage/data/datasources/stage_local_datasource.dart';

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_the_words/config/language/app_language.dart';
 import 'package:find_the_words/core/constants/app_keys.dart';
-import 'package:find_the_words/core/services/service_locator.dart';
+import 'package:find_the_words/core/di/service_locator.dart';
 import 'package:find_the_words/core/services/storage_service.dart';
 import 'package:find_the_words/core/services/store_discount_service.dart';
 import 'package:find_the_words/features/auth/account_boost_cubit/account_boost_cubit.dart';

@@ -6,7 +6,7 @@ import 'package:find_the_words/core/constants/constants.dart';
 import 'package:find_the_words/core/services/auth_service.dart';
 import 'package:find_the_words/core/services/cloud_sync_service.dart';
 import 'package:find_the_words/core/services/connectivity_service.dart';
-import 'package:find_the_words/core/services/service_locator.dart';
+import 'package:find_the_words/core/di/service_locator.dart';
 import 'package:find_the_words/core/utils/token_utils.dart';
 import 'package:find_the_words/features/auth/data/models/profile_status_model.dart';
 import 'package:find_the_words/features/auth/data/models/user_model.dart';

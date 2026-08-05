@@ -7,7 +7,7 @@ import 'package:find_the_words/config/routes/args/stage_route_args.dart';
 import 'package:find_the_words/config/theme/screens/theme_screen.dart';
 import 'package:find_the_words/core/models/words_model.dart';
 import 'package:find_the_words/core/services/navigation_service.dart';
-import 'package:find_the_words/core/services/service_locator.dart';
+import 'package:find_the_words/core/di/service_locator.dart';
 import 'package:find_the_words/error_screen.dart';
 import 'package:find_the_words/features/auth/auth_cubit/auth_cubit.dart';
 import 'package:find_the_words/features/auth/auth_cubit/auth_status_listener.dart';

@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:find_the_words/config/theme/custom_text_type.dart';
-import 'package:find_the_words/core/services/service_locator.dart';
+import 'package:find_the_words/core/di/service_locator.dart';
 import 'package:find_the_words/core/widgets/custom_text.dart';
 import 'package:find_the_words/features/freeze/freeze_cubit/freeze_cubit.dart';
 import 'package:find_the_words/features/store/presentation/helper/current_boost_helper.dart';

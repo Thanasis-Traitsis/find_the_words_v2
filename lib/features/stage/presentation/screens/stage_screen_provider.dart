@@ -1,4 +1,4 @@
-import 'package:find_the_words/core/services/service_locator.dart';
+import 'package:find_the_words/core/di/service_locator.dart';
 import 'package:find_the_words/features/stage/presentation/help_overlay_cubit/help_overlay_cubit.dart';
 import 'package:find_the_words/features/stage/presentation/screens/stage_screen.dart';
 import 'package:find_the_words/features/stage/presentation/stage_timer_cubit/stage_timer_cubit.dart';

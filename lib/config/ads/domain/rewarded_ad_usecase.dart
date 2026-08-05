@@ -1,4 +1,4 @@
-import 'package:find_the_words/core/services/service_locator.dart';
+import 'package:find_the_words/core/di/service_locator.dart';
 import 'package:find_the_words/core/services/store_discount_service.dart';
 import 'package:find_the_words/features/freeze/freeze_cubit/freeze_cubit.dart';
 import 'package:find_the_words/features/points/cubit/points_ad_limit_cubit.dart';

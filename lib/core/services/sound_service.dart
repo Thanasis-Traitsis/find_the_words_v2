@@ -1,6 +1,6 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:find_the_words/core/constants/app_keys.dart';
-import 'package:find_the_words/core/services/service_locator.dart';
+import 'package:find_the_words/core/di/service_locator.dart';
 import 'package:find_the_words/features/stage/presentation/stage_bloc/stage_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

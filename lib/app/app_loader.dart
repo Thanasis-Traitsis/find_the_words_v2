@@ -11,7 +11,7 @@ import 'package:find_the_words/config/theme/app_theme.dart';
 import 'package:find_the_words/config/theme/theme_cubit/theme_cubit.dart';
 import 'package:find_the_words/config/version/force_update_screen.dart';
 import 'package:find_the_words/config/version/version_bloc/version_bloc.dart';
-import 'package:find_the_words/core/services/service_locator.dart';
+import 'package:find_the_words/core/di/service_locator.dart';
 import 'package:find_the_words/features/auth/account_boost_cubit/account_boost_cubit.dart';
 import 'package:find_the_words/features/auth/auth_cubit/auth_cubit.dart';
 import 'package:find_the_words/features/freeze/freeze_cubit/freeze_cubit.dart';

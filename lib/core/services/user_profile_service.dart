@@ -2,7 +2,7 @@ import 'package:find_the_words/config/language/app_language.dart';
 import 'package:find_the_words/config/language/cubit/language_cubit.dart';
 import 'package:find_the_words/core/models/words_model.dart';
 import 'package:find_the_words/core/services/cloud_sync_service.dart';
-import 'package:find_the_words/core/services/service_locator.dart';
+import 'package:find_the_words/core/di/service_locator.dart';
 import 'package:find_the_words/features/auth/auth_cubit/auth_cubit.dart';
 import 'package:find_the_words/features/auth/data/models/profile_status_model.dart';
 import 'package:find_the_words/features/auth/domain/entities/user_entity.dart';

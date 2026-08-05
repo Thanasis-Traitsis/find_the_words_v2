@@ -1,5 +1,5 @@
 import 'package:find_the_words/config/routes/args/complete_route_args.dart';
-import 'package:find_the_words/core/services/service_locator.dart';
+import 'package:find_the_words/core/di/service_locator.dart';
 import 'package:find_the_words/core/services/sound_service.dart';
 import 'package:find_the_words/core/services/user_profile_service.dart';
 import 'package:find_the_words/features/auth/account_boost_cubit/account_boost_cubit.dart';

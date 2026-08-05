@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:find_the_words/core/services/service_locator.dart';
+import 'package:find_the_words/core/di/service_locator.dart';
 import 'package:find_the_words/features/auth/data/models/profile_status_model.dart';
 import 'package:find_the_words/features/points/cubit/points_cubit.dart';
 import 'package:find_the_words/features/stage/data/models/current_stage.dart';
