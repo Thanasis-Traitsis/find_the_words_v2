@@ -11,6 +11,10 @@ abstract class UserRepository {
 
   Future<UserEntity> refreshUserFromStorage();
 
+  /// Returns null only when no cloud document exists yet for [id] — safe to
+  /// create one. A fetch failure (network, permissions, etc.) throws rather
+  /// than returning null, so callers can't mistake "couldn't check" for
+  /// "doesn't exist" and end up overwriting real cloud data.
   Future<DocumentSnapshot?> getFirebaseUser(String id);
 
   Future<void> createFirebaseUser(UserEntity user);

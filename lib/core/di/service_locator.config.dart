@@ -27,6 +27,10 @@ import '../../features/auth/auth_cubit/auth_cubit.dart' as _i199;
 import '../../features/auth/data/repositories/user_repository_impl.dart'
     as _i687;
 import '../../features/auth/domain/repositories/user_repository.dart' as _i926;
+import '../../features/auth/domain/usecases/build_authenticated_user_usecase.dart'
+    as _i253;
+import '../../features/auth/domain/usecases/merge_user_progress_usecase.dart'
+    as _i542;
 import '../../features/freeze/freeze_cubit/freeze_cubit.dart' as _i341;
 import '../../features/points/cubit/points_ad_limit_cubit.dart' as _i183;
 import '../../features/points/cubit/points_cubit.dart' as _i640;
@@ -80,10 +84,6 @@ extension GetItInjectableX on _i174.GetIt {
       environmentFilter,
     );
     final registerModule = _$RegisterModule();
-    gh.lazySingleton<_i1007.CloudSyncService>(
-      () => _i1007.CloudSyncService(gh<_i926.UserRepository>()),
-      registerFor: {_full},
-    );
     await gh.lazySingletonAsync<_i88.StoreDiscountService>(
       () => registerModule.storeDiscountService,
       registerFor: {_full},
@@ -137,6 +137,14 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i887.WordSelectionService(gh<_i460.SharedPreferences>()),
       registerFor: {_full},
     );
+    gh.lazySingleton<_i1007.CloudSyncService>(
+      () => _i1007.CloudSyncService(
+        gh<_i926.UserRepository>(),
+        gh<_i542.MergeUserProgressUsecase>(),
+        gh<_i253.BuildAuthenticatedUserUsecase>(),
+      ),
+      registerFor: {_full},
+    );
     gh.lazySingleton<_i205.ConnectivityCubit>(
       () => _i205.ConnectivityCubit(gh<_i47.ConnectivityService>()),
       registerFor: {_full},
@@ -165,6 +173,14 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i262.DictionaryService>(
       () => _i262.DictionaryService(),
+      registerFor: {_minimal},
+    );
+    gh.factory<_i542.MergeUserProgressUsecase>(
+      () => _i542.MergeUserProgressUsecase(),
+      registerFor: {_minimal},
+    );
+    gh.factory<_i253.BuildAuthenticatedUserUsecase>(
+      () => _i253.BuildAuthenticatedUserUsecase(),
       registerFor: {_minimal},
     );
     gh.lazySingleton<_i990.StageGeneratorService>(
@@ -214,10 +230,6 @@ extension GetItInjectableX on _i174.GetIt {
       ),
       registerFor: {_full},
     );
-    gh.lazySingleton<_i199.AuthCubit>(
-      () => _i199.AuthCubit(gh<_i926.UserRepository>()),
-      registerFor: {_minimal},
-    );
     await gh.lazySingletonAsync<_i341.FreezeCubit>(
       () {
         final i = _i341.FreezeCubit(gh<_i442.UserProfileService>());
@@ -229,6 +241,13 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i427.LoadStageUsecase>(
       () => _i427.LoadStageUsecase(repository: gh<_i316.StageRepository>()),
       registerFor: {_full},
+    );
+    gh.lazySingleton<_i199.AuthCubit>(
+      () => _i199.AuthCubit(
+        gh<_i926.UserRepository>(),
+        gh<_i253.BuildAuthenticatedUserUsecase>(),
+      ),
+      registerFor: {_minimal},
     );
     gh.lazySingleton<_i648.SettingsCubit>(
       () => _i648.SettingsCubit(

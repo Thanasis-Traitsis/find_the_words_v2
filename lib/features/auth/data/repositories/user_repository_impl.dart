@@ -89,21 +89,12 @@ class UserRepositoryImpl extends UserRepository {
 
   @override
   Future<DocumentSnapshot<Object?>?> getFirebaseUser(String userId) async {
-    try {
-      final docSnapshot = await FirebaseFirestore.instance
-          .collection(AppKeys.usersFirebaseCollectionKey)
-          .doc(userId)
-          .get();
+    final docSnapshot = await FirebaseFirestore.instance
+        .collection(AppKeys.usersFirebaseCollectionKey)
+        .doc(userId)
+        .get();
 
-      if (docSnapshot.exists) {
-        return docSnapshot;
-      } else {
-        return null;
-      }
-    } catch (e) {
-      debugPrint('Error checking Firebase auth: $e');
-      return null;
-    }
+    return docSnapshot.exists ? docSnapshot : null;
   }
 
   @override

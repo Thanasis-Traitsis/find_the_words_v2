@@ -1,34 +1,35 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
-import 'package:find_the_words/config/language/app_language.dart';
-import 'package:find_the_words/core/constants/constants.dart';
 import 'package:find_the_words/core/di/env.dart';
 import 'package:find_the_words/core/services/auth_service.dart';
 import 'package:find_the_words/core/services/cloud_sync_service.dart';
 import 'package:find_the_words/core/services/connectivity_service.dart';
 import 'package:find_the_words/core/di/service_locator.dart';
 import 'package:find_the_words/core/utils/token_utils.dart';
-import 'package:find_the_words/features/auth/data/models/profile_status_model.dart';
 import 'package:find_the_words/features/auth/data/models/user_model.dart';
 import 'package:find_the_words/features/auth/domain/entities/user_entity.dart';
 import 'package:find_the_words/features/auth/domain/repositories/user_repository.dart';
+import 'package:find_the_words/features/auth/domain/usecases/build_authenticated_user_usecase.dart';
 import 'package:find_the_words/features/freeze/freeze_cubit/freeze_cubit.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:injectable/injectable.dart';
-import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 part 'auth_state.dart';
+
+enum _SignInProvider { google, apple }
 
 @lazySingleton
 @Environment(Env.minimal)
 class AuthCubit extends Cubit<AuthState> {
   final UserRepository _userRepo;
+  final BuildAuthenticatedUserUsecase _buildAuthenticatedUser;
 
-  AuthCubit(this._userRepo) : super(AuthLoading()) {
+  AuthCubit(this._userRepo, this._buildAuthenticatedUser)
+    : super(AuthLoading()) {
     _loadAuthState();
   }
 
@@ -61,20 +62,30 @@ class AuthCubit extends Cubit<AuthState> {
     await createNewUser();
   }
 
-  Future<void> googleSignIn() async {
+  Future<void> googleSignIn() => _signIn(
+    provider: _SignInProvider.google,
+    signIn: AuthService.instance.signInWithGoogle,
+  );
+
+  Future<void> appleSignIn() => _signIn(
+    provider: _SignInProvider.apple,
+    signIn: AuthService.instance.signInWithApple,
+  );
+
+  Future<void> _signIn({
+    required _SignInProvider provider,
+    required Future<firebase_auth.UserCredential?> Function() signIn,
+  }) async {
     if (state is! AuthAuthenticated) return;
     final currentState = state as AuthAuthenticated;
     emit(currentState.copyWith(signInOutLoading: true));
 
     try {
-      // Attempt Google Sign-In
-      final firebase_auth.UserCredential? userCredential = await AuthService
-          .instance
-          .signInWithGoogle();
+      final userCredential = await signIn();
 
       if (userCredential == null) {
         // User canceled - return to previous state
-        debugPrint('Google Sign-In canceled');
+        debugPrint('${provider.name} sign-in canceled');
         emit(
           currentState.copyWith(
             signInOutLoading: false,
@@ -85,9 +96,8 @@ class AuthCubit extends Cubit<AuthState> {
       }
 
       final firebaseUser = userCredential.user!;
-      final syncService = getIt<CloudSyncService>();
       final cloudUserDoc = await _userRepo.getFirebaseUser(firebaseUser.uid);
-      final syncedUser = await syncService.syncWithCloud(
+      final syncedUser = await getIt<CloudSyncService>().syncWithCloud(
         firebaseUser: firebaseUser,
         localUser: currentState.user,
         cloudUserDoc: cloudUserDoc,
@@ -99,73 +109,8 @@ class AuthCubit extends Cubit<AuthState> {
       emit(
         AuthAuthenticated(user: syncedUser, effect: AuthEffect.signInSuccess),
       );
-    } on GoogleSignInException catch (e) {
-      debugPrint('Google Sign-In exception: ${e.code} - ${e.description}');
-      emit(
-        currentState.copyWith(
-          signInOutLoading: false,
-          effect: AuthEffect.signInFailure,
-        ),
-      );
     } catch (e) {
-      debugPrint('Error signing in with Google: $e');
-      emit(
-        currentState.copyWith(
-          signInOutLoading: false,
-          effect: AuthEffect.signInFailure,
-        ),
-      );
-    }
-  }
-
-  Future<void> appleSignIn() async {
-    if (state is! AuthAuthenticated) return;
-    final currentState = state as AuthAuthenticated;
-    emit(currentState.copyWith(signInOutLoading: true));
-
-    try {
-      // Attempt Apple Sign-In
-      final firebase_auth.UserCredential? userCredential = await AuthService
-          .instance
-          .signInWithApple();
-
-      if (userCredential == null) {
-        // User canceled - return to previous state
-        debugPrint('Apple Sign-In canceled');
-        emit(
-          currentState.copyWith(
-            signInOutLoading: false,
-            effect: AuthEffect.signInFailure,
-          ),
-        );
-        return;
-      }
-
-      final firebaseUser = userCredential.user!;
-      final syncService = getIt<CloudSyncService>();
-      final cloudUserDoc = await _userRepo.getFirebaseUser(firebaseUser.uid);
-      final syncedUser = await syncService.syncWithCloud(
-        firebaseUser: firebaseUser,
-        localUser: currentState.user,
-        cloudUserDoc: cloudUserDoc,
-      );
-
-      await _userRepo.updateUser(syncedUser);
-      await AuthService.instance.saveToken(firebaseUser.uid);
-
-      emit(
-        AuthAuthenticated(user: syncedUser, effect: AuthEffect.signInSuccess),
-      );
-    } on SignInWithAppleAuthorizationException catch (e) {
-      debugPrint('Apple Sign-In exception: ${e.code} - ${e.message}');
-      emit(
-        currentState.copyWith(
-          signInOutLoading: false,
-          effect: AuthEffect.signInFailure,
-        ),
-      );
-    } catch (e) {
-      debugPrint('Error signing in with Apple: $e');
+      debugPrint('Error signing in with ${provider.name}: $e');
       emit(
         currentState.copyWith(
           signInOutLoading: false,
@@ -215,17 +160,7 @@ class AuthCubit extends Cubit<AuthState> {
     emit(currentState.copyWith(deleteAccountLoading: true));
 
     try {
-      final userId = currentState.user.id;
-      final isGuest = currentState.user.isGuest;
-
-      debugPrint('Deleting account - isGuest: $isGuest');
-
-      await AuthService.instance.deleteAccount(
-        userId: userId,
-        isGuest: isGuest,
-      );
-
-      await createNewUser(afterDeletion: true);
+      await _performAccountDeletion(currentState.user);
     } catch (e) {
       emit(currentState.copyWith(deleteAccountLoading: false));
       rethrow;
@@ -236,119 +171,90 @@ class AuthCubit extends Cubit<AuthState> {
     if (state is! AuthAuthenticated) return;
     final currentState = state as AuthAuthenticated;
     emit(currentState.copyWith(deleteAccountLoading: true));
-    
-    try {
-      await AuthService.instance.reauthenticateWithGoogle();
 
-      await createNewUser(afterDeletion: true);
+    try {
+      switch (_currentSignInProvider()) {
+        case _SignInProvider.apple:
+          await AuthService.instance.reauthenticateWithApple();
+        case _SignInProvider.google:
+          await AuthService.instance.reauthenticateWithGoogle();
+      }
+
+      await _performAccountDeletion(currentState.user);
     } catch (e) {
       emit(currentState.copyWith(deleteAccountLoading: false));
       rethrow;
     }
   }
 
+  Future<void> _performAccountDeletion(UserEntity user) async {
+    await AuthService.instance.deleteAccount(
+      userId: user.id,
+      isGuest: user.isGuest,
+    );
+    await createNewUser(afterDeletion: true);
+  }
+
+  _SignInProvider _currentSignInProvider() {
+    final providerIds =
+        AuthService.instance.currentFirebaseUser?.providerData.map(
+          (info) => info.providerId,
+        ) ??
+        const <String>[];
+
+    return providerIds.contains('apple.com')
+        ? _SignInProvider.apple
+        : _SignInProvider.google;
+  }
+
   Future<void> _handleAuthenticatedUser(firebase_auth.User firebaseUser) async {
+    final bool hasInternet = await getIt<ConnectivityService>().hasInternet();
+
+    if (!hasInternet) {
+      await _emitLocalOnlyUser(firebaseUser);
+      return;
+    }
+
+    DocumentSnapshot? cloudUserDoc;
     try {
-      final bool hasInternet = await getIt<ConnectivityService>().hasInternet();
+      cloudUserDoc = await _userRepo.getFirebaseUser(firebaseUser.uid);
+    } catch (e) {
+      // Can't verify cloud state right now (network/permissions/etc) - fall
+      // back to local data rather than risk creating or overwriting the
+      // real cloud document based on a guess.
+      debugPrint('Could not reach cloud, using local user for now: $e');
+      await _emitLocalOnlyUser(firebaseUser);
+      return;
+    }
 
-      // If not WiFi - Just return local user
-      if (!hasInternet) {
-        try {
-          final localUser = await _userRepo.getCurrentUser();
-          emit(AuthAuthenticated(user: localUser));
-          return;
-        } catch (e) {
-          await _createUserFromFirebaseAuth(firebaseUser);
-          return;
-        }
-      }
+    final localUser = await _tryGetLocalUser();
 
-      UserEntity? localUser;
-      try {
-        localUser = await _userRepo.getCurrentUser();
-      } catch (e) {
-        debugPrint('No local user found');
-      }
-
-      final cloudUserDoc = await _userRepo.getFirebaseUser(firebaseUser.uid);
-
-      // Firebase user exists but without any data
-      if (cloudUserDoc == null || !cloudUserDoc.exists) {
-        final newUser = await _createNewAuthenticatedUser(
-          firebaseUser,
-          localUser,
+    try {
+      if (cloudUserDoc == null) {
+        final newUser = _buildAuthenticatedUser(
+          id: firebaseUser.uid,
+          username: firebaseUser.displayName,
+          email: firebaseUser.email,
+          localUser: localUser,
+          fallbackTotalFreezes: getIt<FreezeCubit>().state.totalFreezes,
         );
-        await _userRepo.createFirebaseUser(newUser);
-        await _saveCloudUserAndToken(newUser, firebaseUser.uid);
 
+        await _userRepo.createFirebaseUser(newUser);
+        await _saveUserAndToken(newUser, firebaseUser.uid);
         emit(AuthAuthenticated(user: newUser));
         return;
       }
 
-      // Firebase user exists - sync local/cloud data
-      final syncService = getIt<CloudSyncService>();
-      final syncedUser = await syncService.syncWithCloud(
+      final syncedUser = await getIt<CloudSyncService>().syncWithCloud(
         firebaseUser: firebaseUser,
         localUser: localUser,
         cloudUserDoc: cloudUserDoc,
       );
 
-      // Save to local storage
-      await _saveCloudUserAndToken(syncedUser, firebaseUser.uid);
+      await _saveUserAndToken(syncedUser, firebaseUser.uid);
       emit(AuthAuthenticated(user: syncedUser));
     } catch (e) {
-      await _createUserFromFirebaseAuth(firebaseUser);
-    }
-  }
-
-  Future<UserEntity> _createNewAuthenticatedUser(
-    firebase_auth.User firebaseUser,
-    UserEntity? localUser,
-  ) async {
-    final freezeState = getIt<FreezeCubit>().state;
-
-    return UserEntity.authenticated(
-      id: firebaseUser.uid,
-      username: firebaseUser.displayName,
-      email: firebaseUser.email,
-      points: localUser?.points ?? AppValues.startingPoints,
-      progressByLanguage:
-          localUser?.progressByLanguage ??
-          {
-            AppLanguage.english: ProfileStatusModel.initial(
-              AppLanguage.english,
-            ),
-            AppLanguage.greek: ProfileStatusModel.initial(AppLanguage.greek),
-          },
-      lastSyncedAt: DateTime.now(),
-      joinedAt: localUser?.joinedAt ?? DateTime.now(),
-      totalFreezes: localUser?.totalFreezes ?? freezeState.totalFreezes,
-    );
-  }
-
-  Future<void> _createUserFromFirebaseAuth(
-    firebase_auth.User firebaseUser,
-  ) async {
-    try {
-      final newUser = UserEntity.authenticated(
-        id: firebaseUser.uid,
-        username: firebaseUser.displayName,
-        email: firebaseUser.email,
-        points: AppValues.startingPoints,
-        progressByLanguage: {
-          AppLanguage.english: ProfileStatusModel.initial(AppLanguage.english),
-          AppLanguage.greek: ProfileStatusModel.initial(AppLanguage.greek),
-        },
-        lastSyncedAt: DateTime.now(),
-        joinedAt: DateTime.now(),
-        totalFreezes: 0,
-      );
-
-      await _saveCloudUserAndToken(newUser, firebaseUser.uid);
-      await _userRepo.updateFirebaseUser(newUser);
-
-      emit(AuthAuthenticated(user: newUser));
-    } catch (e) {
+      debugPrint('Error finishing authenticated sign-in: $e');
       emit(
         AuthFailure(
           message:
@@ -358,7 +264,32 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  Future<void> _saveCloudUserAndToken(UserEntity user, String id) async {
+  Future<void> _emitLocalOnlyUser(firebase_auth.User firebaseUser) async {
+    final localUser = await _tryGetLocalUser();
+
+    final user =
+        localUser ??
+        _buildAuthenticatedUser(
+          id: firebaseUser.uid,
+          username: firebaseUser.displayName,
+          email: firebaseUser.email,
+          fallbackTotalFreezes: getIt<FreezeCubit>().state.totalFreezes,
+        );
+
+    await _userRepo.updateUser(user);
+    emit(AuthAuthenticated(user: user));
+  }
+
+  Future<UserEntity?> _tryGetLocalUser() async {
+    try {
+      return await _userRepo.getCurrentUser();
+    } catch (e) {
+      debugPrint('No local user found');
+      return null;
+    }
+  }
+
+  Future<void> _saveUserAndToken(UserEntity user, String id) async {
     await _userRepo.updateUser(user);
     await AuthService.instance.saveToken(id);
   }
