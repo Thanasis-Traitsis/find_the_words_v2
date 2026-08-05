@@ -19,6 +19,7 @@ import 'package:find_the_words/features/words/presentation/total_words_bloc/tota
 import 'package:find_the_words/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/single_child_widget.dart';
 
 class MyAppLoader extends StatefulWidget {
   const MyAppLoader({super.key});
@@ -61,11 +62,11 @@ class _MyAppLoaderState extends State<MyAppLoader> {
     _initializeApp();
   }
 
-  List<BlocProvider> _splashProviders() {
+  List<SingleChildWidget> _splashProviders() {
     return [BlocProvider.value(value: getIt<ThemeCubit>())];
   }
 
-  List<BlocProvider> _appProviders() {
+  List<SingleChildWidget> _appProviders() {
     return [
       BlocProvider.value(value: getIt<VersionBloc>()),
       BlocProvider.value(value: getIt<ThemeCubit>()),
