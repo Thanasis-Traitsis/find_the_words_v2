@@ -6,9 +6,6 @@ import 'package:find_the_words/features/auth/domain/repositories/user_repository
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:injectable/injectable.dart';
 
-/// Performs a sign-in via the given [signIn] function (Google or Apple),
-/// then syncs the result against the cloud. Returns null if the user
-/// canceled the sign-in flow.
 @injectable
 @Environment(Env.minimal)
 class SignInUsecase {

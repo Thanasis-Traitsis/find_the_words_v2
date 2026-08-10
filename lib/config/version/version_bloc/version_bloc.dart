@@ -61,7 +61,6 @@ class VersionBloc extends Bloc<VersionEvent, VersionState> {
     DismissOptionalUpdate event,
     Emitter<VersionState> emit,
   ) async {
-    // ✅ Persist dismissal
     await _versionService.dismissOptionalUpdate(
       state.minimumVersion,
       state.currentVersion,

@@ -5,15 +5,6 @@ import 'package:find_the_words/features/auth/data/models/profile_status_model.da
 import 'package:find_the_words/features/auth/domain/entities/user_entity.dart';
 import 'package:injectable/injectable.dart';
 
-/// Merges a local and cloud [UserEntity] belonging to the same account.
-///
-/// Progress is compared independently per language — how far a player has
-/// gotten in Greek says nothing about their English progress — rather than
-/// by a single combined total. For each language, whichever side has the
-/// higher `level + progress/100` wins that language's level/stage/progress/
-/// currentStage wholesale; words found are unioned from both sides either
-/// way. `points`/`totalFreezes` are `max(local, cloud)` — a placeholder
-/// until the points economy gets its own merge design.
 @injectable
 @Environment(Env.minimal)
 class MergeUserProgressUsecase {

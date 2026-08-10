@@ -5,9 +5,6 @@ import 'package:find_the_words/features/auth/data/models/profile_status_model.da
 import 'package:find_the_words/features/auth/domain/entities/user_entity.dart';
 import 'package:injectable/injectable.dart';
 
-/// Builds a fresh authenticated [UserEntity]. Carries over an existing
-/// local user's points/progress/freezes/joinedAt when present (a guest who
-/// just signed in, or a returning session) — otherwise starts fresh.
 @injectable
 @Environment(Env.minimal)
 class BuildAuthenticatedUserUsecase {

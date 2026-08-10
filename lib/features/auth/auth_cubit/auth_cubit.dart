@@ -15,11 +15,6 @@ import 'package:injectable/injectable.dart';
 
 part 'auth_state.dart';
 
-/// Thin orchestrator: every method here maps a UI action to a usecase call
-/// and a state transition. The business logic (initial auth resolution,
-/// sign-in + cloud sync, account deletion) lives in
-/// features/auth/domain/usecases/ - see ResolveInitialAuthStateUsecase,
-/// SignInUsecase, DeleteAccountUsecase, CreateGuestUserUsecase.
 @lazySingleton
 @Environment(Env.minimal)
 class AuthCubit extends Cubit<AuthState> {

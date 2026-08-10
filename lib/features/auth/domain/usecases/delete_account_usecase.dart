@@ -3,10 +3,6 @@ import 'package:find_the_words/core/services/auth_service.dart';
 import 'package:find_the_words/features/auth/domain/entities/user_entity.dart';
 import 'package:injectable/injectable.dart';
 
-/// Deletes the given user's account. If [reauthenticateFirst] is true,
-/// reauthenticates with whichever provider (Google or Apple) the user
-/// actually signed in with before attempting the delete — Firebase
-/// requires a recent sign-in for destructive account operations.
 @injectable
 @Environment(Env.minimal)
 class DeleteAccountUsecase {

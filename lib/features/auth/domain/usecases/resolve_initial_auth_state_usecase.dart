@@ -13,12 +13,6 @@ import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 
-/// Resolves what the current user's state should be at app start: an
-/// existing Firebase session (merged/created against the cloud), an
-/// existing local guest, or a freshly-created guest. Always resolves to a
-/// [UserEntity] — throws [AuthResolutionFailure] only on the one
-/// unrecoverable path (an authenticated session whose data we can neither
-/// read locally nor safely reconcile with the cloud).
 @injectable
 @Environment(Env.minimal)
 class ResolveInitialAuthStateUsecase {
@@ -36,16 +30,6 @@ class ResolveInitialAuthStateUsecase {
     this._createGuestUser,
   );
 
-  // FreezeCubit is deliberately NOT a constructor dependency: FreezeCubit's
-  // own @PostConstruct(preResolve: true) eagerly constructs
-  // UserProfileService -> AuthCubit during registerRemainingDependencies().
-  // If this usecase (a dependency of AuthCubit) constructor-injected
-  // FreezeCubit too, that eager chain would need FreezeCubit again before
-  // its own registration finishes constructing - a synchronous circular
-  // dependency. Looking it up lazily here instead is safe because this
-  // method only runs later, after AuthCubit's constructor has already
-  // returned and an earlier await has yielded past the synchronous
-  // registration cascade.
   FreezeCubit get _freezeCubit => getIt<FreezeCubit>();
 
   Future<UserEntity> call() async {
@@ -82,9 +66,6 @@ class ResolveInitialAuthStateUsecase {
     try {
       cloudUserDoc = await _userRepo.getFirebaseUser(firebaseUser.uid);
     } catch (e) {
-      // Can't verify cloud state right now (network/permissions/etc) - fall
-      // back to local data rather than risk creating or overwriting the
-      // real cloud document based on a guess.
       debugPrint('Could not reach cloud, using local user for now: $e');
       return _localOnlyUser(firebaseUser);
     }
