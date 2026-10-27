@@ -1,15 +1,19 @@
 import 'dart:async';
 
 import 'package:find_the_words/config/ads/domain/rewarded_ad_usecase.dart';
+import 'package:find_the_words/core/di/env.dart';
 import 'package:find_the_words/core/utils/snackbar_helper.dart';
 import 'package:find_the_words/features/store/data/models/reward_type.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:find_the_words/core/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 
 part 'rewarded_ad_state.dart';
 
+@lazySingleton
+@Environment(Env.full)
 class RewardedAdCubit extends Cubit<RewardedAdState> {
   RewardedAd? _rewardedAd;
   Timer? _retryTimer;
@@ -22,7 +26,14 @@ class RewardedAdCubit extends Cubit<RewardedAdState> {
   static const int _maxRetries = 3;
   static const Duration _adExpirationTime = Duration(hours: 1);
 
-  RewardedAdCubit() : super(RewardedAdInitial());
+  // initialize() is called directly here, not via @PostConstruct, so this
+  // stays a plain sync registration (safe for sync getIt<RewardedAdCubit>()
+  // accessors). Ad loading is network-dependent and must never block app
+  // bootstrap or require an async accessor to reach this cubit at all —
+  // deliberately fire-and-forget.
+  RewardedAdCubit() : super(RewardedAdInitial()) {
+    initialize();
+  }
 
   bool get isAdReady => state.isAdReady;
 

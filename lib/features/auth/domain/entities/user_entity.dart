@@ -1,6 +1,6 @@
 import 'package:find_the_words/config/language/app_language.dart';
 import 'package:find_the_words/config/language/cubit/language_cubit.dart';
-import 'package:find_the_words/core/services/service_locator.dart';
+import 'package:find_the_words/core/di/service_locator.dart';
 import 'package:find_the_words/features/auth/data/models/profile_status_model.dart';
 import 'package:find_the_words/features/stage/data/models/current_stage.dart';
 

@@ -1,7 +1,7 @@
 import 'package:find_the_words/core/constants/constants.dart';
 import 'package:find_the_words/core/constants/custom_icons.dart';
 import 'package:find_the_words/core/screens/custom_screen.dart';
-import 'package:find_the_words/core/services/service_locator.dart';
+import 'package:find_the_words/core/di/service_locator.dart';
 import 'package:find_the_words/core/services/sound_service.dart';
 import 'package:find_the_words/core/utils/breakpoint_utils.dart';
 import 'package:find_the_words/core/utils/snackbar_helper.dart';

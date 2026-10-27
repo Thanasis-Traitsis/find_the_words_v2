@@ -1,10 +1,14 @@
 import 'dart:math';
 
 import 'package:find_the_words/core/constants/app_keys.dart';
+import 'package:find_the_words/core/di/env.dart';
 import 'package:find_the_words/features/stage/data/models/current_stage.dart';
 import 'package:find_the_words/features/stage/data/models/stage_criteria.dart';
+import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+@lazySingleton
+@Environment(Env.full)
 class WordSelectionService {
   static const String _usedStageKey = AppKeys.usedStageKey;
   static const String _bannedStageKey = AppKeys.bannedStageKey;

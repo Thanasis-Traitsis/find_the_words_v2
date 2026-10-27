@@ -1,8 +1,9 @@
 import 'package:find_the_words/config/routes/app_pages.dart';
+import 'package:find_the_words/config/routes/args/stage_route_args.dart';
 import 'package:find_the_words/core/constants/constants.dart';
 import 'package:find_the_words/core/constants/custom_icons.dart';
 import 'package:find_the_words/core/screens/custom_screen.dart';
-import 'package:find_the_words/core/services/service_locator.dart';
+import 'package:find_the_words/core/di/service_locator.dart';
 import 'package:find_the_words/core/utils/text_extensions.dart';
 import 'package:find_the_words/core/widgets/custom_appbar.dart';
 import 'package:find_the_words/core/widgets/custom_primary_button.dart';
@@ -65,12 +66,10 @@ class HomeScreen extends StatelessWidget {
                             NextStageButtonPressed(progress),
                           );
 
-                          AppPages.stage.push(
-                            extra: {
-                              'stage': state.user.currentProgress.stage,
-                              'level': state.user.currentProgress.level,
-                            },
-                          );
+                          StageRouteArgs(
+                            stage: state.user.currentProgress.stage,
+                            level: state.user.currentProgress.level,
+                          ).push();
                         },
                         suffixIcon: CustomIcons.arrowRight,
                         fullWidth: true,

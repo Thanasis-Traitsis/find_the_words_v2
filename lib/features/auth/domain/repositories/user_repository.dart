@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_the_words/features/auth/domain/entities/user_entity.dart';
-import 'package:find_the_words/features/stage/data/models/current_stage.dart';
 
 abstract class UserRepository {
   Future<UserEntity> createUser(String id);

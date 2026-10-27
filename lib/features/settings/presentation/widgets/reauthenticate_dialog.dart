@@ -1,4 +1,4 @@
-import 'package:find_the_words/core/services/service_locator.dart';
+import 'package:find_the_words/core/di/service_locator.dart';
 import 'package:find_the_words/core/utils/text_extensions.dart';
 import 'package:find_the_words/core/widgets/confirmation_dialog.dart';
 import 'package:find_the_words/features/auth/auth_cubit/auth_cubit.dart';

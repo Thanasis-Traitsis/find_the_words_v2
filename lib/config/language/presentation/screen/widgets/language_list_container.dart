@@ -2,7 +2,7 @@ import 'package:find_the_words/config/language/app_language.dart';
 import 'package:find_the_words/config/language/cubit/language_cubit.dart';
 import 'package:find_the_words/config/routes/app_pages.dart';
 import 'package:find_the_words/core/constants/constants.dart';
-import 'package:find_the_words/core/services/service_locator.dart';
+import 'package:find_the_words/core/di/service_locator.dart';
 import 'package:find_the_words/core/utils/text_extensions.dart';
 import 'package:find_the_words/core/utils/theme_extensions.dart';
 import 'package:find_the_words/config/language/presentation/screen/widgets/language_selection_item.dart';
@@ -74,7 +74,6 @@ class _LanguageListContainerState extends State<LanguageListContainer> {
                         setState(() {
                           selectedLanguage = language;
                         });
-                        applyNewLanguage();
                       },
               );
             }),
@@ -83,10 +82,14 @@ class _LanguageListContainerState extends State<LanguageListContainer> {
         CustomPrimaryButton.large(
           isLoading: _isApplying,
           text: context.translate.submit,
-          onTap: () {
-            if (!_isApplying) {
-              AppPages.home.go();
+          onTap: () async {
+            if (_isApplying) return;
+
+            if (selectedLanguage != getIt<LanguageCubit>().state.appLanguage) {
+              await applyNewLanguage();
             }
+
+            AppPages.home.go();
           },
         ),
       ],

@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:find_the_words/config/language/app_language.dart';
 import 'package:find_the_words/config/language/cubit/language_cubit.dart';
-import 'package:find_the_words/core/services/service_locator.dart';
+import 'package:find_the_words/core/di/service_locator.dart';
 
 class WordFilters {
   final Set<String> selectedLetters;

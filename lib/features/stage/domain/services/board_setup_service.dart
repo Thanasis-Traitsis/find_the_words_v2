@@ -1,3 +1,4 @@
+import 'package:find_the_words/core/di/env.dart';
 import 'package:find_the_words/core/utils/string_extensions.dart';
 import 'package:find_the_words/features/stage/data/models/criteria_failure.dart';
 import 'package:find_the_words/features/stage/data/models/current_stage.dart';
@@ -9,7 +10,10 @@ import 'package:find_the_words/features/stage/domain/helpers/word_placement_trac
 import 'package:find_the_words/features/stage/domain/services/stage_generator_service.dart';
 import 'package:find_the_words/features/stage/domain/services/stage_validation_service.dart';
 import 'package:flutter/material.dart';
+import 'package:injectable/injectable.dart';
 
+@lazySingleton
+@Environment(Env.full)
 class BoardSetupService {
   static const String leftKey = "LEFT";
   static const String topKey = "TOP";

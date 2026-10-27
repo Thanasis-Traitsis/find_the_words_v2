@@ -1,8 +1,10 @@
+import 'package:find_the_words/core/di/env.dart';
 import 'package:find_the_words/features/stage/data/models/current_stage.dart';
 import 'package:find_the_words/features/stage/domain/helpers/word_placement.dart';
 import 'package:find_the_words/features/stage/domain/helpers/word_placement_tracker.dart';
 import 'package:find_the_words/features/stage/domain/repositories/stage_repository.dart';
 import 'package:find_the_words/features/stage/domain/usecases/crossword_usecase.dart';
+import 'package:injectable/injectable.dart';
 
 class CompletedWord {
   final String word;
@@ -21,6 +23,8 @@ class IntersectionCheckResult {
   });
 }
 
+@injectable
+@Environment(Env.full)
 class CheckIntersectionsUsecase {
   final StageRepository _repository;
   final CrosswordUsecase _crosswordUsecase;

@@ -1,6 +1,10 @@
 import 'dart:io';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:find_the_words/core/di/env.dart';
+import 'package:injectable/injectable.dart';
 
+@lazySingleton
+@Environment(Env.minimal)
 class ConnectivityService {
   final Connectivity _connectivity = Connectivity();
 

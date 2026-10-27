@@ -27,17 +27,18 @@ class ThemeSelectionRow extends StatelessWidget {
         };
 
         return Row(
+          spacing: AppSpacing.spacingS,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             state.themeMode.name == theme.name
                 ? SizedBox(
-                    width: AppSizes.minTouchTarget,
+                    width: AppSizes.iconM,
                     child: CustomSvgIcon(
                       icon: CustomIcons.check,
                       color: context.colors.text,
                     ),
                   )
-                : SizedBox(width: AppSizes.minTouchTarget),
+                : SizedBox(width: AppSizes.iconM),
             Expanded(
               child: InkWell(
                 onTap: () async {

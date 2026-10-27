@@ -1,11 +1,15 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:find_the_words/core/di/env.dart';
 import 'package:flutter/foundation.dart';
+import 'package:injectable/injectable.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io' show Platform;
 
+@lazySingleton
+@Environment(Env.minimal)
 class VersionService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final SharedPreferences _prefs;

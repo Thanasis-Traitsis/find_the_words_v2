@@ -1,14 +1,19 @@
 import 'package:equatable/equatable.dart';
 import 'package:find_the_words/core/constants/constants.dart';
-import 'package:find_the_words/core/services/service_locator.dart';
+import 'package:find_the_words/core/di/env.dart';
+import 'package:find_the_words/core/di/service_locator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'points_ad_limit_state.dart';
 
+@lazySingleton
+@Environment(Env.full)
 class PointsAdLimitCubit extends Cubit<PointsAdLimitState> {
   PointsAdLimitCubit() : super(const PointsAdLimitState());
 
+  @PostConstruct(preResolve: true)
   Future<void> initialize() async {
     final prefs = getIt<SharedPreferences>();
 

@@ -1,24 +1,20 @@
 import 'package:equatable/equatable.dart';
 import 'package:find_the_words/config/version/version_service.dart';
-import 'package:flutter/material.dart';
+import 'package:find_the_words/core/di/env.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 
-part 'version_event.dart';
 part 'version_state.dart';
 
-class VersionBloc extends Bloc<VersionEvent, VersionState> {
+@lazySingleton
+@Environment(Env.minimal)
+class VersionCubit extends Cubit<VersionState> {
   final VersionService _versionService;
 
-  VersionBloc(this._versionService) : super(const VersionState()) {
-    on<CheckVersion>(_onCheckVersion);
-    on<RefreshVersion>(_onRefreshVersion);
-    on<DismissOptionalUpdate>(_onDismissOptionalUpdate);
-  }
+  VersionCubit(this._versionService) : super(const VersionState());
 
-  Future<void> _onCheckVersion(
-    CheckVersion event,
-    Emitter<VersionState> emit,
-  ) async {
+  Future<void> checkVersion() async {
     if (state.isLoading) return;
 
     emit(state.copyWith(isLoading: true, hasError: false));
@@ -34,30 +30,23 @@ class VersionBloc extends Bloc<VersionEvent, VersionState> {
           needsOptionalUpdate: result.needsOptionalUpdate,
           updateMessage: result.message,
           whatsNew: result.whatsNew,
-          storeUrl: result.storeUrl, 
+          storeUrl: result.storeUrl,
           isLoading: false,
           hasError: false,
         ),
       );
     } catch (e) {
-      debugPrint('Error in VersionBloc: $e');
+      debugPrint('Error in VersionCubit: $e');
       emit(state.copyWith(isLoading: false, hasError: true));
     }
   }
 
-  Future<void> _onRefreshVersion(
-    RefreshVersion event,
-    Emitter<VersionState> emit,
-  ) async {
+  Future<void> refreshVersion() async {
     _versionService.clearCache();
-    add(const CheckVersion());
+    await checkVersion();
   }
 
-  Future<void> _onDismissOptionalUpdate(
-    DismissOptionalUpdate event,
-    Emitter<VersionState> emit,
-  ) async {
-    // ✅ Persist dismissal
+  Future<void> dismissOptionalUpdate() async {
     await _versionService.dismissOptionalUpdate(
       state.minimumVersion,
       state.currentVersion,

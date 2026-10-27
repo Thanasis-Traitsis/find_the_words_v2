@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 class AppKeys {
   static const String themeModeKey = 'app_theme_mode';
+  
   static const String languageCodeKey = 'language_code';
   static const String soundKey = 'sound_enabled';
   static const String authTokenKey = 'auth_token';

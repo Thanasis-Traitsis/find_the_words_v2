@@ -1,21 +1,26 @@
 import 'package:equatable/equatable.dart';
 import 'package:find_the_words/core/constants/app_keys.dart';
 import 'package:find_the_words/core/constants/app_strings.dart';
+import 'package:find_the_words/core/di/env.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'theme_state.dart';
 
+@lazySingleton
+@Environment(Env.minimal)
 class ThemeCubit extends Cubit<ThemeState> {
   static const String _themeKey = AppKeys.themeModeKey;
 
-  ThemeCubit() : super(const ThemeState());
+  final SharedPreferences _prefs;
+
+  ThemeCubit(this._prefs) : super(const ThemeState());
 
   Future<void> loadTheme() async {
     try {
-      final prefs = await SharedPreferences.getInstance();
-      final String? themeMode = prefs.getString(_themeKey);
+      final String? themeMode = _prefs.getString(_themeKey);
 
       if (themeMode != null) {
         emit(state.copyWith(themeMode: ThemeMode.values.byName(themeMode)));
@@ -27,8 +32,7 @@ class ThemeCubit extends Cubit<ThemeState> {
 
   Future<void> _saveTheme(ThemeMode themeMode) async {
     try {
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString(_themeKey, themeMode.name);
+      await _prefs.setString(_themeKey, themeMode.name);
     } catch (e) {
       debugPrint("${AppStrings.devThemeSaveError}: $e");
     }

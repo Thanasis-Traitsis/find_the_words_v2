@@ -16,7 +16,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 2.1.2+17
+version: 2.1.2+18
 
 environment:
   sdk: ^3.8.1
@@ -58,12 +58,15 @@ dependencies:
   shimmer: ^3.0.0
   stream_transform: ^2.1.1
   url_launcher: ^6.3.2
+  injectable: ^2.5.0
 
 dev_dependencies:
   flutter_lints: ^6.0.0
   flutter_launcher_icons: ^0.14.4
   flutter_test:
     sdk: flutter
+  injectable_generator: ^2.6.2
+  build_runner: ^2.4.9
 
 # flutter_localization 0.4.0 and 0.4.1 are both broken: 0.4.1's android/build.gradle.kts uses
 # the kotlin{} extension without applying the kotlin-android plugin (breaks Android), and both

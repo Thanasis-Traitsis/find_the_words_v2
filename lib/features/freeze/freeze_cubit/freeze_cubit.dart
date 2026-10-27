@@ -2,15 +2,19 @@ import 'package:equatable/equatable.dart';
 import 'package:find_the_words/config/language/app_language.dart';
 import 'package:find_the_words/config/language/cubit/language_cubit.dart';
 import 'package:find_the_words/core/constants/constants.dart';
-import 'package:find_the_words/core/services/service_locator.dart';
+import 'package:find_the_words/core/di/env.dart';
+import 'package:find_the_words/core/di/service_locator.dart';
 import 'package:find_the_words/core/services/user_profile_service.dart';
 import 'package:find_the_words/features/auth/auth_cubit/auth_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'freeze_state.dart';
 
+@lazySingleton
+@Environment(Env.full)
 class FreezeCubit extends Cubit<FreezeState> {
   final UserProfileService _userProfileService;
   static const String _lastFreeAdTimestampKey = AppKeys.lastFreeAdTimestampKey;
@@ -18,6 +22,7 @@ class FreezeCubit extends Cubit<FreezeState> {
   FreezeCubit(this._userProfileService) : super(const FreezeState());
 
   /// Initialize from UserModel - reads CurrentStage from both languages
+  @PostConstruct(preResolve: true)
   Future<void> initializeFreeze() async {
     try {
       final authState = getIt<AuthCubit>().state;

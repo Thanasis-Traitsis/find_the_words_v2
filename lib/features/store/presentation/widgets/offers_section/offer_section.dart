@@ -1,6 +1,6 @@
 import 'package:find_the_words/core/constants/constants.dart';
 import 'package:find_the_words/core/constants/custom_icons.dart';
-import 'package:find_the_words/core/services/service_locator.dart';
+import 'package:find_the_words/core/di/service_locator.dart';
 import 'package:find_the_words/core/services/store_discount_service.dart';
 import 'package:find_the_words/core/utils/text_extensions.dart';
 import 'package:find_the_words/features/auth/data/models/account_boost_model.dart';

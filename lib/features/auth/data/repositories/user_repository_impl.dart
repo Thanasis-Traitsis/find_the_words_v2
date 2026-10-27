@@ -2,7 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_the_words/config/language/app_language.dart';
 import 'package:find_the_words/config/language/cubit/language_cubit.dart';
 import 'package:find_the_words/core/constants/constants.dart';
-import 'package:find_the_words/core/services/service_locator.dart';
+import 'package:find_the_words/core/di/env.dart';
+import 'package:find_the_words/core/di/service_locator.dart';
 import 'package:find_the_words/core/services/storage_service.dart';
 import 'package:find_the_words/features/auth/data/models/firebase_user_model.dart';
 import 'package:find_the_words/features/auth/data/models/profile_status_model.dart';
@@ -10,8 +11,11 @@ import 'package:find_the_words/features/auth/data/models/user_model.dart';
 import 'package:find_the_words/features/auth/domain/entities/user_entity.dart';
 import 'package:find_the_words/features/auth/domain/repositories/user_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+@LazySingleton(as: UserRepository)
+@Environment(Env.minimal)
 class UserRepositoryImpl extends UserRepository {
   final StorageService _storageService;
 
@@ -85,21 +89,12 @@ class UserRepositoryImpl extends UserRepository {
 
   @override
   Future<DocumentSnapshot<Object?>?> getFirebaseUser(String userId) async {
-    try {
-      final docSnapshot = await FirebaseFirestore.instance
-          .collection(AppKeys.usersFirebaseCollectionKey)
-          .doc(userId)
-          .get();
+    final docSnapshot = await FirebaseFirestore.instance
+        .collection(AppKeys.usersFirebaseCollectionKey)
+        .doc(userId)
+        .get();
 
-      if (docSnapshot.exists) {
-        return docSnapshot;
-      } else {
-        return null;
-      }
-    } catch (e) {
-      debugPrint('Error checking Firebase auth: $e');
-      return null;
-    }
+    return docSnapshot.exists ? docSnapshot : null;
   }
 
   @override
