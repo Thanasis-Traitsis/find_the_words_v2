@@ -5,6 +5,7 @@ import 'package:find_the_words/core/models/words_model.dart';
 import 'package:find_the_words/core/services/cloud_sync_service.dart';
 import 'package:find_the_words/core/di/service_locator.dart';
 import 'package:find_the_words/features/auth/auth_cubit/auth_cubit.dart';
+import 'package:find_the_words/features/auth/data/models/account_boost_model.dart';
 import 'package:find_the_words/features/auth/data/models/profile_status_model.dart';
 import 'package:find_the_words/features/auth/domain/entities/user_entity.dart';
 import 'package:find_the_words/features/auth/domain/repositories/user_repository.dart';
@@ -209,6 +210,53 @@ class UserProfileService {
     );
 
     await _localDataSource.saveStage(updatedCurrentStage, language);
+    await _userRepo.updateUser(updatedUser);
+    _authCubit.updateUser(updatedUser);
+
+    if (!updatedUser.isGuest) {
+      _syncService.scheduleSync(updatedUser);
+    }
+  }
+
+  Future<void> updatePoints(int newPoints) async {
+    final authState = _authCubit.state;
+    if (authState is! AuthAuthenticated) return;
+
+    final updatedUser = authState.user.copyWith(points: newPoints);
+
+    await _userRepo.updateUser(updatedUser);
+    _authCubit.updateUser(updatedUser);
+
+    if (!updatedUser.isGuest) {
+      _syncService.scheduleSync(updatedUser);
+    }
+  }
+
+  Future<void> updateActiveBoost(
+    AppLanguage language,
+    AccountBoostModel? boost,
+  ) async {
+    final authState = _authCubit.state;
+    if (authState is! AuthAuthenticated) return;
+
+    final currentUser = authState.user;
+    final currentProfile = currentUser.progressByLanguage[language];
+    if (currentProfile == null) return;
+
+    final updatedProfile = currentProfile.copyWith(
+      activeBoost: boost,
+      clearBoost: boost == null,
+    );
+
+    final updatedProgressByLanguage =
+        Map<AppLanguage, ProfileStatusModel>.from(
+          currentUser.progressByLanguage,
+        )..[language] = updatedProfile;
+
+    final updatedUser = currentUser.copyWith(
+      progressByLanguage: updatedProgressByLanguage,
+    );
+
     await _userRepo.updateUser(updatedUser);
     _authCubit.updateUser(updatedUser);
 

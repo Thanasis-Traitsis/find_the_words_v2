@@ -41,9 +41,7 @@ class AuthCubit extends Cubit<AuthState> {
     } catch (e) {
       emit(
         AuthFailure(
-          message: e is AuthResolutionFailure
-              ? e.message
-              : 'Failed to initialize user. Please try again or contact support.',
+          message: 'Failed to initialize user. Please try again or contact support.',
         ),
       );
     }

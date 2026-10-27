@@ -4,13 +4,10 @@ import 'package:find_the_words/config/language/app_language.dart';
 import 'package:find_the_words/config/language/cubit/language_cubit.dart';
 import 'package:find_the_words/core/di/env.dart';
 import 'package:find_the_words/core/di/service_locator.dart';
-import 'package:find_the_words/core/services/storage_service.dart';
+import 'package:find_the_words/core/services/user_profile_service.dart';
 import 'package:find_the_words/features/auth/auth_cubit/auth_cubit.dart';
-import 'package:find_the_words/features/auth/data/models/profile_status_model.dart';
-import 'package:find_the_words/features/auth/data/models/user_model.dart';
 import 'package:find_the_words/features/auth/data/models/account_boost_model.dart';
 import 'package:find_the_words/features/auth/domain/entities/account_boost_entity.dart';
-import 'package:find_the_words/features/auth/domain/entities/user_entity.dart';
 import 'package:find_the_words/features/points/cubit/points_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
@@ -19,15 +16,15 @@ import 'package:injectable/injectable.dart';
 @Environment(Env.full)
 class AccountBoostCubit extends Cubit<AccountBoostEntity?> {
   final AuthCubit _authCubit;
-  final StorageService _storageService;
+  final UserProfileService _userProfileService;
   StreamSubscription<AuthState>? _authSubscription;
   Timer? _timer;
 
   AccountBoostCubit({
     required AuthCubit authCubit,
-    required StorageService storageService,
+    required UserProfileService userProfileService,
   }) : _authCubit = authCubit,
-       _storageService = storageService,
+       _userProfileService = userProfileService,
        super(null) {
     _listenToAuthChanges();
   }
@@ -66,8 +63,7 @@ class AccountBoostCubit extends Cubit<AccountBoostEntity?> {
     }
   }
 
-  // Activate a new boost
-  Future<void> activate({
+  Future<bool> activate({
     required String activeKey,
     required AccountBoostType type,
     int multiplier = 2,
@@ -75,8 +71,10 @@ class AccountBoostCubit extends Cubit<AccountBoostEntity?> {
     required PointsCubit pointsCubit,
     required int points,
   }) async {
-    final authState = _authCubit.state;
-    if (authState is! AuthAuthenticated) return;
+    if (_authCubit.state is! AuthAuthenticated) return false;
+
+    final deducted = await pointsCubit.deductPoints(points);
+    if (!deducted) return false;
 
     final boost = AccountBoostModel.activate(
       activekey: activeKey,
@@ -85,66 +83,38 @@ class AccountBoostCubit extends Cubit<AccountBoostEntity?> {
       amount: amount,
     );
 
-    await _updateBoost(boost, authState.user);
-    await pointsCubit.deductPoints(points);
+    await _updateBoost(boost);
 
     if (type == AccountBoostType.minutes) {
       _startTimer();
     }
+
+    return true;
   }
 
-  // Decrement stage for stage-based boosts
   Future<void> decrementStage() async {
     final boost = state;
     if (boost == null || boost.type != AccountBoostType.stages) return;
-
-    final authState = _authCubit.state;
-    if (authState is! AuthAuthenticated) return;
+    if (_authCubit.state is! AuthAuthenticated) return;
 
     final updated = boost.decrementStage();
 
     if (updated.isActive) {
-      await _updateBoost(AccountBoostModel.fromEntity(updated), authState.user);
+      await _updateBoost(AccountBoostModel.fromEntity(updated));
     } else {
       await clear();
     }
   }
 
-  // Clear boost
   Future<void> clear() async {
-    final authState = _authCubit.state;
-    if (authState is! AuthAuthenticated) return;
+    if (_authCubit.state is! AuthAuthenticated) return;
 
     _cancelTimer();
-    await _updateBoost(null, authState.user);
+    await _updateBoost(null);
   }
 
-  // Update boost in storage and auth state
-  Future<void> _updateBoost(
-    AccountBoostModel? boost,
-    UserEntity currentUser,
-  ) async {
-    final currentLanguage = _getCurrentLanguage();
-    final currentProfile = currentUser.progressByLanguage[currentLanguage];
-
-    if (currentProfile == null) return;
-
-    final updatedProfile = currentProfile.copyWith(
-      activeBoost: boost,
-      clearBoost: boost == null,
-    );
-
-    final updatedProgressByLanguage = Map<AppLanguage, ProfileStatusModel>.from(
-      currentUser.progressByLanguage,
-    )..[currentLanguage] = updatedProfile;
-
-    final updatedUser = currentUser.copyWith(
-      progressByLanguage: updatedProgressByLanguage,
-    );
-
-    final userModel = UserModel.fromEntity(updatedUser);
-    await _storageService.saveUser(userModel);
-    _authCubit.emit(AuthAuthenticated(user: userModel));
+  Future<void> _updateBoost(AccountBoostModel? boost) async {
+    await _userProfileService.updateActiveBoost(_getCurrentLanguage(), boost);
   }
 
   void _startTimer() {

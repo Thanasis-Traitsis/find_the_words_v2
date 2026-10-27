@@ -74,7 +74,6 @@ class _LanguageListContainerState extends State<LanguageListContainer> {
                         setState(() {
                           selectedLanguage = language;
                         });
-                        applyNewLanguage();
                       },
               );
             }),
@@ -83,10 +82,14 @@ class _LanguageListContainerState extends State<LanguageListContainer> {
         CustomPrimaryButton.large(
           isLoading: _isApplying,
           text: context.translate.submit,
-          onTap: () {
-            if (!_isApplying) {
-              AppPages.home.go();
+          onTap: () async {
+            if (_isApplying) return;
+
+            if (selectedLanguage != getIt<LanguageCubit>().state.appLanguage) {
+              await applyNewLanguage();
             }
+
+            AppPages.home.go();
           },
         ),
       ],

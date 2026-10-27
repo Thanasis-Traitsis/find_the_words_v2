@@ -14,12 +14,13 @@ part 'theme_state.dart';
 class ThemeCubit extends Cubit<ThemeState> {
   static const String _themeKey = AppKeys.themeModeKey;
 
-  ThemeCubit() : super(const ThemeState());
+  final SharedPreferences _prefs;
+
+  ThemeCubit(this._prefs) : super(const ThemeState());
 
   Future<void> loadTheme() async {
     try {
-      final prefs = await SharedPreferences.getInstance();
-      final String? themeMode = prefs.getString(_themeKey);
+      final String? themeMode = _prefs.getString(_themeKey);
 
       if (themeMode != null) {
         emit(state.copyWith(themeMode: ThemeMode.values.byName(themeMode)));
@@ -31,8 +32,7 @@ class ThemeCubit extends Cubit<ThemeState> {
 
   Future<void> _saveTheme(ThemeMode themeMode) async {
     try {
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString(_themeKey, themeMode.name);
+      await _prefs.setString(_themeKey, themeMode.name);
     } catch (e) {
       debugPrint("${AppStrings.devThemeSaveError}: $e");
     }

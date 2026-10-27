@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:find_the_words/core/constants/app_keys.dart';
 import 'package:find_the_words/core/di/env.dart';
+import 'package:find_the_words/core/services/auth_service.dart';
 import 'package:find_the_words/core/services/connectivity_service.dart';
 import 'package:find_the_words/core/di/service_locator.dart';
 import 'package:find_the_words/features/auth/data/models/firebase_user_model.dart';
@@ -32,27 +33,21 @@ class CloudSyncService {
   Future<UserEntity> syncWithCloud({
     required firebase_auth.User firebaseUser,
     UserEntity? localUser,
-    DocumentSnapshot? cloudUserDoc,
   }) async {
-    // No cloud doc - upload local
-    if (cloudUserDoc == null || !cloudUserDoc.exists) {
-      return await _uploadLocalToCloud(localUser!, firebaseUser);
-    }
+    final cloudDoc = await _userRepo.getFirebaseUser(firebaseUser.uid);
 
-    // Cloud exists - merge
-    final cloudData = cloudUserDoc.data() as Map<String, dynamic>;
-    final firebaseModel = FirebaseUserModel.fromFirestore(cloudData);
-    final cloudUser = firebaseModel.toEntity();
+    final user = cloudDoc == null
+        ? await _uploadToCloud(localUser, firebaseUser)
+        : await _mergeWithCloudDoc(localUser, cloudDoc, firebaseUser);
 
-    if (localUser == null) {
-      return cloudUser;
-    }
+    await _userRepo.updateUser(user);
+    await AuthService.instance.saveToken(firebaseUser.uid);
 
-    return await _mergeUserData(localUser, cloudUser, firebaseUser);
+    return user;
   }
 
-  Future<UserEntity> _uploadLocalToCloud(
-    UserEntity localUser,
+  Future<UserEntity> _uploadToCloud(
+    UserEntity? localUser,
     firebase_auth.User firebaseUser,
   ) async {
     final newUser = _buildAuthenticatedUser(
@@ -63,18 +58,19 @@ class CloudSyncService {
     );
 
     await _userRepo.createFirebaseUser(newUser);
-    debugPrint('Uploaded local data to cloud');
     return newUser;
   }
 
-  Future<UserEntity> _mergeUserData(
-    UserEntity localUser,
-    UserEntity cloudUser,
+  Future<UserEntity> _mergeWithCloudDoc(
+    UserEntity? localUser,
+    DocumentSnapshot cloudDoc,
     firebase_auth.User firebaseUser,
   ) async {
-    final bannedWords = (getIt<SharedPreferences>().getStringList(
-      AppKeys.bannedWords,
-    ) ?? []).toSet();
+    final cloudUser = FirebaseUserModel.fromFirestore(
+      cloudDoc.data() as Map<String, dynamic>,
+    ).toEntity();
+
+    if (localUser == null) return cloudUser;
 
     final mergedUser = _mergeUserProgress(
       local: localUser,
@@ -82,13 +78,25 @@ class CloudSyncService {
       id: firebaseUser.uid,
       username: firebaseUser.displayName,
       email: firebaseUser.email,
-      bannedWords: bannedWords,
+      bannedWords: await _tryGetBannedWords(),
     );
 
     await _userRepo.updateFirebaseUser(mergedUser);
     await _userRepo.updateCurrentStageFromMerge(mergedUser);
 
     return mergedUser;
+  }
+
+  Future<Set<String>> _tryGetBannedWords() async {
+    try {
+      await _userRepo.updateBannedWords();
+    } catch (e) {
+      debugPrint('Could not refresh banned words, merging without them: $e');
+    }
+
+    return (getIt<SharedPreferences>().getStringList(AppKeys.bannedWords) ??
+            [])
+        .toSet();
   }
 
   void scheduleSync(UserEntity user) {

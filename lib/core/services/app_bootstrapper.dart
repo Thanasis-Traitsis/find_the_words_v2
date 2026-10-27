@@ -1,5 +1,4 @@
 import 'package:find_the_words/config/language/cubit/language_cubit.dart';
-import 'package:find_the_words/config/theme/theme_cubit/theme_cubit.dart';
 import 'package:find_the_words/core/constants/constants.dart';
 import 'package:find_the_words/core/di/env.dart';
 import 'package:find_the_words/core/services/auth_service.dart';
@@ -12,27 +11,25 @@ import 'package:injectable/injectable.dart';
 @Environment(Env.minimal)
 class AppBootstrapper {
   Future<void> initialize() async {
-    await MobileAds.instance.initialize();
-    MobileAds.instance.updateRequestConfiguration(
-      RequestConfiguration(testDeviceIds: AppKeys.testDeviceIds),
-    );
-
     await Future.wait([
+      _initializeAds(),
       registerRemainingDependencies(),
       AuthService.instance.initializeGoogleSignIn(),
-      _loadInitialData(),
+      _loadDictionary(),
     ]);
 
     await Future.delayed(Duration(seconds: 1));
   }
 
-  Future<void> _loadInitialData() async {
-    final themeCubit = getIt<ThemeCubit>();
-    final langCubit = getIt<LanguageCubit>();
+  Future<void> _initializeAds() async {
+    await MobileAds.instance.initialize();
+    MobileAds.instance.updateRequestConfiguration(
+      RequestConfiguration(testDeviceIds: AppKeys.testDeviceIds),
+    );
+  }
 
-    await Future.wait([themeCubit.loadTheme(), langCubit.loadSelectedLang()]);
-
-    final dictionaryService = getIt<DictionaryService>();
-    await dictionaryService.loadDictionaryJson();
+  Future<void> _loadDictionary() async {
+    final langCode = getIt<LanguageCubit>().state.appLanguage.code;
+    await getIt<DictionaryService>().loadDictionaryJson(langCode: langCode);
   }
 }

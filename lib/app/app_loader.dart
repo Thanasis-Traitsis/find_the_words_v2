@@ -10,7 +10,7 @@ import 'package:find_the_words/config/theme/app_colors.dart';
 import 'package:find_the_words/config/theme/app_theme.dart';
 import 'package:find_the_words/config/theme/theme_cubit/theme_cubit.dart';
 import 'package:find_the_words/config/version/force_update_screen.dart';
-import 'package:find_the_words/config/version/version_bloc/version_bloc.dart';
+import 'package:find_the_words/config/version/version_cubit/version_cubit.dart';
 import 'package:find_the_words/core/di/service_locator.dart';
 import 'package:find_the_words/features/auth/account_boost_cubit/account_boost_cubit.dart';
 import 'package:find_the_words/features/auth/auth_cubit/auth_cubit.dart';
@@ -34,17 +34,16 @@ class AppLoader extends StatelessWidget {
       providers: [
         BlocProvider.value(value: getIt<ThemeCubit>()),
         BlocProvider.value(value: getIt<LanguageCubit>()),
+        BlocProvider.value(value: getIt<VersionCubit>()),
         BlocProvider(create: (_) => getIt<SplashCubit>()..start()),
       ],
       child: BlocBuilder<SplashCubit, SplashState>(
-        builder: (context, state) {
-          if (state is SplashReady) {
-            return MultiBlocProvider(
+        builder: (context, state) => switch (state) {
+          SplashReady() => MultiBlocProvider(
               providers: _fullAppProviders(),
               child: const App(),
-            );
-          }
-          return _SplashShell(state: state);
+            ),
+          SplashPending() => _SplashShell(state: state),
         },
       ),
     );
@@ -52,14 +51,14 @@ class AppLoader extends StatelessWidget {
 
   List<SingleChildWidget> _fullAppProviders() {
     return [
-      BlocProvider.value(value: getIt<VersionBloc>()),
       BlocProvider.value(value: getIt<ConnectivityCubit>()),
+      BlocProvider.value(value: getIt<AuthCubit>()),
+
       BlocProvider.value(value: getIt<RewardedAdCubit>()),
       BlocProvider.value(value: getIt<FreezeCubit>()),
       BlocProvider.value(value: getIt<PointsAdLimitCubit>()),
       BlocProvider.value(value: getIt<SoundCubit>()),
       BlocProvider.value(value: getIt<SettingsCubit>()),
-      BlocProvider.value(value: getIt<AuthCubit>()),
       BlocProvider.value(value: getIt<PointsCubit>()),
       BlocProvider.value(value: getIt<AccountBoostCubit>()),
       BlocProvider.value(value: getIt<StageBloc>()),
@@ -69,7 +68,7 @@ class AppLoader extends StatelessWidget {
 }
 
 class _SplashShell extends StatelessWidget {
-  final SplashState state;
+  final SplashPending state;
   const _SplashShell({required this.state});
 
   @override
@@ -88,7 +87,6 @@ class _SplashShell extends StatelessWidget {
             message: message,
             onRetry: () => context.read<SplashCubit>().retry(),
           ),
-        SplashReady() => const SizedBox.shrink(),
       },
     );
   }

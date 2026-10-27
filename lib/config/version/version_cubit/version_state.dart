@@ -1,4 +1,4 @@
-part of 'version_bloc.dart';
+part of 'version_cubit.dart';
 
 class VersionState extends Equatable {
   final String currentVersion;

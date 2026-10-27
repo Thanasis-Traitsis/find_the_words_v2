@@ -1,10 +1,8 @@
 import 'dart:async';
 
 import 'package:find_the_words/core/di/env.dart';
-import 'package:find_the_words/core/services/storage_service.dart';
+import 'package:find_the_words/core/services/user_profile_service.dart';
 import 'package:find_the_words/features/auth/auth_cubit/auth_cubit.dart';
-import 'package:find_the_words/features/auth/data/models/user_model.dart';
-import 'package:find_the_words/features/auth/domain/entities/user_entity.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
@@ -12,14 +10,14 @@ import 'package:injectable/injectable.dart';
 @Environment(Env.full)
 class PointsCubit extends Cubit<int> {
   final AuthCubit _authCubit;
-  final StorageService _storageService;
+  final UserProfileService _userProfileService;
   StreamSubscription<AuthState>? _authSubscription;
 
   PointsCubit({
     required AuthCubit authCubit,
-    required StorageService storageService,
+    required UserProfileService userProfileService,
   }) : _authCubit = authCubit,
-       _storageService = storageService,
+       _userProfileService = userProfileService,
        super(0) {
     _listenToAuthChanges();
   }
@@ -44,29 +42,17 @@ class PointsCubit extends Cubit<int> {
     final authState = _authCubit.state;
     if (authState is! AuthAuthenticated) return;
 
-    final currentUser = authState.user;
-    await _updatePoints(currentUser.points + amount, currentUser);
+    await _userProfileService.updatePoints(authState.user.points + amount);
   }
 
   Future<bool> deductPoints(int amount, {String? reason}) async {
     final authState = _authCubit.state;
     if (authState is! AuthAuthenticated) return false;
 
-    final currentUser = authState.user;
-    if (currentUser.points < amount) {
-      return false;
-    }
+    if (authState.user.points < amount) return false;
 
-    await _updatePoints(currentUser.points - amount, currentUser);
+    await _userProfileService.updatePoints(authState.user.points - amount);
     return true;
-  }
-
-  Future<void> _updatePoints(int newPoints, UserEntity currentUser) async {
-    final updatedUser = currentUser.copyWith(points: newPoints);
-    final userModel = UserModel.fromEntity(updatedUser);
-    await _storageService.saveUser(userModel);
-    
-    _authCubit.emit(AuthAuthenticated(user: updatedUser));
   }
 
   @override

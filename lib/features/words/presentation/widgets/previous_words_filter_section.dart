@@ -45,7 +45,7 @@ class _PreviousWordsFilterSectionState
       children: [
         FiltersSection(
           sectionTitle: "${context.translate.filtersSectionHeaderPreviousStageWords}:",
-          sectionDescription: context.translate.filtersSectionDescriptionPreviousStageWords,
+          sectionDescription: context.translate.filtersSectionDescriptionSelectedLetters,
           sectionContent: Wrap(
             spacing: AppSpacing.spacingM,
             runSpacing: AppSpacing.spacingM,

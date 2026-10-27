@@ -17,9 +17,11 @@ import '../../config/ads/rewarded_cubit/rewarded_ad_cubit.dart' as _i127;
 import '../../config/connectivity/connectivity_cubit/connectivity_cubit.dart'
     as _i205;
 import '../../config/language/cubit/language_cubit.dart' as _i1061;
+import '../../config/language/domain/usecases/change_language_usecase.dart'
+    as _i417;
 import '../../config/sound/cubit/sound_cubit.dart' as _i283;
 import '../../config/theme/theme_cubit/theme_cubit.dart' as _i387;
-import '../../config/version/version_bloc/version_bloc.dart' as _i778;
+import '../../config/version/version_cubit/version_cubit.dart' as _i373;
 import '../../config/version/version_service.dart' as _i339;
 import '../../features/auth/account_boost_cubit/account_boost_cubit.dart'
     as _i170;
@@ -76,8 +78,8 @@ import '../services/store_discount_service.dart' as _i88;
 import '../services/user_profile_service.dart' as _i442;
 import 'register_module.dart' as _i291;
 
-const String _full = 'full';
 const String _minimal = 'minimal';
+const String _full = 'full';
 
 extension GetItInjectableX on _i174.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -91,6 +93,10 @@ extension GetItInjectableX on _i174.GetIt {
       environmentFilter,
     );
     final registerModule = _$RegisterModule();
+    gh.factory<_i259.SignInUsecase>(
+      () => _i259.SignInUsecase(gh<_i1007.CloudSyncService>()),
+      registerFor: {_minimal},
+    );
     await gh.lazySingletonAsync<_i88.StoreDiscountService>(
       () => registerModule.storeDiscountService,
       registerFor: {_full},
@@ -98,10 +104,6 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i40.PreviousStageWordsService>(
       () => _i40.PreviousStageWordsService(),
-      registerFor: {_full},
-    );
-    gh.lazySingleton<_i47.ConnectivityService>(
-      () => _i47.ConnectivityService(),
       registerFor: {_full},
     );
     gh.lazySingleton<_i127.RewardedAdCubit>(
@@ -166,16 +168,12 @@ extension GetItInjectableX on _i174.GetIt {
       registerFor: {_minimal},
       preResolve: true,
     );
+    gh.lazySingleton<_i47.ConnectivityService>(
+      () => _i47.ConnectivityService(),
+      registerFor: {_minimal},
+    );
     gh.lazySingleton<_i187.AppBootstrapper>(
       () => _i187.AppBootstrapper(),
-      registerFor: {_minimal},
-    );
-    gh.lazySingleton<_i1061.LanguageCubit>(
-      () => _i1061.LanguageCubit(),
-      registerFor: {_minimal},
-    );
-    gh.lazySingleton<_i387.ThemeCubit>(
-      () => _i387.ThemeCubit(),
       registerFor: {_minimal},
     );
     gh.lazySingleton<_i262.DictionaryService>(
@@ -202,20 +200,6 @@ extension GetItInjectableX on _i174.GetIt {
       ),
       registerFor: {_full},
     );
-    gh.lazySingleton<_i170.AccountBoostCubit>(
-      () => _i170.AccountBoostCubit(
-        authCubit: gh<_i199.AuthCubit>(),
-        storageService: gh<_i306.StorageService>(),
-      ),
-      registerFor: {_full},
-    );
-    gh.lazySingleton<_i640.PointsCubit>(
-      () => _i640.PointsCubit(
-        authCubit: gh<_i199.AuthCubit>(),
-        storageService: gh<_i306.StorageService>(),
-      ),
-      registerFor: {_full},
-    );
     gh.lazySingleton<_i442.UserProfileService>(
       () => _i442.UserProfileService(
         gh<_i926.UserRepository>(),
@@ -229,8 +213,37 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i687.UserRepositoryImpl(gh<_i306.StorageService>()),
       registerFor: {_minimal},
     );
+    gh.factory<_i417.ChangeLanguageUsecase>(
+      () => _i417.ChangeLanguageUsecase(
+        gh<_i262.DictionaryService>(),
+        gh<_i442.UserProfileService>(),
+      ),
+      registerFor: {_minimal},
+    );
+    gh.lazySingleton<_i170.AccountBoostCubit>(
+      () => _i170.AccountBoostCubit(
+        authCubit: gh<_i199.AuthCubit>(),
+        userProfileService: gh<_i442.UserProfileService>(),
+      ),
+      registerFor: {_full},
+    );
+    gh.lazySingleton<_i640.PointsCubit>(
+      () => _i640.PointsCubit(
+        authCubit: gh<_i199.AuthCubit>(),
+        userProfileService: gh<_i442.UserProfileService>(),
+      ),
+      registerFor: {_full},
+    );
+    gh.lazySingleton<_i1061.LanguageCubit>(
+      () => _i1061.LanguageCubit(gh<_i460.SharedPreferences>()),
+      registerFor: {_minimal},
+    );
     gh.lazySingleton<_i339.VersionService>(
       () => _i339.VersionService(gh<_i460.SharedPreferences>()),
+      registerFor: {_minimal},
+    );
+    gh.lazySingleton<_i387.ThemeCubit>(
+      () => _i387.ThemeCubit(gh<_i460.SharedPreferences>()),
       registerFor: {_minimal},
     );
     gh.lazySingleton<_i316.StageRepository>(
@@ -256,13 +269,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i427.LoadStageUsecase>(
       () => _i427.LoadStageUsecase(repository: gh<_i316.StageRepository>()),
       registerFor: {_full},
-    );
-    gh.factory<_i259.SignInUsecase>(
-      () => _i259.SignInUsecase(
-        gh<_i926.UserRepository>(),
-        gh<_i1007.CloudSyncService>(),
-      ),
-      registerFor: {_minimal},
     );
     gh.lazySingleton<_i648.SettingsCubit>(
       () => _i648.SettingsCubit(
@@ -291,7 +297,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i926.UserRepository>(),
         gh<_i47.ConnectivityService>(),
         gh<_i1007.CloudSyncService>(),
-        gh<_i253.BuildAuthenticatedUserUsecase>(),
         gh<_i792.CreateGuestUserUsecase>(),
       ),
       registerFor: {_minimal},
@@ -303,8 +308,8 @@ extension GetItInjectableX on _i174.GetIt {
       ),
       registerFor: {_full},
     );
-    gh.lazySingleton<_i778.VersionBloc>(
-      () => _i778.VersionBloc(gh<_i339.VersionService>()),
+    gh.lazySingleton<_i373.VersionCubit>(
+      () => _i373.VersionCubit(gh<_i339.VersionService>()),
       registerFor: {_minimal},
     );
     gh.lazySingleton<_i199.AuthCubit>(
@@ -317,6 +322,15 @@ extension GetItInjectableX on _i174.GetIt {
       ),
       registerFor: {_minimal},
     );
+    gh.lazySingleton<_i254.SplashCubit>(
+      () => _i254.SplashCubit(
+        bootstrapper: gh<_i187.AppBootstrapper>(),
+        versionCubit: gh<_i373.VersionCubit>(),
+        themeCubit: gh<_i387.ThemeCubit>(),
+        languageCubit: gh<_i1061.LanguageCubit>(),
+      ),
+      registerFor: {_minimal},
+    );
     gh.lazySingleton<_i772.StageBloc>(
       () => _i772.StageBloc(
         loadStageUsecase: gh<_i427.LoadStageUsecase>(),
@@ -326,13 +340,6 @@ extension GetItInjectableX on _i174.GetIt {
         stageRepo: gh<_i316.StageRepository>(),
       ),
       registerFor: {_full},
-    );
-    gh.lazySingleton<_i254.SplashCubit>(
-      () => _i254.SplashCubit(
-        bootstrapper: gh<_i187.AppBootstrapper>(),
-        versionBloc: gh<_i778.VersionBloc>(),
-      ),
-      registerFor: {_minimal},
     );
     return this;
   }

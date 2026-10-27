@@ -140,7 +140,7 @@ class _FiltersBottomsheetState extends State<FiltersBottomsheet> {
           ),
           FiltersSection(
             sectionTitle: context.translate.filtersSectionHeaderSelectedLetters,
-            sectionDescription: context.translate.filtersSectionDescriptionSelectedLetters,
+            sectionDescription: context.translate.filtersSectionDescriptionPreviousStageWords,
             sectionContent: Column(
               spacing: AppSpacing.spacingM,
               crossAxisAlignment: CrossAxisAlignment.start,

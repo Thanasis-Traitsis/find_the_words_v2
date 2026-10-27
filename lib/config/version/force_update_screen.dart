@@ -1,5 +1,5 @@
 import 'package:find_the_words/config/theme/custom_text_type.dart';
-import 'package:find_the_words/config/version/version_bloc/version_bloc.dart';
+import 'package:find_the_words/config/version/version_cubit/version_cubit.dart';
 import 'package:find_the_words/core/constants/constants.dart';
 import 'package:find_the_words/core/constants/custom_icons.dart';
 import 'package:find_the_words/core/screens/custom_screen.dart';
@@ -15,7 +15,7 @@ class ForceUpdateScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<VersionBloc, VersionState>(
+    return BlocBuilder<VersionCubit, VersionState>(
       builder: (context, state) {
         return CustomScreen(
           child: Center(

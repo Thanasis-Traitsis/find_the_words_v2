@@ -1,9 +1,24 @@
-sealed class SplashState {}
-
-class SplashLoading extends SplashState {}
-class SplashForceUpdate extends SplashState {}
-class SplashFailed extends SplashState {
-  final String message;
-  SplashFailed(this.message);
+sealed class SplashState {
+  const SplashState();
 }
-class SplashReady extends SplashState {}
+
+sealed class SplashPending extends SplashState {
+  const SplashPending();
+}
+
+class SplashLoading extends SplashPending {
+  const SplashLoading();
+}
+
+class SplashForceUpdate extends SplashPending {
+  const SplashForceUpdate();
+}
+
+class SplashFailed extends SplashPending {
+  final String message;
+  const SplashFailed(this.message);
+}
+
+class SplashReady extends SplashState {
+  const SplashReady();
+}
